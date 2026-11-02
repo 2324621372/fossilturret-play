@@ -271,7 +271,7 @@ const TYPES={
   pachy:{hp:8,spd:0.9,pts:30,dmg:2,size:1.1,col:'#d88ac8',cy:0.52,hr:0.42},
   trike:{hp:16,spd:0.8,pts:40,dmg:2,size:1.25,col:'#5aa8ee',cy:0.48,hr:0.46,heavy:1},
   ankylo:{hp:36,spd:0.6,pts:80,dmg:3,size:1.45,col:'#e0a040',cy:0.24,hr:0.42,heavy:1},
-  trex:{hp:110,spd:0.5,pts:300,dmg:5,size:1.9,col:'#f0574a',cy:0.6,hr:0.44,heavy:1,boss:1},
+  trex:{hp:90,spd:0.5,pts:300,dmg:5,size:1.9,col:'#f0574a',cy:0.6,hr:0.44,heavy:1,boss:1},
   ankyking:{hp:50,spd:0.4,pts:350,dmg:4,size:1.9,col:'#ffd23a',cy:0.24,hr:0.42,heavy:1,boss:1,armor:1},
   pteroq:{hp:90,spd:0.55,pts:400,dmg:4,size:1.75,col:'#c85ae8',cy:0.66,hr:0.4,heavy:1,boss:1,fly:1},
   tyrant:{hp:150,spd:0.5,pts:500,dmg:8,size:2.1,col:'#ff3a1a',cy:0.6,hr:0.44,heavy:1,boss:1},
@@ -1257,9 +1257,9 @@ function setMute(m){AU.muted=m;store('fossil_muted',m?'1':'0');$('mute').textCon
 
 /* ================= 波次设计 ================= */
 function stageOf(n){return n<=2?1:n<=4?2:n<=6?3:4}
-const WAVES={1:[{raptor:13,compy:10,ovi:1},0.92],2:[{raptor:11,compy:10,ovi:4,pachy:2},0.86],3:[{raptor:8,compy:10,ovi:3,trike:2,pachy:2,para:1},0.9],
-  4:[{raptor:8,compy:10,ovi:2,trike:2,pachy:2,dilo:2,para:1},0.86],5:[{raptor:6,compy:10,ovi:2,ptero:4,trike:1,dilo:2,pachy:2,para:1,stego:1},0.86],
-  6:[{raptor:7,compy:10,ovi:2,ptero:4,trike:1,ankylo:1,dilo:2,pachy:2,para:1,stego:1},0.82]};
+const WAVES={1:[{raptor:13,compy:10,ovi:1},0.92],2:[{raptor:11,compy:10,ovi:4,pachy:2},0.86],3:[{raptor:9,compy:5,ovi:2,trike:1,pachy:2,para:1},0.92],
+  4:[{raptor:8,compy:10,ovi:2,trike:1,pachy:2,dilo:2,para:1},0.88],5:[{raptor:6,compy:10,ovi:2,ptero:4,trike:1,dilo:2,pachy:2,para:1,stego:1},0.86],
+  6:[{raptor:8,compy:10,ovi:2,ptero:4,trike:1,dilo:1,pachy:2,para:1},0.84]};   /* 霸王龙波：少放重型 */
 const BOSSES=['trex','ankyking','pteroq','tyrant','spino','titan'];
 function waveDef(n){
   const st=stageOf(n),k=Math.max(0,n-7);
@@ -1317,7 +1317,7 @@ function startWave(n){
   const st=S.wv.st;
   if(st!==S.stage){S.prevStage=S.stage;S.stage=st;S.stageFade=0;AU.crash=1}
   AU.level=st;
-  const B=S.wv.boss,bh=B?Math.round(TYPES[B].hp*S.wv.hpMul):0;
+  const B=S.wv.boss,bh=B?Math.round(TYPES[B].hp*Math.pow(S.wv.hpMul,0.85)):0;
   const tips={1:[tr('wave',1),tr('tip1')],2:[tr('wave',2),tr('tip2')],3:[tr('stage',2,tr('s2')),tr('tip3',TYPES.trike.hp)],4:[tr('wave',4),tr('tip4')],
     5:[tr('stage',3,tr('s3')),tr('tip5')],7:[tr('stage',4,tr('s4')),tr('tip7')]};
   if(tips[n])banner(tips[n][0],tips[n][1],2.6);
@@ -1325,7 +1325,9 @@ function startWave(n){
   updHUD();
 }
 function spawn(type,x,hpMul,el){
-  const T=TYPES[type],hp=Math.round(T.hp*hpMul*(el?1.8:1)*10)/10;
+  /* 细颚龙成群出现，耐久只随波次缓慢增长，保持"一枪一只"的手感 */
+  /* 首领耐久按 hpMul^0.85 增长，避免某个首领波一波清空满血骨栅 */
+  const T=TYPES[type],hp=Math.round(T.hp*(type==='compy'?Math.max(1,hpMul*0.55):T.boss?Math.pow(hpMul,0.85):hpMul)*(el?1.8:1)*10)/10;
   const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*1.22*(1+(S.stage-1)*0.05+Math.min(0.4,0.022*S.wave))*(el==='swift'?1.45:1),t:Math.random()*5,flash:0,pts:T.pts*hpMul*(el?3:1),ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0,el,hasteT:0};
   if(el==='shield')e.sh=e.shMax=Math.round(hp*0.5*10)/10;
   if(el==='regen')e.calm=0;
@@ -1641,7 +1643,7 @@ function allyFire(al,i,t){
   al.fire=1;
 }
 function spit(e){
-  const tx=proj(e.x,0).x;S.spits.push({x0:e.sx,y0:e.py-e.h*0.82,x1:tx,y1:by-16,t:0,T:1.1,x:e.sx,y:e.py-e.h*0.82});sfx('spit');
+  const tx=proj(e.x,0).x;S.spits.push({x0:e.sx,y0:e.py-e.h*0.82,x1:tx,y1:by-16,t:0,T:1.4,x:e.sx,y:e.py-e.h*0.82});sfx('spit');
 }
 
 /* ================= 更新 ================= */
@@ -1658,7 +1660,7 @@ function update(dt){
     S.wt+=dt;
     while(S.qi<wv.list.length&&S.wt>=wv.list[S.qi].t-(TYPES[wv.list[S.qi].type].heavy?1.6:0)){
       const it=wv.list[S.qi++],T=TYPES[it.type];
-      if(T.heavy){S.tele.push({it,t:T.boss?2.4:1.6,max:T.boss?2.4:1.6});if(T.boss){sfx('warn');sfx('riser');banner(tr('bossT',tr('d_'+it.type)),tr('bossS',Math.round(T.hp*wv.hpMul),T.dmg,tr('bh_'+it.type)),2.2)}}
+      if(T.heavy){S.tele.push({it,t:T.boss?2.4:1.6,max:T.boss?2.4:1.6});if(T.boss){sfx('warn');sfx('riser');banner(tr('bossT',tr('d_'+it.type)),tr('bossS',Math.round(T.hp*Math.pow(wv.hpMul,0.85)),T.dmg,tr('bh_'+it.type)),2.2)}}
       else spawn(it.type,it.x,wv.hpMul,it.el);
     }
     for(const tl of S.tele){tl.t-=dt;if(tl.t<=0){spawn(tl.it.type,tl.it.x,wv.hpMul,tl.it.el);tl.done=1}}
@@ -1685,13 +1687,15 @@ function update(dt){
       if(e.life<=0||Math.abs(e.x)>2.4){e.gone=1;const p=proj(clamp(e.x,-1,1),e.z);addText(p.x,p.y-30,tr('f_esc'),"#ffd447",14);sfx('escape')}
     }else{
       let sp=e.spd*slow;
-      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=2.4;spit(e)}}
+      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=3.2;spit(e)}}
       if(e.type==='pachy'){
-        if(e.ps===0&&e.z<5.5){e.ps=1;e.pw=0.7;sfx('charge')}
+        if(e.ps===0&&e.z<5.5){e.ps=1;e.pw=0.9;sfx('charge')}
         if(e.ps===1){sp=0;e.pw-=dt;if(e.pw<=0)e.ps=2}
         if(e.ps===2)sp=3.6*slow;
       }
-      e.z-=sp*dt;
+      /* 透视补偿：近处的屏幕位移本来是远处的 ~50 倍，这里让世界速度随距离变化，
+         近远屏幕速度比降到约 2.7 倍；总走完时间与原来相同（4.66 由积分得出） */
+      e.z-=sp*Math.pow((Math.max(0,e.z)+D0)/4.66,1.5)*dt;
       if(e.type==='ptero')e.x=e.x0*0.6+Math.sin(e.t*1.6+e.ph)*0.45;
       else if(e.type==='pteroq'){e.x=Math.sin(e.t*0.9+e.ph)*0.55;e.sumT-=dt;if(e.sumT<=0&&!S.dead){e.sumT=3.5;for(const d of[-1,1]){const m=spawn('ptero',clamp(e.x+d*0.3,-0.9,0.9),S.wv.hpMul);m.z=Math.min(ZMAX,e.z+0.4)}sfx('warn')}}
       else if(e.type==='tyrant'&&!e.rage&&e.hp<e.max*0.5){e.rage=1;e.spd*=1.8;sfx('roar');S.shake=Math.max(S.shake,0.45);addText(e.sx,e.sy-e.sr-20,tr('rage'),'#ff3a1a',24)}
