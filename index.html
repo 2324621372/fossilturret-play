@@ -12,7 +12,7 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-s
 body.doodle{background:#d8ceb4;font-family:"Comic Sans MS","Chalkboard SE","PingFang SC","Microsoft YaHei",sans-serif}
 #wrap{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);overflow:hidden;background:#000}
 canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
-#hud{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 0;pointer-events:none;z-index:3}
+#hud{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 68px) 10px 0;pointer-events:none;z-index:3}
 .row{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
 .panel{border-radius:14px;padding:5px 10px 6px}
 .lbl{font-size:11px;letter-spacing:1px;font-weight:700}
@@ -33,7 +33,7 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 #banner{position:absolute;left:0;right:0;top:33%;text-align:center;pointer-events:none;z-index:3;opacity:0;transform:scale(.85);transition:opacity .3s,transform .3s cubic-bezier(.2,1.6,.4,1);padding:0 18px}
 #banner.show{opacity:1;transform:scale(1)}
 #banner b{display:inline-block;font-size:28px;font-weight:900;padding:4px 16px;border-radius:14px}
-#banner span{display:block;margin-top:8px;font-size:14px;font-weight:700;line-height:1.5}
+#banner>span{display:block;margin-top:8px;font-size:14px;font-weight:700;line-height:1.5}
 #hint{position:absolute;left:14px;right:14px;text-align:center;pointer-events:none;z-index:3;transition:opacity .8s;font-size:14px;line-height:1.55;padding:8px 10px;border-radius:14px;font-weight:700}
 #hint.off{opacity:0}
 #over{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:18px}
@@ -53,6 +53,7 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 .pzi{width:12px;height:14px;border-left:4px solid currentColor;border-right:4px solid currentColor;box-sizing:border-box}
 #pause{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;padding:18px}
 #pause.show{display:flex}
+#pause .card{max-height:100%;overflow-y:auto;touch-action:pan-y}
 #pause .ltl{margin:12px 0 6px}
 .langs{display:flex;gap:6px;margin-bottom:12px}
 .langs button{flex:1;height:44px;border-radius:12px;font-size:14px;font-weight:900;font-family:inherit;cursor:pointer;touch-action:manipulation}
@@ -102,6 +103,29 @@ body.doodle .big1{color:#2b2b38;background:#7ad35a;border:3px solid #2b2b38;box-
 #reroll:disabled{opacity:.5}
 .scard{touch-action:pan-y}
 .srow .ci{width:14px;height:14px;vertical-align:-2px}
+#codex{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;padding:12px}
+#codex.show{display:flex}
+#dexClose{position:sticky;bottom:0;box-shadow:0 -6px 10px rgba(0,0,0,.18)}
+#codex .scard{padding-bottom:0}
+#dexList{padding-bottom:4px}
+#dexN{margin-top:4px;letter-spacing:0;font-size:10.5px}
+#dexList{display:flex;flex-direction:column;gap:7px;margin:8px 0 2px;text-align:left}
+.dx{display:flex;gap:8px;align-items:center;border-radius:12px;padding:6px 8px}
+.dx img{width:60px;height:60px;object-fit:contain;flex:none}
+.dx.unk img{filter:brightness(0);opacity:.35}
+.dx2{min-width:0;flex:1}
+.dx .dn{font-size:14px;font-weight:900}
+.dtag{font-size:9.5px;font-weight:900;padding:1px 5px;border-radius:6px;margin-left:6px;vertical-align:1px}
+.dx .ds{font-size:10.5px;font-weight:700;margin:2px 0;display:flex;flex-wrap:wrap;gap:1px 8px}
+.dx .dd{font-size:10.5px;line-height:1.35}
+body.toon #codex{background:radial-gradient(#3a1a08cc,#140804f0)}
+body.toon .dx{background:#fff6e0;border:2px solid #c8a070;color:#3a1a08}
+body.toon .dx .ds{color:#8a5a2a}body.toon .dx .dd{color:#6a4426}
+body.toon .dtag{background:#6a4426;color:#ffe8c0}body.toon .dtag.boss{background:#d82a1a;color:#fff}body.toon .dtag.sup{background:#e8a800;color:#fff}
+body.doodle #codex{background:#2b2b3880}
+body.doodle .dx{background:#fff;border:2.5px solid #2b2b38;border-radius:12px 8px 13px 9px;color:#2b2b38}
+body.doodle .dx .ds{color:#e8602a}body.doodle .dx .dd{color:#5a5a6a}
+body.doodle .dtag{background:#fff6c8;border:1.5px solid #2b2b38}body.doodle .dtag.boss{background:#ff5a4a;color:#fff}body.doodle .dtag.sup{background:#ffe066}
 /* ---- 写实卡通 ---- */
 body.toon #coin{color:#ffe08a;text-shadow:0 1px 0 #6a3a10}
 body.toon .ws{background:linear-gradient(#5a3a22,#2e1c0e);border:2px solid #8a6a3a;color:#ffe8c0;box-shadow:0 3px 0 #1a0c04}
@@ -190,7 +214,7 @@ body.doodle #retry{color:#2b2b38;background:#7ad35a;border:3px solid #2b2b38;box
     <div class="row">
       <div class="panel"><div class="lbl" data-t="score">击退积分</div><div id="score">0</div><div id="best">最佳 0</div><div id="coin"><i class="ci"></i><b id="coinN">0</b></div></div>
       <div id="mid"><div id="wave">第 1 波</div><div id="stage">阶段1 · 坑沿黎明</div></div>
-      <div class="btns"><div class="bpair"><div id="pz" class="btn" role="button" aria-label="暂停"><i class="pzi"></i></div><div id="mute" class="btn" role="button" aria-label="静音">🔊</div></div><div id="sty" class="btn" role="button" aria-label="切换画风">涂鸦</div></div>
+      <div class="btns"><div class="bpair"><div id="pz" class="btn" role="button" tabindex="0" aria-label="暂停"><i class="pzi"></i></div><div id="mute" class="btn" role="button" tabindex="0" aria-label="静音">🔊</div></div><div id="sty" class="btn" role="button" tabindex="0" aria-label="切换画风">涂鸦</div></div>
     </div>
     <div id="hpRow"><span class="lbl" data-t="fence">骨栅</span><div id="hpBar"></div><span id="combo"></span></div>
   </div>
@@ -209,6 +233,7 @@ body.doodle #retry{color:#2b2b38;background:#7ad35a;border:3px solid #2b2b38;box
       <div><span data-t="stSup"></span><b id="fSup">0</b></div>
     </div>
     <div class="rule" data-t="rule"></div>
+    <button id="dexO" class="big2" data-t="dexT" style="margin:0 0 8px">怪物图鉴</button>
     <button id="retry" data-t="retry">再守一次</button>
   </div></div>
   <div id="shop"><div class="card scard">
@@ -218,18 +243,29 @@ body.doodle #retry{color:#2b2b38;background:#7ad35a;border:3px solid #2b2b38;box
     <div id="team"></div>
     <div class="srow"><button id="reroll" class="big2"></button><button id="go" class="big1"></button></div>
   </div></div>
-  <div id="pause"><div class="card">
-    <h2 data-t="pause">暂停</h2>
+  <div id="pause" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="card">
+    <h2 id="pauseTitle" data-t="pause">暂停</h2>
     <div class="lbl ltl" data-t="lang"></div>
     <div class="langs"><button data-lang="zh">简体中文</button><button data-lang="tw">繁體中文</button><button data-lang="en">English</button></div>
     <div class="rule" data-t="pauseRule"></div>
     <button id="resume" class="big1" data-t="resume">继续</button>
+    <button id="dexP" class="big2" data-t="dexT">怪物图鉴</button>
     <button id="restart" class="big2" data-t="restart">重新开始</button>
+  </div></div>
+  <div id="codex"><div class="card scard">
+    <h2 data-t="dexT">怪物图鉴</h2>
+    <div class="lbl" id="dexN"></div>
+    <div id="dexList"></div>
+    <button id="dexClose" class="big1" data-t="close">返回</button>
   </div></div>
 </div>
 <script>
 (()=>{
 'use strict';
+(()=>{var he=(e,t)=>()=>(e&&(t=e(e=0)),t);var M=he(()=>{});M();async function*O(e){if(!e.headers.get("content-type")?.includes("text/event-stream")||!e.body)throw new Error("Runtime did not return an LLM stream");let t=e.body.getReader(),r=new TextDecoder,i="",s=[],a=0,n="",c=!1;function d(){let h=s.join(`
+`);s=[],a=0;let m=n;if(n="",!h)return;if(h==="[DONE]"){c=!0;return}let u=JSON.parse(h);if(m==="error"||u.error)throw new Error(typeof u.error=="string"?u.error:"LLM stream failed");return u}try{for(;!c;){let h=await t.read();i+=r.decode(h.value,{stream:!h.done});let m;for(;(m=i.indexOf(`
+`))>=0;){let u=i.slice(0,m).replace(/\r$/,"");if(i=i.slice(m+1),u)if(u.startsWith("data:")){let l=u.slice(5).replace(/^ /,"");s.push(l),a+=l.length}else u.startsWith("event:")&&(n=u.slice(6).trim());else{let l=d();if(l&&(yield l),c)return}if(a>2*1024*1024)throw new Error("LLM stream event too large")}if(i.length>2*1024*1024)throw new Error("LLM stream event too large");if(h.done)throw new Error("LLM stream ended before completion")}}finally{await t.cancel().catch(()=>{}),t.releaseLock()}}var de=(e,t)=>globalThis.fetch(e,t),x=class{constructor(e,t,r,i=de){this.baseUrl=e,this.ticket=t,this.userId=r,this.fetchImpl=i}async request(e,t={},r={}){let i=e==="matchmaking.join"?"/v1/runtime/matchmaking/join":e==="matchmaking.leave"?"/v1/runtime/matchmaking/leave":e==="runtime.capabilities"?`/v1/runtime/capabilities?game_id=${encodeURIComponent(String(t.game_id??""))}`:e==="rooms.create"?"/v1/runtime/rooms":e==="rooms.list"?`/v1/runtime/rooms?game_id=${encodeURIComponent(String(t.game_id??""))}`:`/v1/runtime/${e.replace(/\./g,"/")}`,s=e==="rooms.list"||e==="runtime.capabilities"||e==="llm.usage",a={"Content-Type":"application/json",Authorization:`Bearer ${typeof this.ticket=="function"?await this.ticket():this.ticket}`};this.userId&&(a["X-Riffle-User-ID"]=this.userId);let n=this.fetchImpl,c=await n(`${this.baseUrl.replace(/\/$/,"")}${i}`,{method:s?"GET":"POST",headers:a,signal:r.signal,...e.startsWith("llm.")||e.startsWith("rtc.")?{redirect:"error",credentials:"omit"}:{},...s?{}:{body:JSON.stringify(t)}}),d=await c.json().catch(()=>({}));if(!c.ok)throw Object.assign(new Error(d.error||`Runtime HTTP ${c.status}`),{status:c.status});return d}async*stream(e,t={},r={}){if(e!=="llm.stream")throw new Error("Unsupported streaming method");let i=this.fetchImpl,s=await i(`${this.baseUrl.replace(/\/$/,"")}/v1/runtime/llm/stream`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${typeof this.ticket=="function"?await this.ticket():this.ticket}`},body:JSON.stringify(t),signal:r.signal,redirect:"error",credentials:"omit"});if(!s.ok){let a=await s.json().catch(()=>({}));throw new Error(a.error||`Runtime HTTP ${s.status}`)}yield*O(s)}};var Rt=1440*6e4;var v=e=>typeof e=="string"&&e.trim()?e.trim():null,S=e=>{let t=Number(e);return Number.isSafeInteger(t)&&t>0?String(t):v(e)};function L(e){try{let t=e?.split(".")[1];if(!t)return{};let r=t.replace(/-/g,"+").replace(/_/g,"/"),i=r.padEnd(Math.ceil(r.length/4)*4,"=");return JSON.parse(globalThis.atob(i))}catch{return{}}}function W(e,t,r){return String(e.game_id)===t&&(r===null||String(e.sub)===r)}function K(e,t){let r=e??{},i=t?new URL(t).searchParams:new URLSearchParams,s=v(i.get("launchToken"))??v(r.launchToken)??v(r.ticket),a=L(s),n=v(i.get("runtimeUrl"))??v(r.runtimeUrl)??v(r.apiBaseUrl),c=S(i.get("gameId"))??S(a.game_id)??S(r.gameId)??S(r.postId),d=S(a.sub)??S(r.userId)??S(r.user?.id);if(!n)throw new Error("Riffle Runtime URL missing");if(!c)throw new Error("Game ID missing");let h=new URL(n);if(h.protocol!=="http:"&&h.protocol!=="https:")throw new Error("Runtime URL must use HTTP(S)");return{apiBaseUrl:n,launchToken:s,gameId:c,userId:d}}function F(e=globalThis.__RIFFLE_CONTEXT__,t=globalThis.location?.href){let r=K(e,t);if(!r.launchToken)throw new Error("Launch Token missing");return{...r,launchToken:r.launchToken}}function B(e,{requireTicket:t=!0,url:r=globalThis.location?.href}={}){let i=()=>e??globalThis.__RIFFLE_CONTEXT__??{},s=t?F(i(),r):K(i(),r),{apiBaseUrl:a,gameId:n,userId:c}=s,d=s.launchToken,h,m=l=>{let w=L(l).exp;return!!l&&(typeof w!="number"||w*1e3>Date.now()+3e4)};return{apiBaseUrl:a,gameId:n,userId:c,getLaunchToken:async()=>{let l=i(),w=v(l.launchToken)??v(l.ticket);if(w&&w!==d&&m(w)&&W(L(w),n,c)&&(d=w),m(d))return d;let C=v(l.runtimeUrl)??v(l.apiBaseUrl),o=v(l.token),f=!C||new URL(C).origin===new URL(a).origin;if(!o||!f){if(d)return d;throw new Error("Not signed in: no Riffle session for this game")}return h??(h=ue(a,o,n,c).then(p=>(d=p,p)).finally(()=>{h=void 0})),h}}}async function ue(e,t,r,i){let s=await fetch(`${e.replace(/\/$/,"")}/v1/runtime/launch-tickets`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${t}`},body:JSON.stringify({game_id:r,scope:["runtime:connect"]}),redirect:"error",credentials:"omit"}),a=await s.json();if(!s.ok)throw new Error("Unable to renew Runtime session");let n=v(a.ticket),c=L(n);if(!n||!W(c,r,i))throw new Error("Renewed Runtime identity mismatch");return n}var j=class{constructor(e,t,r={}){this.transport=e,this.gameId=t,this.run=null,this.starting=null,this.best=0,this.lastSentAt=0,this.queued=null,this.interval=Math.max(0,r.progressIntervalMs??1e3)}current(){return this.run?{...this.run}:null}start(){return this.clearQueued(),this.run=null,this.best=0,this.starting=this.transport.request("challenge.start",{game_id:this.gameId}).then(e=>(this.run=e,e)).finally(()=>{this.starting=null}),this.starting}score(e){if(!Number.isFinite(e)||e<0||e<=this.best)return;this.best=e;let t=this.lastSentAt+this.interval-Date.now();if(t>0){this.queued??(this.queued=setTimeout(()=>{this.queued=null,this.sendProgress()},t));return}this.sendProgress()}async finish(e){if(!Number.isFinite(e)||e<0)throw new Error("score must be a finite number \u2265 0");this.clearQueued();let t=this.run??(this.starting?await this.starting:null);if(!t)throw new Error("challenge.finish called before challenge.start");return this.run=null,this.transport.request("challenge.finish",{game_id:this.gameId,run_id:t.runId,score:Math.max(e,this.best)})}async sendProgress(){let e=this.run??(this.starting?await this.starting.catch(()=>null):null);e&&(this.lastSentAt=Date.now(),await this.transport.request("challenge.score",{game_id:this.gameId,run_id:e.runId,score:this.best}).catch(()=>{}))}clearQueued(){this.queued&&clearTimeout(this.queued),this.queued=null}};function _(e={}){let{apiBaseUrl:t,gameId:r,userId:i,getLaunchToken:s}=B(e.context,{requireTicket:!1});return new j(new x(t,s,i??void 0),r,e)}M();var b=class extends Error{constructor(e,t,r,i=null,s="BRIDGE_HANDLER_ERROR"){super(e),this.module=t,this.method=r,this.data=i,this.name="RiffleBridgeError",this.code=typeof i?.code=="string"?i.code:s}},ze=0,Q=()=>typeof window>"u"?null:window,$e=(e,t)=>e==="fileStorage"||t==="requestPermission"||["camera","microphone"].includes(e)&&["open","start"].includes(t)?3e4:e==="device"?8e3:5e3,Je=class{constructor(){this.instanceId=++ze,this.messageId=0,this.subscriptions=new Set}init(){let e=Q();return e?(e.__RIFFLE_CALLBACKS__||(e.__RIFFLE_CALLBACKS__=new Map),e.__RIFFLE_SENSOR_HANDLERS__||(e.__RIFFLE_SENSOR_HANDLERS__=new Map),e.handleNativeResponse||(e.handleNativeResponse=t=>{try{let r=JSON.parse(t),i=e.__RIFFLE_CALLBACKS__?.get(r.id);e.__RIFFLE_CALLBACKS__?.delete(r.id),i?.(r)}catch(r){console.error("[RiffleBridge] Invalid native response",r)}}),e.handleSensorData||(e.handleSensorData=({sensor:t,values:r})=>{e.__RIFFLE_SENSOR_HANDLERS__?.get(t)?.forEach(i=>{try{i(r)}catch(s){console.error("[RiffleBridge] Sensor listener",s)}})}),e):null}isAvailable(){return typeof Q()?.ReactNativeWebView?.postMessage=="function"}async waitForReady(e=3e3){let t=Date.now()+e;for(;!this.isAvailable()&&Date.now()<t;)await new Promise(r=>setTimeout(r,50));return this.isAvailable()}async send(e,t,r={},i={}){let s=this.init();if(!s||!this.isAvailable())throw new b("Riffle native bridge is unavailable",e,t,null,"BRIDGE_UNAVAILABLE");let a=s.__RIFFLE_CALLBACKS__,n=`sdk2_${Date.now()}_${this.instanceId}_${++this.messageId}_${Math.random().toString(36).slice(2,8)}`,c=JSON.stringify({id:n,module:e,method:t,params:r,timestamp:Date.now()}),d=Number.isFinite(i.timeoutMs)?Math.max(100,i.timeoutMs):$e(e,t);return new Promise((h,m)=>{let u=setTimeout(()=>{a.delete(n),m(new b(`Riffle bridge timeout: ${e}.${t}`,e,t,null,"BRIDGE_TIMEOUT"))},d);a.set(n,l=>{clearTimeout(u),a.delete(n),l.success?h(l.data):m(new b(l.error||`Riffle bridge failed: ${e}.${t}`,e,t,l.data))});try{s.ReactNativeWebView.postMessage(c)}catch(l){clearTimeout(u),a.delete(n),m(l)}})}onSensorData(e,t){let r=this.init();if(!r)return()=>{};let i=r.__RIFFLE_SENSOR_HANDLERS__;i.has(e)||i.set(e,new Set);let s=n=>t(n);i.get(e).add(s);let a=()=>{i.get(e)?.delete(s),this.subscriptions.delete(a)};return this.subscriptions.add(a),a}clearSensorSubscriptions(){[...this.subscriptions].forEach(e=>e())}},Y=null;function We(){return Y||(Y=new Je)}var q="riffle-runtime-context-v1",y=e=>typeof e=="string"&&e.length>0?e:null,Ke=e=>{if(!e||typeof e!="object")return null;let t=e,r=y(t.id);return r?{id:r,nickname:y(t.nickname)||"",username:y(t.username),avatar:y(t.avatar)}:null},Qe=class{getSnapshot(){let e=typeof window>"u"?null:window,t=e?.__RIFFLE_CONTEXT__?.schema===q?e.__RIFFLE_CONTEXT__:null,r=y(t?t.token:e?.__RIFFLE_TOKEN__),i=t?t.platform:e?.__RIFFLE_PLATFORM__;return{schema:q,available:t?t.available===!0:!!(e&&["__RIFFLE_TOKEN__","__RIFFLE_POST_ID__","__RIFFLE_BASE_URL__","__RIFFLE_PLATFORM__"].some(s=>Object.prototype.hasOwnProperty.call(e,s))),token:r,user:r?Ke(t?t.user:e?.__RIFFLE_USER__):null,postId:y(t?t.postId:e?.__RIFFLE_POST_ID__),apiBaseUrl:y(t?t.apiBaseUrl:e?.__RIFFLE_BASE_URL__),platform:i==="ios"||i==="android"||i==="web"||i==="unknown"?i:e?"web":"unknown",...t&&Object.prototype.hasOwnProperty.call(t,"runtimeUrl")?{runtimeUrl:y(t.runtimeUrl)}:{},...t&&Object.prototype.hasOwnProperty.call(t,"launchToken")?{launchToken:y(t.launchToken)}:{},...t&&Object.prototype.hasOwnProperty.call(t,"gameId")?{gameId:y(t.gameId)}:{},...t&&Object.prototype.hasOwnProperty.call(t,"rtMsg")?{rtMsg:y(t.rtMsg)}:{},...t&&Object.prototype.hasOwnProperty.call(t,"locale")?{locale:y(t.locale)}:{}}}getToken(){return this.getSnapshot().token}getUser(){return this.getSnapshot().user}getPostId(){return this.getSnapshot().postId}getApiBaseUrl(){return this.getSnapshot().apiBaseUrl}getPlatform(){return this.getSnapshot().platform}getLocale(){let e=typeof navigator>"u"?null:navigator;return this.getSnapshot().locale||y(e?.languages?.[0])||y(e?.language)||"en"}subscribe(e,t={}){let r=typeof window>"u"?null:window,i=JSON.stringify(this.getSnapshot()),s=()=>{let n=this.getSnapshot(),c=JSON.stringify(n);c!==i&&(i=c,e(n))};r?.addEventListener("riffle:contextchange",s);let a=()=>r?.removeEventListener("riffle:contextchange",s);try{t.emitCurrent!==!1&&e(this.getSnapshot())}catch(n){throw a(),n}return a}async waitForReady(e=3e3){if(typeof window>"u")return!1;let t=Date.now()+(Number.isFinite(e)?Math.max(0,e):3e3);for(;!this.getSnapshot().available&&Date.now()<t;)await new Promise(r=>setTimeout(r,Math.min(50,Math.max(0,t-Date.now()))));return this.getSnapshot().available}},Z=3,X=2e6,Ye=/^data:image\/[a-z0-9.+-]+;base64,/i;function ee(e){if(e==null)return[];if(!Array.isArray(e))throw new Error("images must be an array");if(e.length>Z)throw new Error(`images must contain at most ${Z} entries`);return e.map((t,r)=>{if(typeof t!="string"||t.length===0)throw new Error(`images[${r}] must be a non-empty string`);if(t.length>X)throw new Error(`images[${r}] must be at most ${X} characters`);if(!Ye.test(t))throw new Error(`images[${r}] must be a data:image/<type>;base64 URL`);return t})}var Ze=class{constructor(e,t){this.core=e,this.getContextUser=t}getCurrentUser(){return this.getContextUser()}getUserAvatar(){return this.getCurrentUser()?.avatar||null}openProfile(e){if(String(e).trim()==="")throw new Error("userId is required");return this.core.send("app","openProfile",{userId:String(e)})}openComments(e={}){let t=e.initialText||"";if(t.length>300)throw new Error("initialText must be at most 300 characters");let r=ee(e.images);return this.core.send("app","openComments",{gameId:e.gameId,initialText:t,images:r,submit:!1})}openShare(e={}){let t=ee(e.images),r=globalThis.__RIFFLE_REGION__;if(e.rtMsg&&typeof e.rtMsg=="object"&&!Array.isArray(e.rtMsg)&&e.rtMsg.region===void 0&&typeof r=="string"&&r&&(e={...e,rtMsg:{...e.rtMsg,region:r}}),e.rtMsg!==void 0){if(e.rtMsg===null||typeof e.rtMsg!="object"||Array.isArray(e.rtMsg))throw new Error("rtMsg must be a JSON object");let i;try{i=JSON.stringify(e.rtMsg)}catch{throw new Error("rtMsg must be JSON serializable")}if(!i)throw new Error("rtMsg must be JSON serializable");let s=new TextEncoder().encode(i);if(Math.ceil(s.length/3)*4>4096)throw new Error("rtMsg is too large")}return this.core.send("app","openShare",{gameId:e.gameId,rtMsg:e.rtMsg,images:t})}captureScreenshot(e={}){return this.core.send("app","captureScreenshot",{...e})}};var Xe=Object.freeze({handPose:"riffle-hand-pose-v2",faceTracking:"riffle-face-tracking-v2",skinSegmentation:"riffle-skin-segmentation-summary-v1",cameraEffects:"riffle-camera-effects-v1",speechRecognition:"riffle-speech-recognition-v1",audioAnalysis:"riffle-audio-analysis-v1",ar:"riffle-ar-tracking-v1"});function U(e,t,r="start",i){let s=e.modules[t];return s?.status==="available"&&s.methods?.includes(r)===!0&&(!i||(s.dataContracts||s.data_contracts||[]).includes(i))}function R(e){return e.isAvailable()?e.send("bridge","getCapabilities"):Promise.resolve({bridgeVersion:"unknown",runtime:"browser",platform:"web",modules:{}})}function et(e,t,r={}){if(typeof window>"u")return()=>{};let i=window,s=a=>{let n=a.detail;!n||n.module!==e||typeof n.sessionId!="string"||r.sessionId&&n.sessionId!==r.sessionId||t(n)};return i.addEventListener(`riffle:${e}`,s),()=>i.removeEventListener(`riffle:${e}`,s)}var T=class{constructor(e,t){this.core=e,this.module=t}async start(e={},t){let r=e.dataContract||Xe[this.module],i=await R(this.core);if(!U(i,this.module,"start",r))throw new b(`${this.module} does not support ${r}`,this.module,"start",{capability:i.modules[this.module]||null},"CAPABILITY_UNAVAILABLE");if(this.module==="faceTracking"){let s=e,a=["dataContract","features","includeFaceImage","includeFaceRegions"],n=["position","eyes","mouth","smile"];if(Object.keys(s).some(c=>!a.includes(c))||s.features!==void 0&&(!Array.isArray(s.features)||s.features.some(c=>!n.includes(c))))throw new b("Unsupported face tracking options",this.module,"start",{executed:!1,started:!1},"FACE_TRACKING_OPTIONS_UNSUPPORTED")}return this.core.send(this.module,"start",{...e,dataContract:r},t)}stop(e,t){return e?this.core.send(this.module,"stop",{sessionId:e},t):Promise.reject(new b("sessionId is required",this.module,"stop",null,"BRIDGE_INVALID_REQUEST"))}subscribe(e,t){return et(this.module,e,t)}},tt=class extends T{constructor(e){super(e,"cameraEffects")}update(e,t,r){return e?this.core.send(this.module,"update",{...t,sessionId:e},r):Promise.reject(new b("sessionId is required",this.module,"update",null,"BRIDGE_INVALID_REQUEST"))}},rt=class extends T{constructor(e){super(e,"speechRecognition")}abort(e,t){return e?this.core.send(this.module,"abort",{sessionId:e},t):Promise.reject(new b("sessionId is required",this.module,"abort",null,"BRIDGE_INVALID_REQUEST"))}},ne="riffle-game-config-v1",P=["low","mid","high"],Nt=Object.freeze({schema:ne,displayMode:"windowed",orientation:"portrait"}),it=1500,te=["fullscreen","windowed"],re=["portrait","landscape"];function st(e){if(!e||typeof e!="object")throw new Error("game init options are required");if(!te.includes(e.displayMode))throw new Error(`displayMode must be one of ${te.join(", ")}`);if(!re.includes(e.orientation))throw new Error(`orientation must be one of ${re.join(", ")}`);let t={schema:ne,displayMode:e.displayMode,orientation:e.orientation};if(e.bots!==void 0){let r=e.bots?.difficulties;if(!Array.isArray(r)||r.some(i=>!P.includes(i))||P.some(i=>!r.includes(i)))throw new Error(`bots.difficulties must be ${P.join(", ")}`);t.bots={difficulties:[...P]}}return t}var nt=class{constructor(e){this.core=e,this.config=null,this.pending=null,this.exitHandlers=new Set,this.listening=!1,this.overSupport=null}onExitRequest(e){if(typeof e!="function")throw new Error("onExitRequest needs a function");return this.exitHandlers.add(e),this.listen(),()=>{this.exitHandlers.delete(e)}}listen(){this.listening||typeof window>"u"||typeof window.addEventListener!="function"||(this.listening=!0,window.__RIFFLE_EXIT_PROTOCOL__=1,window.addEventListener("riffle:exitrequest",e=>{let t=e.detail,r={requestId:String(t?.requestId??""),reason:t?.reason==="host"?"host":"user"};this.answerExit(r)}))}async answerExit(e){let t=[...this.exitHandlers],r=Promise.allSettled(t.map(i=>Promise.resolve().then(()=>i(e))));await Promise.race([r,new Promise(i=>setTimeout(i,it))]),this.core.isAvailable()&&await this.core.send("game","exitReady",{requestId:e.requestId}).catch(()=>{})}async canExit(){if(!this.core.isAvailable())return!1;let e=await R(this.core).catch(()=>null);return!!e&&U(e,"game","exit")}async exit(e={}){let t=e.next??"close";if(t!=="close"&&t!=="match")throw new Error("next must be close or match");if(e.stake!==void 0&&(typeof e.stake!="string"||!/^[A-Za-z0-9_-]{1,32}$/.test(e.stake)))throw new Error("stake must be a short id");if(!this.core.isAvailable())return{accepted:!1,reason:"BRIDGE_UNAVAILABLE"};if(!await this.canExit())return{accepted:!1,reason:"HOST_UNSUPPORTED"};try{return(await this.core.send("game","exit",{next:t,...e.stake?{stake:e.stake}:{}}))?.accepted===!1?{accepted:!1,reason:"HOST_REJECTED"}:{accepted:!0,reason:"ACCEPTED"}}catch{return{accepted:!1,reason:"HOST_REJECTED"}}}async over(e={}){if(e.runId!==void 0&&(typeof e.runId!="string"||e.runId.length>512))throw new Error("runId must be a string");if(!this.core.isAvailable())return{received:!1,reason:"BRIDGE_UNAVAILABLE"};if(this.overSupport??(this.overSupport=R(this.core).then(t=>U(t,"game","over")).catch(()=>!1)),!await this.overSupport)return{received:!1,reason:"HOST_UNSUPPORTED"};try{return(await this.core.send("game","over",e.runId?{runId:e.runId}:{}))?.received===!1?{received:!1,reason:"HOST_REJECTED"}:{received:!0,reason:"RECEIVED"}}catch{return{received:!1,reason:"HOST_REJECTED"}}}getConfig(){return this.config?{...this.config}:null}isInitialized(){return this.config!==null}currentOrientation(){return typeof window>"u"||typeof window.matchMedia!="function"?"unknown":window.matchMedia("(orientation: landscape)").matches?"landscape":"portrait"}orientationMismatch(){let e=this.config?.orientation,t=this.currentOrientation();return!!e&&t!=="unknown"&&e!==t}init(e){let t=st(e);return this.config&&JSON.stringify(this.config)!==JSON.stringify(t)?Promise.reject(new Error("bridge.init was already called with a different game config")):this.pending?this.pending:(this.config=t,this.publish(t),this.pending=this.register(t).catch(r=>{throw this.pending=null,r}),this.pending)}publish(e){if(typeof window>"u")return;window.__RIFFLE_GAME_CONFIG__={...e};let t=typeof document<"u"?document.documentElement:null;t?.setAttribute&&(t.setAttribute("data-riffle-display",e.displayMode),t.setAttribute("data-riffle-orientation",e.orientation));try{window.dispatchEvent(new CustomEvent("riffle:gameconfig",{detail:{...e}}))}catch{}}async register(e){if(!this.core.isAvailable())return{config:e,applied:!1,reason:"BRIDGE_UNAVAILABLE",host:null};let t=await R(this.core).catch(()=>null);if(!t||!U(t,"game","init"))return{config:e,applied:!1,reason:"HOST_UNSUPPORTED",host:null};try{let r=await this.core.send("game","init",{...e});return{config:e,applied:r?.applied!==!1,reason:r?.applied===!1?"HOST_REJECTED":"APPLIED",host:r??null}}catch(r){return{config:e,applied:!1,reason:"HOST_REJECTED",host:{error:r instanceof Error?r.message:String(r)}}}}},at=class{constructor(e){this.core=e}playAdvanced(e){return this.core.send("haptic","playAdvanced",{...e})}light(){return this.core.send("haptic","light")}medium(){return this.core.send("haptic","medium")}heavy(){return this.core.send("haptic","heavy")}success(){return this.core.send("haptic","success")}warning(){return this.core.send("haptic","warning")}error(){return this.core.send("haptic","error")}selection(){return this.core.send("haptic","selection")}async sequence(e,t=200){for(let r=0;r<e.length;r++){let i=e[r],s=this[i];typeof s=="function"&&await s.call(this),r<e.length-1&&await new Promise(a=>setTimeout(a,t))}}intensity(e){return e<=.3?this.light():e<=.7?this.medium():this.heavy()}},ot=class{constructor(e){this.core=e,this.isActive=!1,this.activeTypes=[]}async start(e={}){let{types:t=["accelerometer","gyroscope","magnetometer","barometer"],interval:r=100}=e,i=await this.core.send("sensors","start",{types:t,updateInterval:r});return this.isActive=!0,this.activeTypes=i.started,i}async stop(){let e=await this.core.send("sensors","stop");return this.isActive=!1,this.activeTypes=[],e}onAccelerometer(e){return this.core.onSensorData("accelerometer",e)}onGyroscope(e){return this.core.onSensorData("gyroscope",e)}onMagnetometer(e){return this.core.onSensorData("magnetometer",e)}onBarometer(e){return this.core.onSensorData("barometer",e)}getStatus(){return{isActive:this.isActive,activeTypes:this.activeTypes}}},ct=class{constructor(e){this.core=e}async getDeviceInfo(){return this.core.send("device","getDeviceInfo")}async getBatteryInfo(){return this.core.send("device","getBatteryInfo")}async getNetworkInfo(){return this.core.send("device","getNetworkInfo")}async getSystemInfo(){return this.core.send("device","getSystemInfo")}async getAppInfo(){return this.core.send("device","getAppInfo")}async getScreenInfo(){return this.core.send("device","getScreenInfo")}async getAllInfo(){return this.core.send("device","getAllInfo")}},lt=class{constructor(e){this.core=e}async init(){return this.core.send("fileStorage","init")}async getStorageStats(){return this.core.send("fileStorage","getStorageStats")}async takePhoto(){return this.core.send("fileStorage","takePhoto")}async pickFromGallery(){return this.core.send("fileStorage","pickFromGallery")}async saveFile(e,t,r){return this.core.send("fileStorage","saveFile",{sourceUri:e,filename:t,subfolder:r})}async listFiles(e){return this.core.send("fileStorage","listFiles",{subfolder:e})}async downloadAndSave(e,t,r){return this.core.send("fileStorage","downloadAndSave",{url:e,downloadFilename:t,downloadSubfolder:r})}async getLocalFileByUrl(e){return this.core.send("fileStorage","getLocalFileByUrl",{checkUrl:e})}async clearAppFiles(){return this.core.send("fileStorage","clearAppFiles")}async deleteFile(e,t){return this.core.send("fileStorage","deleteFile",{deleteFilename:e,deleteSubfolder:t})}async loadUrlMappings(){return this.core.send("fileStorage","loadUrlMappings")}async downloadWithCache(e,t=!0){return this.core.send("fileStorage","downloadWithCache",{downloadUrl:e,checkCache:t})}async clearUrlMappings(){return this.core.send("fileStorage","clearUrlMappings")}async removeUrlMapping(e){return this.core.send("fileStorage","removeUrlMapping",{removeUrl:e})}async addCustomFileMapping(e,t){return this.core.send("fileStorage","addCustomFileMapping",{customKey:e,localPath:t})}async readAsBase64(e){return this.core.send("fileStorage","readAsBase64",{uriOrKey:e})}async resolveUri(e){if(!e)throw new Error("URI is required");if(e.startsWith("file://"))return e;if(!e.startsWith("http://")&&!e.startsWith("https://")){let t=await this.getLocalFileByUrl(e);if(t?.exists&&t.uri)return t.uri;throw new Error(`File mapping not found: ${e}`)}try{let t=await this.getLocalFileByUrl(e);if(t?.exists&&t.uri)return t.uri}catch{}return e}async saveToGallery(e,t="Riffle"){let r=e;return e.startsWith("data:")||(r=await this.resolveUri(e)),this.core.send("fileStorage","saveToGallery",{saveUri:r,albumName:t})}},ht=class{constructor(e,t){this.core=e,this.fileStorage=t}async playOnline(e){let{allowConcurrent:t=!0,...r}=e,i=r.uri,s=/^data:/i.test(i);if(s){if(i.length>8e6)throw new Error("Inline audio exceeds 8000000 characters");if(!/^data:audio\/[a-z0-9.+-]+(?:;[^;,=]+=[^;,]*)*;base64,/i.test(i))throw new Error("Expected a base64 data:audio URL with an encoded audio file")}if(t||await this.stopAll(),!s&&!/^(https?:|file:)/.test(i)){let a=await this.fileStorage.getLocalFileByUrl(i);if(!a.exists||!a.uri)throw new Error(`File mapping not found: ${i}`);i=a.uri}return this.core.send("audio","playOnline",{...r,uri:i})}stopByKey(e){return this.core.send("audio","stopByKey",{key:e})}isPlayingByKey(e){return this.core.send("audio","isPlayingByKey",{key:e})}setDebounceInterval(e){return this.core.send("audio","setDebounceInterval",{ms:e})}stopAll(){return this.core.send("audio","stopAll")}getActiveCount(){return this.core.send("audio","getActiveCount")}pause(){return this.core.send("audio","pause")}resume(){return this.core.send("audio","resume")}stop(){return this.core.send("audio","stop")}setVolume(e){return this.core.send("audio","setVolume",{volume:e})}setRate(e){return this.core.send("audio","setRate",{rate:e})}setLooping(e){return this.core.send("audio","setLooping",{isLooping:e})}getStatus(){return this.core.send("audio","getStatus")}},dt=class{constructor(e){this.core=e}requestPermission(){return this.core.send("camera","requestPermission")}async open(e={}){let{facing:t="back"}=e;return this.core.send("camera","open",{facing:t})}async close(){return this.core.send("camera","close")}async toggleFacing(){return this.core.send("camera","toggleFacing")}async takePhoto(){return this.core.send("camera","takePhoto")}async setFilter(e){return this.core.send("camera","setFilter",{filter:e})}async setFlash(e){return this.core.send("camera","setFlash",{enabled:e})}async toggleFlash(){return this.core.send("camera","toggleFlash")}},ut=class{constructor(e){this.core=e,this.isRecording=!1}async requestPermission(){return this.core.send("microphone","requestPermission")}async start(e={}){let{enableMonitoring:t=!0}=e,r=await this.core.send("microphone","start",{enableMonitoring:t});return this.isRecording=r.isRecording,r}async stop(){let e=await this.core.send("microphone","stop");return this.isRecording=!1,e}async pause(){return this.core.send("microphone","pause")}async resume(){return this.core.send("microphone","resume")}async getStatus(){return this.core.send("microphone","getStatus")}onVolumeData(e){return this.core.onSensorData("microphone_volume",e)}onStatusData(e){return this.core.onSensorData("microphone_status",t=>{let r=t;for(let i of r)this.isRecording=i.status!=="ended"&&i.inputShared===!0;e(r)})}getRecordingState(){return this.isRecording}},ft=class{constructor(e){this.core=e,this.currentConfig=null}async updateParams(e){let t=await this.core.send("config","updateParams",e);return this.currentConfig=e,t}getCurrentConfig(){return this.currentConfig}async resetToDefaults(){return this.core.send("config","resetToDefaults")}},mt=class{constructor(e){this.core=e}async showLoading(e){return this.core.send("ui","showLoading",{text:e})}async hideLoading(){return this.core.send("ui","hideLoading")}},pt=class{static magnitude(e,t,r){return Math.sqrt(e*e+t*t+r*r)}static getTiltDirection(e,t,r=2){return Math.abs(e)>Math.abs(t)?e>r?"right":e<-r?"left":"center":t>r?"forward":t<-r?"backward":"center"}static getShakeIntensity(e,t,r){let i=this.magnitude(e,t,r);return i>15?"strong":i>8?"medium":i>3?"light":"none"}},ae=class{constructor(){this.context=new Qe,this.utils=pt,this.core=We(),this.app=new Ze(this.core,()=>this.context.getUser()),this.game=new nt(this.core),this.haptic=new at(this.core),this.sensor=new ot(this.core),this.device=new ct(this.core),this.fileStorage=new lt(this.core),this.audio=new ht(this.core,this.fileStorage),this.camera=new dt(this.core),this.microphone=new ut(this.core),this.config=new ft(this.core),this.ui=new mt(this.core),this.handPose=new T(this.core,"handPose"),this.faceTracking=new T(this.core,"faceTracking"),this.skinSegmentation=new T(this.core,"skinSegmentation"),this.cameraEffects=new tt(this.core),this.speechRecognition=new rt(this.core),this.audioAnalysis=new T(this.core,"audioAnalysis"),this.ar=new T(this.core,"ar")}init(e){return this.game.init(e)}isAvailable(){return this.core.isAvailable()}async waitForReady(e){return this.core.waitForReady(e)}getVersion(){return"3.10.1"}getCapabilities(){return R(this.core)}getHostVersion(){return this.core.send("bridge","getVersion")}vibrate(e="light"){let t=this.haptic[e];if(typeof t=="function")return t.call(this.haptic);throw new Error(`Unsupported haptic type: ${e}`)}};var V=["ar","de","el","en","es","fr","id","it","ja","ko","nl","pl","pt","ru","th","tr","zh-CN","zh-TW"],N="en",G={"zh-TW":["zh-CN"],"zh-CN":["zh-TW"]},ie=new Set(["ar"]),H=(e,t)=>Object.prototype.hasOwnProperty.call(e,t);function oe(e){if(typeof e!="string")return null;let t=e.trim().replace(/_/g,"-").toLowerCase().split("-").filter(Boolean);if(!t.length)return null;let[r,...i]=t;return r==="zh"?i.some(s=>s==="hant"||s==="tw"||s==="hk"||s==="mo")?"zh-TW":"zh-CN":V.includes(r)?r:null}function se(e=V,t=typeof window>"u"?void 0:window){let r=t?.__RIFFLE_CONTEXT__?.schema===q?t.__RIFFLE_CONTEXT__:null,i=t?.navigator;for(let s of[r?.locale,i?.languages?.[0],i?.language]){let a=oe(s);if(!a)continue;let n=[a,...G[a]??[]].find(c=>e.includes(c));if(n)return n}return N}function gt(e,t){return t?e.replace(/\{(\w+)\}/g,(r,i)=>H(t,i)?String(t[i]):r):e}function ce(e,t={}){let r=t.window??(typeof window>"u"?void 0:window),i=e[N]??{},s=V.filter(o=>e[o]),a=new Set,n=se(s,r),c=[],d=()=>{c=[n,...G[n]??[],N].map(o=>e[o]).filter(o=>!!o)};d();let h=(o,f)=>{for(let p of c)if(H(p,o))return gt(p[o],f);return console?.warn("[i18n] missing key",o),o},m=(o,f)=>{try{return Number(o).toLocaleString(n==="ar"?"ar-u-nu-latn":n,f)}catch{return String(o)}},u=o=>{let f=o.getAttribute("data-i18n");if(f){let g;try{g=o.hasAttribute("data-i18n-vars")?JSON.parse(o.getAttribute("data-i18n-vars")):void 0}catch{g=void 0}try{if(o.hasAttribute("data-i18n-refs")){let I=JSON.parse(o.getAttribute("data-i18n-refs"));g={...g};for(let J of Object.keys(I))g[J]=h(I[J])}}catch{}let E=h(f,g);o.hasAttribute("data-i18n-html")?o.innerHTML=E:o.textContent=E}let p=o.getAttribute("data-i18n-attr");if(p)for(let g of p.split(";")){let[E,I]=g.split(":");E&&I&&o.setAttribute(E.trim(),h(I.trim()))}},l=o=>{let f=o??r?.document;f&&(!o&&r?.document?.documentElement&&(r.document.documentElement.lang=n,r.document.documentElement.classList.toggle("i18n-rtl",ie.has(n))),f.querySelectorAll("[data-i18n],[data-i18n-attr]").forEach(u))},w=(o,f,p,g=!1)=>{o&&(o.setAttribute("data-i18n",f),p?o.setAttribute("data-i18n-vars",JSON.stringify(p)):o.removeAttribute("data-i18n-vars"),g?o.setAttribute("data-i18n-html",""):o.removeAttribute("data-i18n-html"),u(o))},C=o=>{let f=oe(o),p=f&&[f,...G[f]??[]].find(g=>s.includes(g))||N;if(p===n)return!1;n=p,d(),l();for(let g of[...a])try{g(n)}catch(E){console?.error("[i18n] listener failed",E)}return!0};return r?.addEventListener?.("riffle:contextchange",()=>{C(se(s,r))}),{t:h,has:o=>H(i,o),number:m,apply:l,bind:w,setLocale:C,onLocaleChange(o){return a.add(o),()=>{a.delete(o)}},get locale(){return n},get rtl(){return ie.has(n)},locales:s}}M();var A=new ae;A.init({displayMode:"fullscreen",orientation:"portrait"}).catch(()=>{});var z=!1;async function le(){try{let e=await A.getCapabilities();z=e.modules?.haptic?.status==="available"&&e.modules.haptic.methods.includes("medium")}catch{z=!1}}le();var k=null,$=new Set;function D(e=k){return!e||e.ended?e?.done??Promise.resolve():(e.ended=!0,e.done=e.ready.then(async()=>{let t;try{t=await e.client.finish(e.points)}catch{}await A.game.over(t?{runId:t.runId}:void 0).catch(()=>{})}),$.add(e.done),e.done.finally(()=>$.delete(e.done)),e.done)}window.FossilPlatform={createI18n:ce,locale:()=>A.context.getLocale(),start(){let e=D();k=null;try{let t=_(),r={client:t,points:0,ended:!1};r.ready=e.then(()=>t.start()).catch(()=>{}),k=r}catch{}},score(e){let t=k;!t||t.ended||e<=t.points||(t.points=e,t.ready.then(()=>{t.ended||t.client.score(t.points)}))},over(e){return k&&!k.ended&&(k.points=Math.max(k.points,e)),D()},impact(){z&&A.vibrate("medium").catch(()=>{})}};A.game.onExitRequest(async()=>{await D(),await Promise.allSettled([...$])});window.addEventListener("pagehide",()=>{D()});document.addEventListener("visibilitychange",()=>{document.hidden||le()});})();
+
 /* ================= 基础 ================= */
 const $=id=>document.getElementById(id);
 const wrap=$('wrap'),cv=$('cv'),ctx=cv.getContext('2d');
@@ -253,7 +289,7 @@ function layout(){
   cx=W/2;
   BAR=Math.round(clamp(H*0.072,54,66));
   $('wbar').style.height=(BAR+safeB+6)+'px';
-  const hudB=safeT+92;
+  const hudB=safeT+160;
   hy=Math.max(hudB+30,H*0.25);
   ty=H-safeB-BAR-6-Math.max(34,H*0.045);
   by=ty-Math.max(58,H*0.074);
@@ -335,7 +371,13 @@ function shopOffers(K,hp,r){
 
 /* ================= 多语言：简体 zh / 繁體 tw / English en ================= */
 const I18N={
-zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',
+zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图鉴',close:'返回',dexN:'已发现 {0} / {1} 种 · 数值为基础值，耐久随波次提升',dHP:'耐久 {0}',dDmg:'撞栅 -{0}',dRew:'击败有奖励',dPts:'分值 {0}',dFirst:'第 {0} 波起',
+  sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 极快',sp4:'横穿 7.5 秒',tBoss:'首领',tHeavy:'重型',tSup:'补给',unk:'？？？',unkD:'还没遇到。遇到后解锁详细资料。',newDex:'📖 图鉴新增：{0}',
+  x_raptor:'最常见的恐龙。速度快、耐久低，走路时左右小幅摇摆。',x_compy:'体型小，5 只一群高速冲来。用霰弹或榴弹清群最划算。',x_ptero:'蛇形飞行，左右大幅摆动。弓箭手会优先射它。',
+  x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨栅（嘴部发绿光是预警）。酸液可以在空中打掉。',x_pachy:'靠近后停下蓄力（头顶出现 ！），然后高速冲锋。驯兽师的网能让它减速。',
+  x_trike:'重型。耐久高，出场前地平线有 ⚠ 预警，提前集中火力。',x_ankylo:'重型。全身甲壳，耐久很高，撞栅 -3。长矛和炸药最有效。',
+  x_trex:'首领。第 6 波出现，第 8 波起每个偶数波都来，出场会吼叫。耐久极高，撞栅 -5，留好热量。',x_supply:'金色补给兽，从坑侧横穿，7.5 秒后逃走。击败得骨栅 +2 或 6 秒超载火力。',
+  
   tip1:'迅猛龙和<span class="hr">细颚龙群</span>来袭：拖动瞄准，按住连射',tip3:'<span class="hr">三角龙</span> 耐久 {0} · <span class="hr">肿头龙</span> 靠近时会蓄力冲锋（头顶出现 ！）',
   tip4:'<span class="hr">双冠龙</span> 停在远处吐酸液砸骨栅，可以把酸液打掉',
   w_bone:'骨炮',w_scatter:'碎石霰弹',w_spear:'化石长矛',w_gren:'琥珀榴弹',
@@ -363,7 +405,13 @@ zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',
   retry:'再守一次',styDoodle:'涂鸦',styToon:'卡通',a_mute:'静音',a_sty:'切换画风',
   pause:'暂停',resume:'继续',restart:'重新开始',lang:'语言 / Language',
   pauseRule:'击退恐龙得分，连杀提高倍率；击杀得金币，清波后在商店买武器、招募队友；骨栅生命归零即失败。按 1–4 或点底部切换武器。'},
-tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',
+tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖鑑',close:'返回',dexN:'已發現 {0} / {1} 種 · 數值為基礎值，耐久隨波次提升',dHP:'耐久 {0}',dDmg:'撞柵 -{0}',dRew:'擊敗有獎勵',dPts:'分值 {0}',dFirst:'第 {0} 波起',
+  sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 極快',sp4:'橫穿 7.5 秒',tBoss:'首領',tHeavy:'重型',tSup:'補給',unk:'？？？',unkD:'還沒遇到。遇到後解鎖詳細資料。',newDex:'📖 圖鑑新增：{0}',
+  x_raptor:'最常見的恐龍。速度快、耐久低，走路時左右小幅搖擺。',x_compy:'體型小，5 隻一群高速衝來。用霰彈或榴彈清群最划算。',x_ptero:'蛇形飛行，左右大幅擺動。弓箭手會優先射牠。',
+  x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨柵（嘴部發綠光是預警）。酸液可以在空中打掉。',x_pachy:'靠近後停下蓄力（頭頂出現 ！），然後高速衝鋒。馴獸師的網能讓牠減速。',
+  x_trike:'重型。耐久高，出場前地平線有 ⚠ 預警，提前集中火力。',x_ankylo:'重型。全身甲殼，耐久很高，撞柵 -3。長矛和炸藥最有效。',
+  x_trex:'首領。第 6 波出現，第 8 波起每個偶數波都來，出場會吼叫。耐久極高，撞柵 -5，留好熱量。',x_supply:'金色補給獸，從坑側橫穿，7.5 秒後逃走。擊敗得骨柵 +2 或 6 秒超載火力。',
+  
   tip1:'迅猛龍和<span class="hr">細顎龍群</span>來襲：拖動瞄準，按住連射',tip3:'<span class="hr">三角龍</span> 耐久 {0} · <span class="hr">腫頭龍</span> 靠近時會蓄力衝鋒（頭頂出現 ！）',
   tip4:'<span class="hr">雙冠龍</span> 停在遠處吐酸液砸骨柵，可以把酸液打掉',
   w_bone:'骨砲',w_scatter:'碎石霰彈',w_spear:'化石長矛',w_gren:'琥珀榴彈',
@@ -391,7 +439,13 @@ tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',
   retry:'再守一次',styDoodle:'塗鴉',styToon:'卡通',a_mute:'靜音',a_sty:'切換畫風',
   pause:'暫停',resume:'繼續',restart:'重新開始',lang:'語言 / Language',
   pauseRule:'擊退恐龍得分，連殺提高倍率；擊殺得金幣，清波後在商店買武器、招募隊友；骨柵生命歸零即失敗。按 1–4 或點底部切換武器。'},
-en:{d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',
+en:{d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',dexT:'Bestiary',close:'Back',dexN:'Discovered {0} / {1} · base stats; HP grows each wave',dHP:'HP {0}',dDmg:'Fence -{0}',dRew:'Drops a reward',dPts:'{0} pts',dFirst:'From wave {0}',
+  sp0:'Speed: slow',sp1:'Speed: medium',sp2:'Speed: fast',sp3:'Speed: very fast',sp4:'Crosses in 7.5s',tBoss:'BOSS',tHeavy:'HEAVY',tSup:'SUPPLY',unk:'???',unkD:'Not met yet. Details unlock once you see it.',newDex:'📖 New bestiary entry: {0}',
+  x_raptor:'The most common dino. Fast and fragile; sways a little as it runs.',x_compy:'Tiny, and comes in packs of 5 at high speed. Gravel shot or grenades clear them best.',x_ptero:'Flies in a wide weave. Archers target it first.',
+  x_dilo:'Stops midway and spits acid at the fence every 2.4s (a green glow at the mouth is the warning). You can shoot the acid down.',x_pachy:'Stops to wind up when close (a ! appears), then charges at high speed. The Tamer’s net slows it.',
+  x_trike:'Heavy. High HP, announced by a ⚠ on the horizon. Focus fire early.',x_ankylo:'Heavy. Armored all over with very high HP; fence -3. Spears and dynamite work best.',
+  x_trex:'Boss. Appears on wave 6, then every even wave from 8, with a roar. Huge HP, fence -5. Save your heat.',x_supply:'Golden supply dino. Crosses the crater and escapes after 7.5s. Shoot it for fence +2 or 6s Overdrive.',
+  
   tip1:'Raptors and <span class="hr">compy swarms</span> incoming: drag to aim, hold to fire',tip3:'<span class="hr">Triceratops</span>: {0} HP · <span class="hr">Pachys</span> wind up and charge when close (watch for the !)',
   tip4:'<span class="hr">Dilophosaurs</span> stop far away and spit acid at the fence. Shoot the acid down',
   w_bone:'Bone Cannon',w_scatter:'Gravel Shot',w_spear:'Fossil Spear',w_gren:'Amber Grenade',
@@ -421,12 +475,15 @@ en:{d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',
   pauseRule:'Repel dinos to score; kill streaks raise the multiplier. Kills drop coins; after each wave, buy weapons and recruit allies. The game ends when fence HP reaches zero. Press 1–4 or tap the bar to switch weapons.'}
 };
 let LANG=(()=>{const q=/[?&]lang=(zh|tw|en)/.exec(location.search);if(q)return q[1];const s=store('fossil_lang');if(I18N[s])return s;
-  const n=(navigator.language||'').toLowerCase();return n.startsWith('zh')?(/tw|hk|mo|hant/.test(n)?'tw':'zh'):'en'})();
-function tr(k,...a){const s=I18N[LANG][k]??I18N.zh[k]??k;return a.length?s.replace(/\{(\d)\}/g,(_,i)=>a[i]):s}
+  const n=(window.FossilPlatform.locale()||navigator.language||'').toLowerCase();return n.startsWith('zh')?(/tw|hk|mo|hant/.test(n)?'tw':'zh'):'en'})();
+const localeTags={zh:'zh-CN',tw:'zh-TW',en:'en'};
+const text=window.FossilPlatform.createI18n({en:I18N.en,'zh-CN':I18N.zh,'zh-TW':I18N.tw});
+function tr(k,...a){return text.t(k,Object.fromEntries(a.map((v,i)=>[String(i),v])))}
 function applyLang(){
+  text.setLocale(localeTags[LANG]);
   document.documentElement.lang=LANG==='zh'?'zh-CN':LANG==='tw'?'zh-TW':'en';document.title=tr('title');
   document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=tr(el.dataset.t)});
-  document.querySelectorAll('[data-lang]').forEach(el=>el.classList.toggle('on',el.dataset.lang===LANG));
+  document.querySelectorAll('[data-lang]').forEach(el=>{el.classList.toggle('on',el.dataset.lang===LANG);el.setAttribute('aria-pressed',String(el.dataset.lang===LANG))});
   $('mute').setAttribute('aria-label',tr('a_mute'));$('pz').setAttribute('aria-label',tr('pause'));$('sty').setAttribute('aria-label',tr('a_sty'));
 }
 
@@ -835,6 +892,7 @@ function buildSprites(){
   SPR.ally={};SPR.aicon={};
   for(const k of AKEYS){const ap=Object.assign({},pal,ALLYPAL[TH][k]);SPR.ally[k]=bake([allyParts(k)],su,d,ap,Object.assign({nospots:1},o))[0];
     SPR.aicon[k]=bake([allyParts(k)],2,d,ap,Object.assign({nospots:1},o))[0].c.toDataURL()}
+  SPR.dex={};for(const t in TYPES)SPR.dex[t]=bake([dinoParts(t,0)],1.4,d,palFor(TH,t),o)[0].c.toDataURL();
   SPR.wicon={};for(const k of WKEYS.concat(['fix','cool']))SPR.wicon[k]=bake([wIconParts(k)],2.4,d,pal,o)[0].c.toDataURL();
   bgCache={};
 }
@@ -1038,10 +1096,11 @@ function drawSceneFX(t){
 const BPM=128,SD=60/BPM/4;
 const AU={ctx:null,muted:store('fossil_muted')==='1',master:null,music:null,sfx:null,pad:null,noise:null,dly:null,step:0,next:0,level:1,over:false,calm:false,crash:0};
 function initAudio(){
-  if(AU.ctx){if(AU.ctx.state!=='running'&&!paused)AU.ctx.resume();return}
+  if(AU.ctx){if(AU.ctx.state!=='running'&&!paused)AU.ctx.resume().catch(()=>{});return}
   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
   let a;try{a=new AC()}catch(e){return}
   AU.ctx=a;
+  if(paused)void a.suspend().catch(()=>{});
   const comp=a.createDynamicsCompressor();comp.threshold.value=-14;comp.ratio.value=4;comp.connect(a.destination);
   AU.master=a.createGain();AU.master.gain.value=AU.muted?0:0.8;AU.master.connect(comp);
   AU.music=a.createGain();AU.music.gain.value=0.55;AU.music.connect(AU.master);
@@ -1160,15 +1219,15 @@ function setMute(m){AU.muted=m;store('fossil_muted',m?'1':'0');$('mute').textCon
 
 /* ================= 波次设计 ================= */
 function stageOf(n){return n<=2?1:n<=4?2:n<=6?3:4}
-const WAVES={1:[{raptor:9,compy:5},1.2],2:[{raptor:11,compy:10},1.08],3:[{raptor:10,compy:5,trike:2,pachy:3},1.0],
-  4:[{raptor:11,compy:10,trike:3,pachy:3,dilo:2},0.95],5:[{raptor:10,compy:10,ptero:5,trike:2,ankylo:1,dilo:2,pachy:3},0.88],
-  6:[{raptor:11,compy:10,ptero:6,trike:3,ankylo:1,dilo:3,pachy:3},0.84]};
+const WAVES={1:[{raptor:10,compy:5},1.08],2:[{raptor:12,compy:10,pachy:1},0.96],3:[{raptor:11,compy:10,trike:2,pachy:3},0.9],
+  4:[{raptor:12,compy:10,trike:3,pachy:4,dilo:2},0.84],5:[{raptor:11,compy:10,ptero:6,trike:2,ankylo:1,dilo:3,pachy:3},0.78],
+  6:[{raptor:12,compy:15,ptero:6,trike:3,ankylo:2,dilo:3,pachy:4},0.74]};
 function waveDef(n){
   const st=stageOf(n),k=Math.max(0,n-7);
   let c,gap;
   if(WAVES[n]){c=WAVES[n][0];gap=WAVES[n][1]}
-  else{c={raptor:12+k,compy:10+2*k,ptero:6+(k>>1),dilo:3+Math.floor(k/3),pachy:4+Math.floor(k/3),trike:3+Math.floor(k/3),ankylo:Math.min(5,2+(k>>1))};gap=Math.max(0.5,0.8*Math.pow(0.96,k))}
-  const hpMul=(1+0.1*(n-1))*Math.pow(1.13,k);
+  else{c={raptor:12+k,compy:10+2*k,ptero:6+(k>>1),dilo:3+Math.floor(k/3),pachy:4+Math.floor(k/3),trike:3+Math.floor(k/3),ankylo:Math.min(5,2+(k>>1))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
+  const hpMul=(1+0.13*(n-1))*Math.pow(1.16,k);
   const supHp=[0,3,4,5,6][st],supN=[0,1,2,2,3][st]+(n>=10?1:0);
   const boss=n===6||n>=8&&n%2===0;
   const r=rng(n*7919+13),heavy=[],light=[];
@@ -1196,10 +1255,14 @@ let S,K;
 let best=parseInt(store('fossil_turret_best')||'0',10)||0;
 const HPMAX=12,HP0=10;
 function newGame(){
+  window.FossilPlatform.start();
+  ptr=null;
+  hint(tr('hint0'),7);
   K=newKit();
   S={t:0,score:0,hp:HP0,wave:0,stage:1,combo:0,comboT:0,kills:0,sups:0,enemies:[],bullets:[],lobs:[],spits:[],parts:[],texts:[],tele:[],coinFx:[],
     heat:0,over:0,overT:0,charge:0,fireCD:0,firing:false,aim:{x:cx,y:(hy+by)/2},lockE:null,shake:0,dead:false,shop:false,hs:0,rr:0,earned:0,
     wv:null,wt:0,qi:0,si:0,inter:0,noDmg:true,lastKiller:'',fired:0,turretA:-Math.PI/2,prevStage:1,stageFade:1,flash:0,meteors:[],dust:[],smoke:[],flocks:[],hintSup:false,rec:0};
+  setPause(false);
   $('over').classList.remove('show');$('shop').classList.remove('show');
   AU.over=false;AU.calm=false;
   renderHP();renderBar();lastHud='';updHUD();startWave(1);
@@ -1222,13 +1285,35 @@ function spawn(type,x,hpMul){
   if(type==='dilo'){e.stopZ=3+Math.random()*0.7;e.spitT=1.4}
   if(type==='pachy')e.ps=0;
   if(type==='trex')sfx('roar');
+  see(type);
   S.enemies.push(e);
 }
 function spawnSupply(sd){
   const kind=S.hp<=4?'heal':(S.sups+S.wave)%2?'heal':'charge';
   S.enemies.push({type:'supply',x:-2.3*sd.side,z:sd.z,dir:sd.side,hp:S.wv.supHp,max:S.wv.supHp,t:0,flash:0,pts:TYPES.supply.pts,kind,life:7.5,ph:0,vx:0,vy:0,slowT:0,stun:0});
   if(!S.hintSup){S.hintSup=true;hint(tr('hintSup'),4.5)}
+  see('supply');
 }
+/* ================= 怪物图鉴 ================= */
+let seen=(()=>{try{return JSON.parse(store('fossil_seen')||'{}')||{}}catch(e){return{}}})();
+function see(t){if(seen[t])return;seen[t]=1;store('fossil_seen',JSON.stringify(seen));if(S)addText(cx,hy+(by-hy)*0.18,tr('newDex',tr('d_'+t)),'#ffd23a',15)}
+const firstW={};
+function firstWave(t){if(t==='supply')return 1;if(firstW[t])return firstW[t];for(let n=1;n<=12;n++)if(waveDef(n).list.some(i=>i.type===t))return firstW[t]=n;return 12}
+function renderDex(){
+  const L=$('dexList'),ks=Object.keys(TYPES);let n=0;L.innerHTML='';
+  for(const t of ks){
+    const T=TYPES[t],k=!!seen[t],d=document.createElement('div');if(k)n++;
+    d.className='dx'+(k?'':' unk');
+    const tag=T.boss?'<span class="dtag boss">'+tr('tBoss')+'</span>':T.heavy?'<span class="dtag">'+tr('tHeavy')+'</span>':t==='supply'?'<span class="dtag sup">'+tr('tSup')+'</span>':'';
+    const sp=t==='supply'?tr('sp4'):tr('sp'+(T.spd<0.7?0:T.spd<1.2?1:T.spd<2.2?2:3));
+    const st=k?'<span>'+tr('dHP',t==='supply'?'3–6':T.hp)+'</span><span>'+sp+'</span><span>'+(t==='supply'?tr('dRew'):tr('dDmg',T.dmg))+'</span><span>'+tr('dPts',T.pts)+'</span><span>'+tr('dFirst',firstWave(t))+'</span>'
+      :'<span>'+tr('dFirst',firstWave(t))+'</span>';
+    d.innerHTML='<img src="'+SPR.dex[t]+'" alt=""><div class="dx2"><div class="dn">'+(k?tr('d_'+t):tr('unk'))+tag+'</div><div class="ds">'+st+'</div><div class="dd">'+(k?tr('x_'+t):tr('unkD'))+'</div></div>';
+    L.appendChild(d);
+  }
+  $('dexN').textContent=tr('dexN',n,ks.length);
+}
+function setDex(v){$('codex').classList.toggle('show',v);if(v){renderDex();$('codex').querySelector('.scard').scrollTop=0}}
 function addText(x,y,s,col,size){S.texts.push({x,y,s,col,size:size||16,t:0})}
 function burst(x,y,col,n,sp,life,k,sz){for(let i=0;i<n;i++){if(S.parts.length>460)S.parts.shift();const a=Math.random()*Math.PI*2,v=sp*(0.3+Math.random());S.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-sp*(k==='dust'?0.1:0.35),col,life:life*(0.6+Math.random()*0.6),t:0,s:(sz||1)*(2+Math.random()*3),g:k==='dust'?-20:sp*1.3,k,vr:Math.random()-0.5})}}
 function ring(x,y,s,col){S.parts.push({x,y,vx:0,vy:0,g:0,k:'ring',s,life:0.4,t:0,col})}
@@ -1285,12 +1370,13 @@ function fenceDmg(d,x,type,label){
   S.hp-=d;S.combo=0;S.noDmg=false;S.shake=Math.min(0.7,0.25+d*0.08);S.flash=0.35;S.lastKiller=type;
   burst(x,by-10,'#c8a878',12,120,0.8,'dust',3);burst(x,by-14,'#fff',6,220,0.9,'bone',1.2);addText(x,by-30,label||tr('f_hit',d),'#ff5a70',20);
   sfx('base');renderHP(true);updHUD();
-  if(navigator.vibrate)try{navigator.vibrate(d>2?120:50)}catch(err){}
+  window.FossilPlatform.impact();
   if(S.hp<=0){S.hp=0;gameOver()}
 }
 function baseHit(e){fenceDmg(TYPES[e.type].dmg,proj(e.x,0).x,e.type)}
 function gameOver(){
   if(S.dead)return;
+  window.FossilPlatform.over(S.score);
   S.dead=true;AU.over=true;S.firing=false;S.shop=false;$('shop').classList.remove('show');
   const nb=S.score>best&&S.score>0;if(nb){best=S.score;store('fossil_turret_best',String(best))}
   $('why').textContent=tr('why',tr('d_'+S.lastKiller));
@@ -1371,6 +1457,7 @@ function renderBar(){
     d.querySelector('.wn').textContent=lv?tr('w_'+k):'🔒 '+tr('inShop');d.querySelector('.st').textContent='★'.repeat(lv)});
 }
 function pickW(k){
+  if(paused)return;
   if(!K.w[k]){hint(tr('hintShop'),2.5);return}
   if(K.cur!==k){K.cur=k;S.fireCD=Math.max(S.fireCD,0.12);sfx('switch');renderBar()}
 }
@@ -1386,6 +1473,7 @@ function renderHP(hit){
 }
 let lastHud='',lastCoin=0;
 function updHUD(){
+  window.FossilPlatform.score(S.score);
   const m=Math.min(3,1+0.1*S.combo);
   const key=S.score+'|'+best+'|'+S.wave+'|'+S.stage+'|'+S.combo+'|'+K.coins;
   if(key===lastHud)return;lastHud=key;
@@ -1404,44 +1492,51 @@ function setAim(ev){
   S.aim.x=clamp(p.x,6,W-6);S.aim.y=clamp(p.y-off,hy-60,by+10);
 }
 function onDown(ev){
-  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#wbar'))return;
+  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#wbar,#codex'))return;
   ev.preventDefault();initAudio();
-  if(S.dead||S.shop)return;
+  if(paused||S.dead||S.shop)return;
   ptr=ev.pointerId;setAim(ev);S.firing=true;
 }
-function onMove(ev){if(S.dead||S.shop)return;if(ptr===ev.pointerId||ev.pointerType==='mouse'){if(ptr!==null||ev.pointerType==='mouse')setAim(ev)}if(ptr===ev.pointerId)ev.preventDefault()}
+function onMove(ev){if(paused||S.dead||S.shop)return;if(ptr===ev.pointerId||ev.pointerType==='mouse'){if(ptr!==null||ev.pointerType==='mouse')setAim(ev)}if(ptr===ev.pointerId)ev.preventDefault()}
 function onUp(ev){if(ptr===ev.pointerId){ptr=null;S.firing=false}}
 window.addEventListener('pointerdown',onDown,{passive:false});
 window.addEventListener('pointermove',onMove,{passive:false});
 window.addEventListener('pointerup',onUp);window.addEventListener('pointercancel',onUp);
-document.addEventListener('touchmove',e=>{if(!e.target.closest||!e.target.closest('#over,#pause,#shop'))e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',e=>{if(!e.target.closest||!e.target.closest('#over,#pause,#shop,#codex'))e.preventDefault()},{passive:false});
 document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 document.addEventListener('gesturestart',e=>e.preventDefault());
 document.addEventListener('contextmenu',e=>e.preventDefault());
 $('mute').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();setMute(!AU.muted)});
-function setStyle(t){TH=t;store('fossil_style',t);document.body.className=t;$('sty').textContent=t==='toon'?tr('styDoodle'):tr('styToon');buildSprites();renderHP();renderBar();if(S.shop)renderShop()}
+function setStyle(t){TH=t;store('fossil_style',t);document.body.className=t;$('sty').textContent=t==='toon'?tr('styDoodle'):tr('styToon');buildSprites();renderHP();renderBar();if(S.shop)renderShop();if($('codex').classList.contains('show'))renderDex()}
 $('sty').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();setStyle(TH==='toon'?'doodle':'toon')});
 let paused=false;
 function setPause(v){if(v&&S.dead)return;paused=v;$('pause').classList.toggle('show',v);S.firing=false;ptr=null;
-  if(AU.ctx){if(v)AU.ctx.suspend();else if(!document.hidden)AU.ctx.resume()}}
-function setLang(l){if(!I18N[l])return;LANG=l;store('fossil_lang',l);applyLang();$('sty').textContent=TH==='toon'?tr('styDoodle'):tr('styToon');lastHud='';updHUD();renderBar();if(S.shop)renderShop();
+  if(AU.ctx){if(v)AU.ctx.suspend().catch(()=>{});else if(!document.hidden)AU.ctx.resume().catch(()=>{})}}
+function setLang(l){if(!I18N[l])return;LANG=l;store('fossil_lang',l);applyLang();$('sty').textContent=TH==='toon'?tr('styDoodle'):tr('styToon');lastHud='';updHUD();renderBar();if(S.shop)renderShop();if($('codex').classList.contains('show'))renderDex();
+  hint(tr(S.hintSup?'hintSup':'hint0'),S.hintSup?4.5:7);$('banner').classList.remove('show');
   if(S.dead){$('why').textContent=tr('why',tr('d_'+S.lastKiller));$('fWave').textContent=tr('waveN',S.wave)}}
-const tap=(el,f)=>el.addEventListener('pointerup',e=>{e.preventDefault();e.stopPropagation();initAudio();f(e)});
+const tap=(el,f)=>el.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();initAudio();f(e)});
 $('pz').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();setPause(!paused)});
 tap($('resume'),()=>setPause(false));
 tap($('restart'),()=>{setPause(false);newGame()});
 document.querySelectorAll('[data-lang]').forEach(b=>tap(b,()=>setLang(b.dataset.lang)));
+tap($('dexP'),()=>setDex(true));tap($('dexO'),()=>setDex(true));tap($('dexClose'),()=>setDex(false));
 $('retry').addEventListener('pointerup',e=>{e.preventDefault();initAudio();newGame()});
 $('go').addEventListener('click',e=>{e.preventDefault();initAudio();closeShop()});
 $('reroll').addEventListener('click',e=>{e.preventDefault();initAudio();reroll()});
 window.addEventListener('keydown',e=>{
+  if($('codex').classList.contains('show')){if(e.key==='Escape')setDex(false);return}
   if(e.key==='Escape'||e.key==='p'||e.key==='P'){setPause(!paused);return}
+  if(e.target.matches?.('[role=button]')&&(e.key===' '||e.key==='Enter')){e.preventDefault();e.target.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true}));return}
+  if(e.target.closest?.('button,[role=button]'))return;
   if(S.dead&&(e.key===' '||e.key==='Enter'))newGame();
   else if(S.shop&&e.key==='Enter'&&!paused)closeShop();
   if(e.key>='1'&&e.key<='4'&&!S.shop)pickW(WKEYS[+e.key-1]);
   if(e.key==='m'||e.key==='M')setMute(!AU.muted)});
+window.addEventListener('blur',()=>{S.firing=false;ptr=null});
+window.addEventListener('pagehide',()=>{if(!S.dead)setPause(true);else if(AU.ctx)void AU.ctx.suspend().catch(()=>{})});
 window.addEventListener('resize',()=>{layout();S.aim.x=clamp(S.aim.x,6,W-6)});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){if(!S.dead)setPause(true);else if(AU.ctx)AU.ctx.suspend()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(!S.dead)setPause(true);else if(AU.ctx)void AU.ctx.suspend().catch(()=>{})}});
 
 /* ================= 射击 ================= */
 const SU=()=>U/100*1.1;
@@ -1522,7 +1617,7 @@ function update(dt){
       if(e.life<=0||Math.abs(e.x)>2.4){e.gone=1;const p=proj(clamp(e.x,-1,1),e.z);addText(p.x,p.y-30,tr('f_esc'),"#ffd447",14);sfx('escape')}
     }else{
       let sp=e.spd*slow;
-      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=2.8;spit(e)}}
+      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=2.4;spit(e)}}
       if(e.type==='pachy'){
         if(e.ps===0&&e.z<5.5){e.ps=1;e.pw=0.7;sfx('charge')}
         if(e.ps===1){sp=0;e.pw-=dt;if(e.pw<=0)e.ps=2}
@@ -1901,7 +1996,7 @@ requestAnimationFrame(frame);
 // 测试钩子
 window.__FT={setStyle,setLang,setPause,get paused(){return paused},get S(){return S},get K(){return K},waveDef,stageOf,TYPES,WEAPONS,ALLIES,get AU(){return AU},
   skip(n){if(S.shop){S.shop=false;AU.calm=false;$('shop').classList.remove('show')}S.enemies=[];S.tele=[];S.spits=[];S.lobs=[];startWave(n)},
-  openShop,closeShop,buyCard,autoShop,renderBar,get offers(){return offers},fence(d){fenceDmg(d,cx,'raptor')}};
+  openShop,closeShop,buyCard,autoShop,setDex,get seen(){return seen},renderBar,get offers(){return offers},fence(d){fenceDmg(d,cx,'raptor')}};
 
 })();
 </script>
