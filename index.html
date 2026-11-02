@@ -325,6 +325,9 @@ const TYPES={
   trike:{hp:16,spd:0.8,pts:40,dmg:2,size:1.25,col:'#5aa8ee',cy:0.48,hr:0.46,heavy:1},
   ankylo:{hp:36,spd:0.6,pts:80,dmg:3,size:1.45,col:'#e0a040',cy:0.24,hr:0.42,heavy:1},
   trex:{hp:110,spd:0.5,pts:300,dmg:5,size:1.9,col:'#f0574a',cy:0.6,hr:0.44,heavy:1,boss:1},
+  ankyking:{hp:50,spd:0.4,pts:350,dmg:4,size:1.9,col:'#ffd23a',cy:0.24,hr:0.42,heavy:1,boss:1,armor:1},
+  pteroq:{hp:90,spd:0.55,pts:400,dmg:4,size:1.75,col:'#c85ae8',cy:0.66,hr:0.4,heavy:1,boss:1,fly:1},
+  tyrant:{hp:150,spd:0.5,pts:500,dmg:8,size:2.1,col:'#ff3a1a',cy:0.6,hr:0.44,heavy:1,boss:1},
   supply:{hp:3,spd:0,pts:60,dmg:0,size:1.05,col:'#ffcc22',cy:0.5,hr:0.62}
 };
 /* ================= 局内成长：武器 / 队友 / 商店 ================= */
@@ -371,12 +374,12 @@ function shopOffers(K,hp,r){
 
 /* ================= 多语言：简体 zh / 繁體 tw / English en ================= */
 const I18N={
-zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图鉴',close:'返回',dexN:'已发现 {0} / {1} 种 · 数值为基础值，耐久随波次提升',dHP:'耐久 {0}',dDmg:'撞栅 -{0}',dRew:'击败有奖励',dPts:'分值 {0}',dFirst:'第 {0} 波起',
+zh:{d_ankyking:'甲龙王',d_pteroq:'翼龙女王',d_tyrant:'暴君霸王龙',x_ankyking:'首领（第 4 波）。厚甲：骨炮、霰弹和队友子弹只造成一半伤害，长矛和爆炸不受影响。撞栅 -4。',x_pteroq:'首领（第 8 波）。大幅蛇形飞行，每 3.5 秒召唤两只翼龙。撞栅 -4。',x_tyrant:'首领（第 10 波）。耐久最高，血量低于一半时狂暴，全身发红，速度接近翻倍。撞栅 -8。',bh_trex:'留好热量',bh_ankyking:'厚甲：换长矛或榴弹',bh_pteroq:'会召唤翼龙',bh_tyrant:'半血后狂暴加速',rage:'狂暴！',armor:'护甲减伤',d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图鉴',close:'返回',dexN:'已发现 {0} / {1} 种 · 数值为基础值，耐久随波次提升',dHP:'耐久 {0}',dDmg:'撞栅 -{0}',dRew:'击败有奖励',dPts:'分值 {0}',dFirst:'第 {0} 波起',
   sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 极快',sp4:'横穿 7.5 秒',tBoss:'首领',tHeavy:'重型',tSup:'补给',unk:'？？？',unkD:'还没遇到。遇到后解锁详细资料。',newDex:'📖 图鉴新增：{0}',
   x_raptor:'最常见的恐龙。速度快、耐久低，走路时左右小幅摇摆。',x_compy:'体型小，5 只一群高速冲来。用霰弹或榴弹清群最划算。',x_ptero:'蛇形飞行，左右大幅摆动。弓箭手会优先射它。',
   x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨栅（嘴部发绿光是预警）。酸液可以在空中打掉。',x_pachy:'靠近后停下蓄力（头顶出现 ！），然后高速冲锋。驯兽师的网能让它减速。',
   x_trike:'重型。耐久高，出场前地平线有 ⚠ 预警，提前集中火力。',x_ankylo:'重型。全身甲壳，耐久很高，撞栅 -3。长矛和炸药最有效。',
-  x_trex:'首领。第 6 波出现，第 8 波起每个偶数波都来，出场会吼叫。耐久极高，撞栅 -5，留好热量。',x_supply:'金色补给兽，从坑侧横穿，7.5 秒后逃走。击败得骨栅 +2 或 6 秒超载火力。',
+  x_trex:'首领（第 6 波）。出场会吼叫，耐久极高，撞栅 -5，留好热量。第 12 波起四个首领在偶数波轮流登场。',x_supply:'金色补给兽，从坑侧横穿，7.5 秒后逃走。击败得骨栅 +2 或 6 秒超载火力。',
   
   tip1:'迅猛龙和<span class="hr">细颚龙群</span>来袭：拖动瞄准，按住连射',tip3:'<span class="hr">三角龙</span> 耐久 {0} · <span class="hr">肿头龙</span> 靠近时会蓄力冲锋（头顶出现 ！）',
   tip4:'<span class="hr">双冠龙</span> 停在远处吐酸液砸骨栅，可以把酸液打掉',
@@ -394,8 +397,8 @@ zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图�
   hint0:'👆 <b>按住屏幕拖动瞄准</b>，按住即自动连射<br>别让恐龙撞上骨栅（会扣基地生命）',
   hintSup:'<em>金色补给兽</em> 带奖励横穿陨石坑<br>优先击败：<span class="hg">✚ 骨栅+2</span> / <span class="hy">⚡ 6秒超载</span>',
   
-  tip5:'<span class="hr">翼龙</span> 蛇形飞行 · <span class="hr">甲龙</span> 耐久 {0}，撞栅 -3',tip7:'恐龙耐久每波 +10% · 偶数波出现 <span class="hr">霸王龙</span>',
-  bossSoon:'<span class="hr">⚠ 霸王龙首领将至！耐久 {0}，撞栅 -5</span>',hold:'守住骨栅',bossT:'⚠ 霸王龙',bossS:'耐久 {0} · 撞栅 -5 · 留好热量',
+  tip5:'<span class="hr">翼龙</span> 蛇形飞行 · <span class="hr">甲龙</span> 耐久 {0}，撞栅 -3',tip7:'恐龙耐久每波提升 · 偶数波轮流出现 <span class="hr">首领</span>',
+  bossSoon:'<span class="hr">⚠ 首领 {0} 将至！耐久 {1}，撞栅 -{2}</span>',hold:'守住骨栅',bossT:'⚠ {0}',bossS:'耐久 {0} · 撞栅 -{1} · {2}',
   cleared:'第 {0} 波 守住！',clearB:'清波 +{0}',noDmg:'　无伤 +150',
   f_heal:'骨栅 +2',f_full:'骨栅已满',f_charge:'⚡ 超载 6 秒',f_hit:'骨栅 -{0}',f_esc:'补给兽溜走了',f_heat:'过热！松手冷却',
   h_heat:'热量',h_over:'过热冷却',h_charge:'⚡超载 {0}s',
@@ -405,12 +408,12 @@ zh:{d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图�
   retry:'再守一次',styDoodle:'涂鸦',styToon:'卡通',a_mute:'静音',a_sty:'切换画风',
   pause:'暂停',resume:'继续',restart:'重新开始',lang:'语言 / Language',
   pauseRule:'击退恐龙得分，连杀提高倍率；击杀得金币，清波后在商店买武器、招募队友；骨栅生命归零即失败。按 1–4 或点底部切换武器。'},
-tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖鑑',close:'返回',dexN:'已發現 {0} / {1} 種 · 數值為基礎值，耐久隨波次提升',dHP:'耐久 {0}',dDmg:'撞柵 -{0}',dRew:'擊敗有獎勵',dPts:'分值 {0}',dFirst:'第 {0} 波起',
+tw:{d_ankyking:'甲龍王',d_pteroq:'翼龍女王',d_tyrant:'暴君霸王龍',x_ankyking:'首領（第 4 波）。厚甲：骨砲、霰彈和隊友子彈只造成一半傷害，長矛和爆炸不受影響。撞柵 -4。',x_pteroq:'首領（第 8 波）。大幅蛇形飛行，每 3.5 秒召喚兩隻翼龍。撞柵 -4。',x_tyrant:'首領（第 10 波）。耐久最高，血量低於一半時狂暴，全身發紅，速度接近翻倍。撞柵 -8。',bh_trex:'留好熱量',bh_ankyking:'厚甲：換長矛或榴彈',bh_pteroq:'會召喚翼龍',bh_tyrant:'半血後狂暴加速',rage:'狂暴！',armor:'護甲減傷',d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖鑑',close:'返回',dexN:'已發現 {0} / {1} 種 · 數值為基礎值，耐久隨波次提升',dHP:'耐久 {0}',dDmg:'撞柵 -{0}',dRew:'擊敗有獎勵',dPts:'分值 {0}',dFirst:'第 {0} 波起',
   sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 極快',sp4:'橫穿 7.5 秒',tBoss:'首領',tHeavy:'重型',tSup:'補給',unk:'？？？',unkD:'還沒遇到。遇到後解鎖詳細資料。',newDex:'📖 圖鑑新增：{0}',
   x_raptor:'最常見的恐龍。速度快、耐久低，走路時左右小幅搖擺。',x_compy:'體型小，5 隻一群高速衝來。用霰彈或榴彈清群最划算。',x_ptero:'蛇形飛行，左右大幅擺動。弓箭手會優先射牠。',
   x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨柵（嘴部發綠光是預警）。酸液可以在空中打掉。',x_pachy:'靠近後停下蓄力（頭頂出現 ！），然後高速衝鋒。馴獸師的網能讓牠減速。',
   x_trike:'重型。耐久高，出場前地平線有 ⚠ 預警，提前集中火力。',x_ankylo:'重型。全身甲殼，耐久很高，撞柵 -3。長矛和炸藥最有效。',
-  x_trex:'首領。第 6 波出現，第 8 波起每個偶數波都來，出場會吼叫。耐久極高，撞柵 -5，留好熱量。',x_supply:'金色補給獸，從坑側橫穿，7.5 秒後逃走。擊敗得骨柵 +2 或 6 秒超載火力。',
+  x_trex:'首領（第 6 波）。出場會吼叫，耐久極高，撞柵 -5，留好熱量。第 12 波起四個首領在偶數波輪流登場。',x_supply:'金色補給獸，從坑側橫穿，7.5 秒後逃走。擊敗得骨柵 +2 或 6 秒超載火力。',
   
   tip1:'迅猛龍和<span class="hr">細顎龍群</span>來襲：拖動瞄準，按住連射',tip3:'<span class="hr">三角龍</span> 耐久 {0} · <span class="hr">腫頭龍</span> 靠近時會蓄力衝鋒（頭頂出現 ！）',
   tip4:'<span class="hr">雙冠龍</span> 停在遠處吐酸液砸骨柵，可以把酸液打掉',
@@ -428,8 +431,8 @@ tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖�
   hint0:'👆 <b>按住螢幕拖動瞄準</b>，按住即自動連射<br>別讓恐龍撞上骨柵（會扣基地生命）',
   hintSup:'<em>金色補給獸</em> 帶獎勵橫穿隕石坑<br>優先擊敗：<span class="hg">✚ 骨柵+2</span> / <span class="hy">⚡ 6秒超載</span>',
   
-  tip5:'<span class="hr">翼龍</span> 蛇形飛行 · <span class="hr">甲龍</span> 耐久 {0}，撞柵 -3',tip7:'恐龍耐久每波 +10% · 偶數波出現 <span class="hr">霸王龍</span>',
-  bossSoon:'<span class="hr">⚠ 霸王龍首領將至！耐久 {0}，撞柵 -5</span>',hold:'守住骨柵',bossT:'⚠ 霸王龍',bossS:'耐久 {0} · 撞柵 -5 · 留好熱量',
+  tip5:'<span class="hr">翼龍</span> 蛇形飛行 · <span class="hr">甲龍</span> 耐久 {0}，撞柵 -3',tip7:'恐龍耐久每波提升 · 偶數波輪流出現 <span class="hr">首領</span>',
+  bossSoon:'<span class="hr">⚠ 首領 {0} 將至！耐久 {1}，撞柵 -{2}</span>',hold:'守住骨柵',bossT:'⚠ {0}',bossS:'耐久 {0} · 撞柵 -{1} · {2}',
   cleared:'第 {0} 波 守住！',clearB:'清波 +{0}',noDmg:'　無傷 +150',
   f_heal:'骨柵 +2',f_full:'骨柵已滿',f_charge:'⚡ 超載 6 秒',f_hit:'骨柵 -{0}',f_esc:'補給獸溜走了',f_heat:'過熱！鬆手冷卻',
   h_heat:'熱量',h_over:'過熱冷卻',h_charge:'⚡超載 {0}s',
@@ -439,12 +442,12 @@ tw:{d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖�
   retry:'再守一次',styDoodle:'塗鴉',styToon:'卡通',a_mute:'靜音',a_sty:'切換畫風',
   pause:'暫停',resume:'繼續',restart:'重新開始',lang:'語言 / Language',
   pauseRule:'擊退恐龍得分，連殺提高倍率；擊殺得金幣，清波後在商店買武器、招募隊友；骨柵生命歸零即失敗。按 1–4 或點底部切換武器。'},
-en:{d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',dexT:'Bestiary',close:'Back',dexN:'Discovered {0} / {1} · base stats; HP grows each wave',dHP:'HP {0}',dDmg:'Fence -{0}',dRew:'Drops a reward',dPts:'{0} pts',dFirst:'From wave {0}',
+en:{d_ankyking:'Ankylo King',d_pteroq:'Ptero Queen',d_tyrant:'Tyrant Rex',x_ankyking:'Boss (wave 4). Thick armor: bone cannon, gravel shot and ally bullets deal half damage. Spears and explosions deal full damage. Fence -4.',x_pteroq:'Boss (wave 8). Weaves widely and summons two pterosaurs every 3.5s. Fence -4.',x_tyrant:'Boss (wave 10). Highest HP. Below half HP it enrages, glows red and nearly doubles its speed. Fence -8.',bh_trex:'save your heat',bh_ankyking:'armored: use spears or grenades',bh_pteroq:'summons pterosaurs',bh_tyrant:'enrages at half HP',rage:'ENRAGED!',armor:'Armor',d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',dexT:'Bestiary',close:'Back',dexN:'Discovered {0} / {1} · base stats; HP grows each wave',dHP:'HP {0}',dDmg:'Fence -{0}',dRew:'Drops a reward',dPts:'{0} pts',dFirst:'From wave {0}',
   sp0:'Speed: slow',sp1:'Speed: medium',sp2:'Speed: fast',sp3:'Speed: very fast',sp4:'Crosses in 7.5s',tBoss:'BOSS',tHeavy:'HEAVY',tSup:'SUPPLY',unk:'???',unkD:'Not met yet. Details unlock once you see it.',newDex:'📖 New bestiary entry: {0}',
   x_raptor:'The most common dino. Fast and fragile; sways a little as it runs.',x_compy:'Tiny, and comes in packs of 5 at high speed. Gravel shot or grenades clear them best.',x_ptero:'Flies in a wide weave. Archers target it first.',
   x_dilo:'Stops midway and spits acid at the fence every 2.4s (a green glow at the mouth is the warning). You can shoot the acid down.',x_pachy:'Stops to wind up when close (a ! appears), then charges at high speed. The Tamer’s net slows it.',
   x_trike:'Heavy. High HP, announced by a ⚠ on the horizon. Focus fire early.',x_ankylo:'Heavy. Armored all over with very high HP; fence -3. Spears and dynamite work best.',
-  x_trex:'Boss. Appears on wave 6, then every even wave from 8, with a roar. Huge HP, fence -5. Save your heat.',x_supply:'Golden supply dino. Crosses the crater and escapes after 7.5s. Shoot it for fence +2 or 6s Overdrive.',
+  x_trex:'Boss (wave 6). Roars on arrival. Huge HP, fence -5. Save your heat. From wave 12 the four bosses take turns on even waves.',x_supply:'Golden supply dino. Crosses the crater and escapes after 7.5s. Shoot it for fence +2 or 6s Overdrive.',
   
   tip1:'Raptors and <span class="hr">compy swarms</span> incoming: drag to aim, hold to fire',tip3:'<span class="hr">Triceratops</span>: {0} HP · <span class="hr">Pachys</span> wind up and charge when close (watch for the !)',
   tip4:'<span class="hr">Dilophosaurs</span> stop far away and spit acid at the fence. Shoot the acid down',
@@ -462,8 +465,8 @@ en:{d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',dexT:'Bestia
   hint0:'👆 <b>Hold and drag to aim</b>; the cannon fires while you hold<br>Keep dinos off the fence (each hit costs base HP)',
   hintSup:'<em>Golden supply dinos</em> carry rewards across the crater<br>Shoot them first: <span class="hg">✚ Fence +2</span> / <span class="hy">⚡ 6s Overdrive</span>',
   
-  tip5:'<span class="hr">Pterosaurs</span> weave in flight · <span class="hr">Ankylosaur</span>: {0} HP, fence -3',tip7:'Dino HP +10% per wave · <span class="hr">T-Rex</span> on even waves',
-  bossSoon:'<span class="hr">⚠ T-Rex boss incoming! {0} HP, fence -5</span>',hold:'Hold the fence',bossT:'⚠ T-REX',bossS:'{0} HP · fence -5 · save your heat',
+  tip5:'<span class="hr">Pterosaurs</span> weave in flight · <span class="hr">Ankylosaur</span>: {0} HP, fence -3',tip7:'Dino HP rises every wave · <span class="hr">bosses</span> take turns on even waves',
+  bossSoon:'<span class="hr">⚠ Boss incoming: {0}! {1} HP, fence -{2}</span>',hold:'Hold the fence',bossT:'⚠ {0}',bossS:'{0} HP · fence -{1} · {2}',
   cleared:'Wave {0} held!',clearB:'Wave bonus +{0}',noDmg:' · No damage +150',
   f_heal:'Fence +2',f_full:'Fence full',f_charge:'⚡ Overdrive 6s',f_hit:'Fence -{0}',f_esc:'Supply dino escaped',f_heat:'Overheated! Release to cool',
   h_heat:'Heat',h_over:'Cooling',h_charge:'⚡Overdrive {0}s',
@@ -536,6 +539,26 @@ function eyes(P,dx,y,r,angry){
 function dinoParts(type,f){
   const ph=f*Math.PI/2,s=Math.sin(ph),c=Math.cos(ph),P=[],L=Math.max(0,s),R=Math.max(0,-s);
   if(type==='compy')return dinoParts('raptor',f);
+  if(type==='ankyking'){
+    P.push(...dinoParts('ankylo',f));
+    for(let i=0;i<5;i++){const a=Math.PI*(1.25+i*0.125),x=Math.cos(a)*46,y=-14+Math.sin(a)*27;P.push(pp([x-5,y+2,x+Math.cos(a)*16,y+Math.sin(a)*16,x+5,y+2],'accent',false))}
+    P.push(pp([-10,-24,-9,-35,-4,-29,0,-38,4,-29,9,-35,10,-24],'crown',false),pe(0,-29,2,2,'gem'));
+    return P;
+  }
+  if(type==='pteroq'){
+    const b=Math.cos(f*Math.PI/2)*2;
+    P.push(pp([-4,-78+b,-10,-108+b,0,-92+b,10,-108+b,4,-78+b],'accent',false));
+    P.push(...dinoParts('ptero',f));
+    P.push(pp([-7,-78+b,-6,-86+b,-3,-82+b,0,-88+b,3,-82+b,6,-86+b,7,-78+b],'crown',false),pe(0,-81+b,1.4,1.4,'gem'));
+    return P;
+  }
+  if(type==='tyrant'){
+    const b=-Math.abs(Math.sin(f*Math.PI/2))*2;
+    for(let i=0;i<6;i++){const x=(i-2.5)*9,y=-78+Math.abs(i-2.5)*5+b;P.push(pp([x-5,y+6,x,y-12-(i%2)*4,x+5,y+6],'accent',false))}
+    P.push(...dinoParts('trex',f));
+    P.push(pl([10,-112+b,20,-100+b],'line',1.1),pl([14,-114+b,22,-106+b],'line',0.8),pl([-20,-70+b,-12,-58+b],'line',0.9));
+    return P;
+  }
   if(type==='dilo'){
     /* 双冠龙：颈部伞膜（最后方）+ 迅猛龙身体 + 头顶双冠 */
     const hb=-Math.abs(s)*2.5-s,fr=[];
@@ -819,7 +842,7 @@ function blit(ctx,s,x,y,u,flip){
 function drawPartsAt(ctx,parts,x,y,u,draw,pal,opt){ctx.save();ctx.translate(x,y);ctx.scale(u,u);draw(ctx,parts,pal,opt);ctx.restore()}
 
 /* ================= 两套画风：写实卡通 toon / 涂鸦 doodle ================= */
-const COMMON={eye:'#fffbea',pupil:'#1b120a',glint:'#ffffff',tooth:'#fffaf0',mouth:'#5c1616',tongue:'#e46a7c',claw:'#f1e6cf',line:'#2a1a10'};
+const COMMON={crown:'#ffd23a',gem:'#e8304a',eye:'#fffbea',pupil:'#1b120a',glint:'#ffffff',tooth:'#fffaf0',mouth:'#5c1616',tongue:'#e46a7c',claw:'#f1e6cf',line:'#2a1a10'};
 const DINO={
   toon:{
     raptor:{body:'#5f9e48',belly:'#eadfa8',accent:'#e2603a',horn:'#efe3c4'},
@@ -830,6 +853,9 @@ const DINO={
     trike:{body:'#5c88c4',belly:'#d9e4ee',accent:'#e9a640',horn:'#f4ecd8'},
     ankylo:{body:'#9c8250',belly:'#e8d8a8',armor:'#6e5c3a',horn:'#e6dabc'},
     trex:{body:'#b8442e',belly:'#efc68e',accent:'#7a2414'},
+    ankyking:{body:'#7a6a50',belly:'#d8c898',armor:'#4a3a2a',horn:'#e8d8a0',accent:'#ffd23a'},
+    pteroq:{body:'#6a3a9a',belly:'#e9cfe8',accent:'#ff4a8a',horn:'#ffd23a',wing:'#a85ac8'},
+    tyrant:{body:'#4a2a3a',belly:'#c8906a',accent:'#ff4a1a'},
     supply:{body:'#f0b830',belly:'#fff0bc',crate:'#a86c38',cloth:'#45a85a'}
   },
   doodle:{
@@ -841,6 +867,9 @@ const DINO={
     trike:{body:'#5aa8ee',belly:'#e4f2ff',accent:'#ffc23a',horn:'#ffffff'},
     ankylo:{body:'#d6a04c',belly:'#fff0c8',armor:'#a07440',horn:'#fff6dc'},
     trex:{body:'#f0574a',belly:'#ffd9a0',accent:'#a42a1e'},
+    ankyking:{body:'#b08a50',belly:'#fff0c8',armor:'#6a5a4a',horn:'#fff6dc',accent:'#ffd23a'},
+    pteroq:{body:'#9a5ae8',belly:'#f6dcff',accent:'#ff5a9a',horn:'#ffe066',wing:'#d88ae8'},
+    tyrant:{body:'#8a3a5a',belly:'#ffc8a0',accent:'#ff3a2a'},
     supply:{body:'#ffd23a',belly:'#fff6c8',crate:'#c98848',cloth:'#4cc46a'}
   }
 };
@@ -1229,7 +1258,7 @@ function waveDef(n){
   else{c={raptor:12+k,compy:10+2*k,ptero:6+(k>>1),dilo:3+Math.floor(k/3),pachy:4+Math.floor(k/3),trike:3+Math.floor(k/3),ankylo:Math.min(5,2+(k>>1))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
   const hpMul=(1+0.13*(n-1))*Math.pow(1.16,k);
   const supHp=[0,3,4,5,6][st],supN=[0,1,2,2,3][st]+(n>=10?1:0);
-  const boss=n===6||n>=8&&n%2===0;
+  const boss={4:'ankyking',6:'trex',8:'pteroq',10:'tyrant'}[n]||(n>=12&&n%2===0?['trex','ankyking','pteroq','tyrant'][(n/2-6)%4]:null);
   const r=rng(n*7919+13),heavy=[],light=[];
   for(const t in c){let m=c[t];
     if(t==='compy')while(m>0){const g=Math.min(5,m);light.push({type:t,sw:g});m-=g}
@@ -1244,7 +1273,7 @@ function waveDef(n){
     if(it.sw){for(let i=0;i<it.sw;i++)list.push({t:t+i*0.16,type:'compy',x:clamp(x+(r()-0.5)*0.4,-0.95,0.95)});t+=gap*1.3}
     else{list.push({t,type:it.type,x});t+=gap*(TYPES[it.type].heavy?1.5:(0.8+r()*0.4))*(st>=2&&r()<0.25?0.45:1)}
   }
-  if(boss)list.push({t:t*0.45,type:'trex',x:0});
+  if(boss)list.push({t:t*0.45,type:boss,x:0});
   list.sort((a,b)=>a.t-b.t);
   const sup=[];for(let i=0;i<supN;i++)sup.push({t:2+t*(i+0.5)/supN+(i?0:2),side:(n+i)%2?1:-1,z:3.6+r()*2.2});
   return{n,st,list,sup,hpMul,supHp,dur:t,boss};
@@ -1272,11 +1301,11 @@ function startWave(n){
   const st=S.wv.st;
   if(st!==S.stage){S.prevStage=S.stage;S.stage=st;S.stageFade=0;AU.crash=1}
   AU.level=st;
-  const bh=Math.round(TYPES.trex.hp*S.wv.hpMul);
+  const B=S.wv.boss,bh=B?Math.round(TYPES[B].hp*S.wv.hpMul):0;
   const tips={1:[tr('wave',1),tr('tip1')],3:[tr('stage',2,tr('s2')),tr('tip3',TYPES.trike.hp)],4:[tr('wave',4),tr('tip4')],
     5:[tr('stage',3,tr('s3')),tr('tip5',TYPES.ankylo.hp)],7:[tr('stage',4,tr('s4')),tr('tip7')]};
   if(tips[n])banner(tips[n][0],tips[n][1],2.6);
-  else banner(tr('wave',n),S.wv.boss?tr('bossSoon',bh):tr('hold'),1.8);
+  else banner(tr('wave',n),B?tr('bossSoon',tr('d_'+B),bh,TYPES[B].dmg):tr('hold'),1.8);
   updHUD();
 }
 function spawn(type,x,hpMul){
@@ -1284,9 +1313,10 @@ function spawn(type,x,hpMul){
   const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*(1+(S.stage-1)*0.05+Math.min(0.3,0.015*S.wave)),t:Math.random()*5,flash:0,pts:T.pts*hpMul,ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0};
   if(type==='dilo'){e.stopZ=3+Math.random()*0.7;e.spitT=1.4}
   if(type==='pachy')e.ps=0;
-  if(type==='trex')sfx('roar');
+  if(T.boss)sfx('roar');
+  if(type==='pteroq')e.sumT=2.5;
   see(type);
-  S.enemies.push(e);
+  S.enemies.push(e);return e;
 }
 function spawnSupply(sd){
   const kind=S.hp<=4?'heal':(S.sups+S.wave)%2?'heal':'charge';
@@ -1350,8 +1380,9 @@ function killEnemy(e){
   updHUD();
 }
 /* 伤害：src 'p' 玩家（可暴击）/ 'a' 队友 */
-function hurt(e,d,src){
+function hurt(e,d,src,kind){
   if(e.dead)return;
+  if(TYPES[e.type].armor&&kind&&kind!=='spear'&&kind!=='boom'){d*=0.5;if(!(e.armT>0)){e.armT=1.2;addText(e.sx,e.sy-e.sr,tr('armor'),'#c8c8d8',13)}}
   let crit=false;if(src==='p'&&Math.random()<0.12){d*=2;crit=true}
   e.hp-=d;e.flash=1;e.hitT=0.12;
   if(e.type==='supply')e.stun=0.22;
@@ -1359,7 +1390,7 @@ function hurt(e,d,src){
   if(e.hp<=0.001){e.dead=1;killEnemy(e)}else sfx('hit',TYPES[e.type].heavy?300:620);
 }
 function explode(x,y,R,d,src,slow){
-  for(const e of S.enemies){if(e.dead)continue;if(Math.hypot(e.sx-x,e.sy-y)<R+e.sr*0.6){if(slow){e.slowT=slow;burst(e.sx,e.sy,'#c08aff',4,90,0.4,'star',0.7)}hurt(e,d,src)}}
+  for(const e of S.enemies){if(e.dead)continue;if(Math.hypot(e.sx-x,e.sy-y)<R+e.sr*0.6){if(slow){e.slowT=slow;burst(e.sx,e.sy,'#c08aff',4,90,0.4,'star',0.7)}hurt(e,d,src,'boom')}}
   for(const sp of S.spits)if(!sp.dead&&Math.hypot(sp.x-x,sp.y-y)<R)sp.dead=1;
   if(slow){ring(x,y,R*1.3,'#c08aff');sfx('net');return}
   S.parts.push({x,y,vx:0,vy:0,g:0,k:'boom',s:R,life:0.36,t:0});
@@ -1592,7 +1623,7 @@ function update(dt){
     S.wt+=dt;
     while(S.qi<wv.list.length&&S.wt>=wv.list[S.qi].t-(TYPES[wv.list[S.qi].type].heavy?1.6:0)){
       const it=wv.list[S.qi++],T=TYPES[it.type];
-      if(T.heavy){S.tele.push({it,t:T.boss?2.4:1.6,max:T.boss?2.4:1.6});if(T.boss){sfx('warn');sfx('riser');banner(tr('bossT'),tr('bossS',Math.round(T.hp*wv.hpMul)),2)}}
+      if(T.heavy){S.tele.push({it,t:T.boss?2.4:1.6,max:T.boss?2.4:1.6});if(T.boss){sfx('warn');sfx('riser');banner(tr('bossT',tr('d_'+it.type)),tr('bossS',Math.round(T.hp*wv.hpMul),T.dmg,tr('bh_'+it.type)),2.2)}}
       else spawn(it.type,it.x,wv.hpMul);
     }
     for(const tl of S.tele){tl.t-=dt;if(tl.t<=0){spawn(tl.it.type,tl.it.x,wv.hpMul);tl.done=1}}
@@ -1610,7 +1641,7 @@ function update(dt){
   if(S.comboT>0){S.comboT-=dt;if(S.comboT<=0){S.combo=0;updHUD()}}
   // 敌人
   for(const e of S.enemies){
-    e.t+=dt;e.flash=Math.max(0,e.flash-dt*6);e.hitT=Math.max(0,(e.hitT||0)-dt);
+    e.t+=dt;e.flash=Math.max(0,e.flash-dt*6);if(e.armT>0)e.armT-=dt;e.hitT=Math.max(0,(e.hitT||0)-dt);
     const slow=e.slowT>0?0.4:1;if(e.slowT>0)e.slowT-=dt;
     if(e.type==='supply'){
       e.life-=dt;if(e.stun>0)e.stun-=dt;else e.x+=e.dir*4.6/7.5*dt*slow;
@@ -1625,6 +1656,8 @@ function update(dt){
       }
       e.z-=sp*dt;
       if(e.type==='ptero')e.x=e.x0*0.6+Math.sin(e.t*1.6+e.ph)*0.45;
+      else if(e.type==='pteroq'){e.x=Math.sin(e.t*0.9+e.ph)*0.55;e.sumT-=dt;if(e.sumT<=0&&!S.dead){e.sumT=3.5;for(const d of[-1,1]){const m=spawn('ptero',clamp(e.x+d*0.3,-0.9,0.9),S.wv.hpMul);m.z=Math.min(ZMAX,e.z+0.4)}sfx('warn')}}
+      else if(e.type==='tyrant'&&!e.rage&&e.hp<e.max*0.5){e.rage=1;e.spd*=1.8;sfx('roar');S.shake=Math.max(S.shake,0.45);addText(e.sx,e.sy-e.sr-20,tr('rage'),'#ff3a1a',24)}
       else if(e.type==='raptor')e.x=e.x0+Math.sin(e.t*2.2+e.ph)*0.06;
       else if(e.type==='compy')e.x=e.x0+Math.sin(e.t*4+e.ph)*0.05;
       if(e.z<=0&&!S.dead){e.gone=1;baseHit(e)}
@@ -1676,7 +1709,7 @@ function update(dt){
         if(e.dead||b.hit&&b.hit.includes(e))continue;const dx=b.x-e.sx,dy=b.y-e.sy,r=e.sr+4;
         if(dx*dx+dy*dy<r*r){
           const hv=TYPES[e.type].heavy;burst(b.x,b.y,hv?'#fff2c0':TYPES[e.type].col,b.kind==='pellet'?2:3,140,0.3,hv?'star':null,0.8);
-          hurt(e,b.dmg,b.src);
+          hurt(e,b.dmg,b.src,b.kind);
           if(b.pierce){b.hit.push(e);b.dmg*=0.85}else{b.dead=1;break}
         }
       }
@@ -1728,7 +1761,7 @@ function drawNet(x,y,w,h,a){
   ctx.rect(x-w,y-h,w*2,h);ctx.clip();ctx.stroke();ctx.restore();
 }
 function drawEnemy(e){
-  const T=TYPES[e.type],sp=SPR[e.type],fi=(e.t*(e.type==='ptero'?6:e.type==='supply'?11:e.type==='compy'?10:e.ps===2?12:T.heavy?3.2:7)|0)%4;
+  const T=TYPES[e.type],sp=SPR[e.type],fi=(e.t*(T.fly?6:e.type==='supply'?11:e.type==='compy'?10:e.ps===2?12:T.heavy?3.2:7)|0)%4;
   const u=e.h/100,x=e.px,y=e.py,flip=e.type==='supply'&&e.dir<0;
   // 补给兽光环：金色脉冲圈，最显眼
   if(e.type==='supply'){
@@ -1739,6 +1772,10 @@ function drawEnemy(e){
   }
   // 肿头龙冲锋尘土
   if(e.ps===2&&Math.random()<0.5)burst(e.px+(Math.random()-0.5)*e.h*0.3,e.gy,'#c8a878',1,40,0.5,'dust',1.6);
+  if(e.rage){const r=e.h*(0.7+0.08*Math.sin(S.t*14));
+    if(TH==='toon'){ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=0.55;ctx.drawImage(glow('#ff2a10'),e.sx-r,e.sy-r,r*2,r*2);ctx.restore()}
+    else{ctx.save();ctx.strokeStyle='#ff3a2a';ctx.lineWidth=3;ctx.setLineDash([7,5]);ctx.beginPath();ctx.ellipse(e.sx,e.sy,r*0.75,r*0.85,0,0,PI2);ctx.stroke();ctx.restore()}
+    if(Math.random()<0.3)burst(e.sx+(Math.random()-0.5)*e.h*0.4,e.py-e.h*0.9,'#ff6a3a',1,50,0.6,'dust',1.2)}
   const squash=e.hitT>0?1+e.hitT*0.25:1,shk=e.ps===1?Math.sin(S.t*60)*2:0;
   ctx.save();ctx.translate(x+shk,y);ctx.scale(1/Math.sqrt(squash),squash>1?1/squash*1.08:1);ctx.translate(-x,-y);
   blit(ctx,sp.f[fi],x,y,u,flip);
@@ -1764,11 +1801,11 @@ function drawEnemy(e){
     return;
   }
   if(T.heavy||e.hp<e.max){
-    const bw=Math.max(e.type==='compy'?18:30,e.h*(T.boss?0.95:0.6)),bx=e.sx-bw/2,byy=e.py-e.h*(e.type==='ankylo'?0.62:1.08)-8;
+    const bw=Math.max(e.type==='compy'?18:30,e.h*(T.boss?0.95:0.6)),bx=e.sx-bw/2,byy=e.py-e.h*(T.cy<0.3?0.62:1.08)-8;
     ctx.fillStyle=TH==='toon'?'rgba(30,15,5,0.75)':'#ffffff';ctx.strokeStyle=INK();ctx.lineWidth=1.6;
     rr(bx-2,byy-2,bw+4,8,3);ctx.fill();ctx.stroke();
     ctx.fillStyle=e.hp/e.max<0.35?'#ff5a3a':T.boss?'#ff3a2a':'#5ad06a';rr(bx,byy,Math.max(0,bw*e.hp/e.max),4,2);ctx.fill();
-    if(T.boss){const s=tr('d_trex')+' '+Math.ceil(e.hp);ctx.font='900 12px sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.lineWidth=3;ctx.strokeStyle=TH==='toon'?'#1a0c04':'#fff';ctx.strokeText(s,e.sx,byy-3);ctx.fillStyle=TH==='toon'?'#ffd8a0':'#e8302a';ctx.fillText(s,e.sx,byy-3)}
+    if(T.boss){const s=tr('d_'+e.type)+' '+Math.ceil(e.hp);ctx.font='900 12px sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.lineWidth=3;ctx.strokeStyle=TH==='toon'?'#1a0c04':'#fff';ctx.strokeText(s,e.sx,byy-3);ctx.fillStyle=TH==='toon'?'#ffd8a0':'#e8302a';ctx.fillText(s,e.sx,byy-3)}
   }
 }
 function rr(x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h)}
