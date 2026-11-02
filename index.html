@@ -1265,7 +1265,10 @@ function waveDef(n){
   let c,gap;
   if(WAVES[n]){c=WAVES[n][0];gap=WAVES[n][1]}
   else{c={raptor:8+k,compy:10+2*k,ovi:3+(k>>1),ptero:5+(k>>1),dilo:3+Math.floor(k/3),pachy:3+Math.floor(k/3),para:2+Math.floor(k/3),trike:2+Math.floor(k/3),stego:Math.min(4,1+(k>>1)),ankylo:Math.min(5,1+(k>>1))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
-  const hpMul=(1+0.13*(n-1))*Math.pow(1.16,k);
+  /* 难度：耐久、数量、出怪间隔（2026-11-02 第三次加难度） */
+  const hpMul=(1.1+0.15*(n-1))*Math.pow(1.17,k);
+  const cMul=1.12+Math.min(0.25,0.025*(n-1));
+  {const c2={};for(const t in c)c2[t]=t==='compy'?Math.round(c[t]*cMul/5)*5:Math.round(c[t]*cMul);c=c2;gap*=0.94}
   const supHp=[0,3,4,5,6][st],supN=[0,1,2,2,3][st]+(n>=10?1:0);
   const boss={4:'ankyking',6:'trex',8:'pteroq',10:'tyrant',12:'spino',14:'titan'}[n]||(n>=16&&n%2===0?BOSSES[(n/2-8)%6]:null);
   const r=rng(n*7919+13),heavy=[],light=[];
@@ -1322,7 +1325,7 @@ function startWave(n){
 }
 function spawn(type,x,hpMul,el){
   const T=TYPES[type],hp=Math.round(T.hp*hpMul*(el?1.8:1)*10)/10;
-  const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*(1+(S.stage-1)*0.05+Math.min(0.3,0.015*S.wave))*(el==='swift'?1.45:1),t:Math.random()*5,flash:0,pts:T.pts*hpMul*(el?3:1),ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0,el,hasteT:0};
+  const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*1.1*(1+(S.stage-1)*0.05+Math.min(0.4,0.022*S.wave))*(el==='swift'?1.45:1),t:Math.random()*5,flash:0,pts:T.pts*hpMul*(el?3:1),ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0,el,hasteT:0};
   if(el==='shield')e.sh=e.shMax=Math.round(hp*0.5*10)/10;
   if(el==='regen')e.calm=0;
   if(type==='dilo'){e.stopZ=3+Math.random()*0.7;e.spitT=1.4}
