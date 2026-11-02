@@ -12,13 +12,13 @@ body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-s
 #wrap{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);overflow:hidden;background:#000}
 canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 /* HUD：右上角 112px 留给宿主 App 的胶囊按钮 */
-#hud{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 8px) calc(env(safe-area-inset-right,0px) + 10px) 0 calc(env(safe-area-inset-left,0px) + 10px);pointer-events:none;z-index:3}
-.row{display:flex;align-items:center;gap:6px;height:40px;padding-right:102px}
+#hud{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 3px) calc(env(safe-area-inset-right,0px) + 8px) 0 calc(env(safe-area-inset-left,0px) + 8px);pointer-events:none;z-index:3}
+.row{display:flex;align-items:center;gap:6px;height:38px;padding-right:104px}
 .panel{border-radius:12px}
-#sp{display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;box-sizing:border-box;min-width:0}
-#score{font-size:22px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
-.btn{pointer-events:auto;width:40px;height:40px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box}
-#hpRow{display:flex;align-items:center;gap:7px;margin-top:12px;padding:4px 8px;border-radius:10px}
+#sp{display:flex;align-items:center;gap:10px;height:36px;padding:0 11px;box-sizing:border-box;min-width:0}
+#score{font-size:21px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.btn{pointer-events:auto;width:40px;height:38px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box}
+#hpRow{display:flex;align-items:center;gap:7px;margin-top:5px;padding:3px 8px;border-radius:10px}
 #wave{font-size:13px;font-weight:900;white-space:nowrap}
 #hpBar{flex:1;display:flex;gap:2px;height:10px;min-width:0}
 #hpBar i{flex:1;border-radius:3px;box-sizing:border-box}
@@ -216,7 +216,7 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 /* ================= 基础 ================= */
 const $=id=>document.getElementById(id);
 const wrap=$('wrap'),cv=$('cv'),ctx=cv.getContext('2d');
-let W=360,H=800,DPR=1,cx=180,hy=200,by=640,ty=720,U=72,safeT=0,safeB=0;
+let W=360,H=800,DPR=1,cx=180,hy=200,by=640,ty=720,U=72,safeT=0,safeB=0,HUDB=70;
 const ZMAX=10,D0=1.6,PMIN=D0/(ZMAX+D0);
 const clamp=(v,a,b)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t;
 const fmt=v=>v%1?v.toFixed(1):String(v);
@@ -235,8 +235,9 @@ function layout(){
   const cs=getComputedStyle(probe);safeT=parseFloat(cs.paddingTop)||0;safeB=parseFloat(cs.paddingBottom)||0;
   cx=W/2;
   /* HUD：顶栏 40 + 骨栅条 ≈ safeT+86；武器按钮在底部两角，不再占整条 */
-  const hudB=safeT+86;
-  hy=Math.max(hudB+34,H*0.2);
+  HUDB=$('hud').getBoundingClientRect().bottom-wrap.getBoundingClientRect().top;
+  if(!(HUDB>0))HUDB=safeT+66;
+  hy=Math.max(HUDB+56,H*0.2);
   ty=H-safeB-Math.max(40,H*0.058);
   by=ty-Math.max(66,H*0.088);
   U=Math.min(W*0.235,(by-hy)*0.22);
@@ -1256,7 +1257,7 @@ function setMute(m){AU.muted=m;store('fossil_muted',m?'1':'0');$('mute').textCon
 
 /* ================= 波次设计 ================= */
 function stageOf(n){return n<=2?1:n<=4?2:n<=6?3:4}
-const WAVES={1:[{raptor:10,compy:5},1.08],2:[{raptor:9,compy:10,ovi:3,pachy:1},0.96],3:[{raptor:8,compy:10,ovi:3,trike:2,pachy:2,para:1},0.9],
+const WAVES={1:[{raptor:13,compy:10,ovi:1},0.92],2:[{raptor:11,compy:10,ovi:4,pachy:2},0.86],3:[{raptor:8,compy:10,ovi:3,trike:2,pachy:2,para:1},0.9],
   4:[{raptor:8,compy:10,ovi:2,trike:2,pachy:2,dilo:2,para:1},0.86],5:[{raptor:6,compy:10,ovi:2,ptero:4,trike:1,dilo:2,pachy:2,para:1,stego:1},0.86],
   6:[{raptor:7,compy:10,ovi:2,ptero:4,trike:1,ankylo:1,dilo:2,pachy:2,para:1,stego:1},0.82]};
 const BOSSES=['trex','ankyking','pteroq','tyrant','spino','titan'];
@@ -1266,7 +1267,7 @@ function waveDef(n){
   if(WAVES[n]){c=WAVES[n][0];gap=WAVES[n][1]}
   else{c={raptor:8+k,compy:10+2*k,ovi:3+(k>>1),ptero:5+(k>>1),dilo:3+Math.floor(k/3),pachy:3+Math.floor(k/3),para:2+Math.floor(k/3),trike:2+Math.floor(k/3),stego:Math.min(4,1+(k>>1)),ankylo:Math.min(5,1+(k>>1))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
   /* 难度：耐久、数量、出怪间隔（2026-11-02 第三次加难度） */
-  const hpMul=(1.1+0.15*(n-1))*Math.pow(1.17,k);
+  const hpMul=(1.4+0.12*(n-1))*Math.pow(1.17,k);
   const cMul=1.12+Math.min(0.25,0.025*(n-1));
   {const c2={};for(const t in c)c2[t]=t==='compy'?Math.round(c[t]*cMul/5)*5:Math.round(c[t]*cMul);c=c2;gap*=0.94}
   const supHp=[0,3,4,5,6][st],supN=[0,1,2,2,3][st]+(n>=10?1:0);
@@ -1325,7 +1326,7 @@ function startWave(n){
 }
 function spawn(type,x,hpMul,el){
   const T=TYPES[type],hp=Math.round(T.hp*hpMul*(el?1.8:1)*10)/10;
-  const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*1.1*(1+(S.stage-1)*0.05+Math.min(0.4,0.022*S.wave))*(el==='swift'?1.45:1),t:Math.random()*5,flash:0,pts:T.pts*hpMul*(el?3:1),ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0,el,hasteT:0};
+  const e={type,x,z:ZMAX+0.2,hp,max:hp,spd:T.spd*1.22*(1+(S.stage-1)*0.05+Math.min(0.4,0.022*S.wave))*(el==='swift'?1.45:1),t:Math.random()*5,flash:0,pts:T.pts*hpMul*(el?3:1),ph:Math.random()*6,x0:x,vx:0,vy:0,slowT:0,el,hasteT:0};
   if(el==='shield')e.sh=e.shMax=Math.round(hp*0.5*10)/10;
   if(el==='regen')e.calm=0;
   if(type==='dilo'){e.stopZ=3+Math.random()*0.7;e.spitT=1.4}
@@ -1857,7 +1858,8 @@ function drawEnemy(e){
     return;
   }
   if(T.heavy||e.el||e.hp<e.max){
-    const bw=Math.max(e.type==='compy'?18:30,e.h*(T.boss?0.95:0.6)),bx=e.sx-bw/2,byy=e.py-e.h*(T.top||(T.cy<0.3?0.62:1.08))-8;
+    /* 血条不钻到顶部 HUD 下面（首领名字还要再留 16px） */
+    const bw=Math.max(e.type==='compy'?18:30,e.h*(T.boss?0.95:0.6)),bx=e.sx-bw/2,byy=Math.max(HUDB+(T.boss?22:8),e.py-e.h*(T.top||(T.cy<0.3?0.62:1.08))-8);
     ctx.fillStyle='rgba(30,15,5,0.75)';ctx.strokeStyle=INK();ctx.lineWidth=1.6;
     rr(bx-2,byy-2,bw+4,8,3);ctx.fill();ctx.stroke();
     ctx.fillStyle=e.hp/e.max<0.35?'#ff5a3a':T.boss?'#ff3a2a':e.el?'#ffc23a':'#5ad06a';rr(bx,byy,Math.max(0,bw*e.hp/e.max),4,2);ctx.fill();
