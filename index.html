@@ -217,7 +217,7 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 const $=id=>document.getElementById(id);
 const wrap=$('wrap'),cv=$('cv'),ctx=cv.getContext('2d');
 let W=360,H=800,DPR=1,cx=180,hy=200,by=640,ty=720,U=72,safeT=0,safeB=0,HUDB=70;
-const ZMAX=10,D0=1.6,PMIN=D0/(ZMAX+D0);
+const ZMAX=10,D0=1.6,PMIN=D0/(ZMAX+D0),ZSPD=0.045;
 const clamp=(v,a,b)=>v<a?a:v>b?b:v,lerp=(a,b,t)=>a+(b-a)*t;
 const fmt=v=>v%1?v.toFixed(1):String(v);
 function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
@@ -1693,9 +1693,9 @@ function update(dt){
         if(e.ps===1){sp=0;e.pw-=dt;if(e.pw<=0)e.ps=2}
         if(e.ps===2)sp=3.6*slow;
       }
-      /* 透视补偿：近处的屏幕位移本来是远处的 ~50 倍，这里让世界速度随距离变化，
-         近远屏幕速度比降到约 2.7 倍；总走完时间与原来相同（4.66 由积分得出） */
-      e.z-=sp*Math.pow((Math.max(0,e.z)+D0)/4.66,1.5)*dt;
+      /* 透视补偿：屏幕上从地平线到骨栅匀速移动。dz/dt ∝ (z+D0)² 时屏幕 y 匀速；
+         ZSPD=0.045 → 走完全程约 12/spd 秒（原匀速世界速度为 10/spd），近处比之前慢约 40% */
+      e.z-=sp*ZSPD*Math.pow(Math.max(0,e.z)+D0,2)*dt;
       if(e.type==='ptero')e.x=e.x0*0.6+Math.sin(e.t*1.6+e.ph)*0.45;
       else if(e.type==='pteroq'){e.x=Math.sin(e.t*0.9+e.ph)*0.55;e.sumT-=dt;if(e.sumT<=0&&!S.dead){e.sumT=3.5;for(const d of[-1,1]){const m=spawn('ptero',clamp(e.x+d*0.3,-0.9,0.9),S.wv.hpMul);m.z=Math.min(ZMAX,e.z+0.4)}sfx('warn')}}
       else if(e.type==='tyrant'&&!e.rage&&e.hp<e.max*0.5){e.rage=1;e.spd*=1.8;sfx('roar');S.shake=Math.max(S.shake,0.45);addText(e.sx,e.sy-e.sr-20,tr('rage'),'#ff3a1a',24)}
