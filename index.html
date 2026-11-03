@@ -81,6 +81,15 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 .sk.cd img{filter:grayscale(.7) brightness(.8)}
 .sk.nogo{animation:nogo .3s}
 @keyframes nogo{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+/* 选点模式：底部换成提示条 + 取消键，武器/技能栏隐藏 */
+#tgtBar{position:absolute;left:calc(env(safe-area-inset-left,0px) + 8px);right:calc(env(safe-area-inset-right,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);height:58px;display:none;align-items:center;gap:8px;padding:0 8px;border-radius:16px;z-index:4;box-sizing:border-box;background:linear-gradient(#4a2e1af2,#2a1a0ef2);border:2px solid #ffd23a;box-shadow:0 0 12px #ffb03a80}
+#wrap.tgt #tgtBar{display:flex}
+#wrap.tgt #wbar,#wrap.tgt #skbar,#wrap.tgt #hint{display:none}
+#tgtBar img{width:40px;height:40px;flex:none}
+#tgtBar .tt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+#tgtBar .tt b{font-size:15px;color:#ffd23a}
+#tgtBar .tt span{font-size:11.5px;color:#fff4dc}
+#tgtNo{flex:none;height:42px;min-width:76px;padding:0 12px;border-radius:12px;font-size:15px;font-weight:900;font-family:inherit;color:#fff;background:linear-gradient(#e86a5a,#b8301a);border:2px solid #fff0d0;cursor:pointer;touch-action:manipulation}
 #swap{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(10,4,0,.6)}
 #swap.show{display:flex}
 #swap .card{max-width:320px}
@@ -192,6 +201,7 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
   </div>
   <div id="wbar" class="w1"></div>
   <div id="skbar"></div>
+  <div id="tgtBar"><img id="tgtIco" alt=""><div class="tt"><b id="tgtName"></b><span data-t="tgtHelp">拖动选择位置，松手释放</span></div><button id="tgtNo" data-t="cancel">取消</button></div>
   <div id="banner"><b></b><span></span></div>
   <div id="hint" data-t="hint0"></div>
   <div id="over"><div class="card">
@@ -381,11 +391,11 @@ function shopOffers(K,hp,r){
 /* ================= 多语言：简体 zh / 繁體 tw / English en ================= */
 const I18N={
 zh:{k_fire:'火球术',k_frost:'冰霜新星',k_chain:'连锁闪电',k_meteor:'陨石雨',k_quake:'地裂震',k_tar:'焦油沼泽',k_beam:'龙息光束',k_tornado:'旋风',k_rage:'狂暴装填',k_shield:'骨盾',skill:'技能',
-  kd_fire:'自动砸向后排最密的怪群，范围伤害并点燃 3 秒',kd_frost:'冻住全场恐龙 2.5 秒（首领减半），并清掉空中的酸液',kd_chain:'闪电从最靠近骨栅的恐龙开始，连跳 5 只',kd_meteor:'在怪最多的地方落下 6 颗陨石',
-  kd_quake:'震击前半场的地面恐龙：伤害、眩晕 1.2 秒并震退',kd_tar:'在怪群前方铺一片焦油，踩进去的恐龙减速并持续掉血 6 秒',kd_beam:'朝怪最多的方向喷出光束，贯穿整列，无视护甲',kd_tornado:'全场伤害，把非首领恐龙吹回远处',kd_rage:'5 秒内炮台不会过热，射速 ×1.4',kd_shield:'挡下接下来 2 次撞栅',
-  kSwap:'（技能栏已满，购买时替换一个）',swapT:'技能栏已满',swapD:'最多同时持有 2 个技能。选一个替换掉（新技能从 Lv1 开始），或取消：',swapX:'替换它',cancel:'取消',
+  kd_fire:'选一个位置砸下火球，范围伤害并点燃 3 秒。适合炸后排和怪群',kd_frost:'冻住全场恐龙 2.5 秒（首领减半），并清掉空中的酸液',kd_chain:'闪电从选中的恐龙开始，连跳 5 只',kd_meteor:'在选定区域落下 6 颗陨石',
+  kd_quake:'震击前半场的地面恐龙：伤害、眩晕 1.2 秒并震退',kd_tar:'在选定位置铺一片焦油，踩进去的恐龙减速并持续掉血 6 秒',kd_beam:'朝选定方向喷出光束，贯穿整列，无视护甲',kd_tornado:'全场伤害，把非首领恐龙吹回远处',kd_rage:'5 秒内炮台不会过热，射速 ×1.4',kd_shield:'挡下接下来 2 次撞栅',
+  kSwap:'（技能栏已满，购买时替换一个）',swapT:'技能栏已满',swapD:'最多同时持有 2 个技能。选一个替换掉（新技能从 Lv1 开始），或取消：',swapX:'替换它',cancel:'取消',tgtHelp:'游戏已暂停 · 拖动选位置，松手释放',
   skEmpty:'空槽',hintSkE:'空技能槽：每波结束后在<em>营地补给</em>里买技能',f_noT:'没有目标',f_rage:'狂暴装填！',f_shield:'骨盾 ×{0}',f_block:'骨盾挡住了！',
-  kuD:'Lv{0} → Lv{1}：效果提升、冷却缩短',hintSk:'🔥 右下角是<em>技能</em>：点一下自动打最合适的目标<br>商店会刷出新技能，最多带 2 个',
+  kuD:'Lv{0} → Lv{1}：效果提升、冷却缩短',hintSk:'🔥 右下角是<em>技能</em>：点一下游戏暂停，拖到想炸的位置松手释放<br>商店会刷出新技能，最多带 2 个',
   d_ovi:'窃蛋龙',d_para:'副栉龙',d_stego:'剑龙',d_spino:'棘龙',d_titan:'泰坦腕龙',
   x_ovi:'灵活地左右闪避前进。撞上骨栅时会顺手偷走最多 8 枚金币。',x_para:'每隔几秒鸣叫一次，让附近的恐龙加速 2 秒。优先击杀。',x_stego:'重型。背上骨板会周期性发蓝光硬化，硬化时只受 1/4 伤害，等光灭了再打。撞栅 -3。',
   x_spino:'首领（第 12 波）。会钻进沙里潜行冲刺，潜行时打不中，浮出时震地。撞栅 -6。',x_titan:'首领（第 14 波）。体型最大，每 5 秒践踏一次：屏幕震动、炮台热量 +30，并让所有恐龙加速。撞栅 -10。',
@@ -426,11 +436,11 @@ zh:{k_fire:'火球术',k_frost:'冰霜新星',k_chain:'连锁闪电',k_meteor:'�
   pause:'暂停',resume:'继续',restart:'重新开始',lang:'语言 / Language',
   pauseRule:'击退恐龙得分，连杀提高倍率；击杀得金币，清波后在商店买武器、招募队友；骨栅生命归零即失败。按 1–4 或点底部切换武器。'},
 tw:{k_fire:'火球術',k_frost:'冰霜新星',k_chain:'連鎖閃電',k_meteor:'隕石雨',k_quake:'地裂震',k_tar:'焦油沼澤',k_beam:'龍息光束',k_tornado:'旋風',k_rage:'狂暴裝填',k_shield:'骨盾',skill:'技能',
-  kd_fire:'自動砸向後排最密的怪群，範圍傷害並點燃 3 秒',kd_frost:'凍住全場恐龍 2.5 秒（首領減半），並清掉空中的酸液',kd_chain:'閃電從最靠近骨柵的恐龍開始，連跳 5 隻',kd_meteor:'在怪最多的地方落下 6 顆隕石',
-  kd_quake:'震擊前半場的地面恐龍：傷害、暈眩 1.2 秒並震退',kd_tar:'在怪群前方鋪一片焦油，踩進去的恐龍減速並持續掉血 6 秒',kd_beam:'朝怪最多的方向噴出光束，貫穿整列，無視護甲',kd_tornado:'全場傷害，把非首領恐龍吹回遠處',kd_rage:'5 秒內砲台不會過熱，射速 ×1.4',kd_shield:'擋下接下來 2 次撞柵',
-  kSwap:'（技能欄已滿，購買時替換一個）',swapT:'技能欄已滿',swapD:'最多同時持有 2 個技能。選一個替換掉（新技能從 Lv1 開始），或取消：',swapX:'替換它',cancel:'取消',
+  kd_fire:'選一個位置砸下火球，範圍傷害並點燃 3 秒。適合炸後排和怪群',kd_frost:'凍住全場恐龍 2.5 秒（首領減半），並清掉空中的酸液',kd_chain:'閃電從選中的恐龍開始，連跳 5 隻',kd_meteor:'在選定區域落下 6 顆隕石',
+  kd_quake:'震擊前半場的地面恐龍：傷害、暈眩 1.2 秒並震退',kd_tar:'在選定位置鋪一片焦油，踩進去的恐龍減速並持續掉血 6 秒',kd_beam:'朝選定方向噴出光束，貫穿整列，無視護甲',kd_tornado:'全場傷害，把非首領恐龍吹回遠處',kd_rage:'5 秒內砲台不會過熱，射速 ×1.4',kd_shield:'擋下接下來 2 次撞柵',
+  kSwap:'（技能欄已滿，購買時替換一個）',swapT:'技能欄已滿',swapD:'最多同時持有 2 個技能。選一個替換掉（新技能從 Lv1 開始），或取消：',swapX:'替換它',cancel:'取消',tgtHelp:'遊戲已暫停 · 拖動選位置，鬆手釋放',
   skEmpty:'空槽',hintSkE:'空技能槽：每波結束後在<em>營地補給</em>裡買技能',f_noT:'沒有目標',f_rage:'狂暴裝填！',f_shield:'骨盾 ×{0}',f_block:'骨盾擋住了！',
-  kuD:'Lv{0} → Lv{1}：效果提升、冷卻縮短',hintSk:'🔥 右下角是<em>技能</em>：點一下自動打最合適的目標<br>商店會刷出新技能，最多帶 2 個',
+  kuD:'Lv{0} → Lv{1}：效果提升、冷卻縮短',hintSk:'🔥 右下角是<em>技能</em>：點一下遊戲暫停，拖到想炸的位置鬆手釋放<br>商店會刷出新技能，最多帶 2 個',
   d_ovi:'竊蛋龍',d_para:'副櫛龍',d_stego:'劍龍',d_spino:'棘龍',d_titan:'泰坦腕龍',
   x_ovi:'靈活地左右閃避前進。撞上骨柵時會順手偷走最多 8 枚金幣。',x_para:'每隔幾秒鳴叫一次，讓附近的恐龍加速 2 秒。優先擊殺。',x_stego:'重型。背上骨板會週期性發藍光硬化，硬化時只受 1/4 傷害，等光滅了再打。撞柵 -3。',
   x_spino:'首領（第 12 波）。會鑽進沙裡潛行衝刺，潛行時打不中，浮出時震地。撞柵 -6。',x_titan:'首領（第 14 波）。體型最大，每 5 秒踐踏一次：螢幕震動、砲台熱量 +30，並讓所有恐龍加速。撞柵 -10。',
@@ -471,11 +481,11 @@ tw:{k_fire:'火球術',k_frost:'冰霜新星',k_chain:'連鎖閃電',k_meteor:'�
   pause:'暫停',resume:'繼續',restart:'重新開始',lang:'語言 / Language',
   pauseRule:'擊退恐龍得分，連殺提高倍率；擊殺得金幣，清波後在商店買武器、招募隊友；骨柵生命歸零即失敗。按 1–4 或點底部切換武器。'},
 en:{k_fire:'Fireball',k_frost:'Frost Nova',k_chain:'Chain Lightning',k_meteor:'Meteor Shower',k_quake:'Earthquake',k_tar:'Tar Pit',k_beam:'Dragon Beam',k_tornado:'Tornado',k_rage:'Overdrive',k_shield:'Bone Shield',skill:'Skill',
-  kd_fire:'Auto-targets the densest pack in the back rows. Area damage, burns for 3s',kd_frost:'Freezes every dino for 2.5s (half on bosses) and clears acid in the air',kd_chain:'Lightning starts at the dino closest to the fence and jumps through 5',kd_meteor:'Drops 6 meteors where the dinos are thickest',
-  kd_quake:'Hits ground dinos in the near half: damage, 1.2s stun and knockback',kd_tar:'Spreads tar in front of a pack. Dinos inside slow down and take damage for 6s',kd_beam:'Fires a beam down the most crowded line. Pierces everything and ignores armor',kd_tornado:'Damages everything and blows non-boss dinos back to the far end',kd_rage:'No overheating and 1.4× fire rate for 5s',kd_shield:'Blocks the next 2 fence hits',
-  kSwap:' (Skill slots full: replace one when buying)',swapT:'Skill slots full',swapD:'You can hold 2 skills. Pick one to replace (the new skill starts at Lv1), or cancel:',swapX:'Replace',cancel:'Cancel',
+  kd_fire:'Drop a fireball where you choose. Area damage, burns for 3s. Great on back rows and packs',kd_frost:'Freezes every dino for 2.5s (half on bosses) and clears acid in the air',kd_chain:'Lightning starts at the dino you pick and jumps through 5',kd_meteor:'Drops 6 meteors on the area you pick',
+  kd_quake:'Hits ground dinos in the near half: damage, 1.2s stun and knockback',kd_tar:'Spreads tar where you choose. Dinos inside slow down and take damage for 6s',kd_beam:'Fires a beam in the direction you pick. Pierces everything and ignores armor',kd_tornado:'Damages everything and blows non-boss dinos back to the far end',kd_rage:'No overheating and 1.4× fire rate for 5s',kd_shield:'Blocks the next 2 fence hits',
+  kSwap:' (Skill slots full: replace one when buying)',swapT:'Skill slots full',swapD:'You can hold 2 skills. Pick one to replace (the new skill starts at Lv1), or cancel:',swapX:'Replace',cancel:'Cancel',tgtHelp:'Paused · drag to aim, release to cast',
   skEmpty:'Empty',hintSkE:'Empty skill slot: buy skills in the <em>Camp Shop</em> after each wave',f_noT:'No target',f_rage:'Overdrive!',f_shield:'Shield ×{0}',f_block:'Blocked!',
-  kuD:'Lv{0} → Lv{1}: stronger effect, shorter cooldown',hintSk:'🔥 <em>Skills</em> are in the bottom-right. Tap one and it picks the best target<br>The shop rolls new skills. Hold up to 2',
+  kuD:'Lv{0} → Lv{1}: stronger effect, shorter cooldown',hintSk:'🔥 <em>Skills</em> are in the bottom-right. Tap one to pause, drag to a spot and release to cast<br>The shop rolls new skills. Hold up to 2',
   d_ovi:'Oviraptor',d_para:'Parasaurolophus',d_stego:'Stegosaurus',d_spino:'Spinosaurus',d_titan:'Titan Brachio',
   x_ovi:'Dodges left and right as it runs. If it reaches the fence it also steals up to 8 coins.',x_para:'Honks every few seconds, speeding up nearby dinos for 2s. Kill it first.',x_stego:'Heavy. Its plates glow blue and harden from time to time; while hardened it takes 1/4 damage, so wait for the glow to fade. Fence -3.',
   x_spino:'Boss (wave 12). Burrows into the sand and dashes; you cannot hit it while it is under, and it shakes the ground when it surfaces. Fence -6.',x_titan:'Boss (wave 14). The biggest dino. Stomps every 5s: the screen shakes, your cannon gains 30 heat, and every dino speeds up. Fence -10.',
@@ -1428,7 +1438,7 @@ let best=parseInt(store('fossil_turret_best')||'0',10)||0;
 const HPMAX=12,HP0=10;
 function newGame(){
   window.FossilPlatform.start();
-  ptr=null;
+  ptr=null;wrap.classList.remove('tgt');
   hint(tr('hint0'),7);
   K=newKit();
   S={t:0,score:0,hp:HP0,wave:0,stage:1,combo:0,comboT:0,kills:0,sups:0,enemies:[],bullets:[],lobs:[],spits:[],parts:[],texts:[],tele:[],coinFx:[],
@@ -1710,13 +1720,18 @@ function setAim(ev){
   S.aim.x=clamp(p.x,6,W-6);S.aim.y=clamp(p.y-off,hy-60,by+10);
 }
 function onDown(ev){
-  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#swap,#wbar,#skbar,#codex'))return;
+  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#swap,#wbar,#skbar,#codex,#tgtBar'))return;
   ev.preventDefault();initAudio();
   if(paused||S.dead||S.shop)return;
+  if(S.tgt){ptr=ev.pointerId;S.tgt.on=true;tgtMove(ev);return}
   ptr=ev.pointerId;setAim(ev);S.firing=true;
 }
-function onMove(ev){if(paused||S.dead||S.shop)return;if(ptr===ev.pointerId||ev.pointerType==='mouse'){if(ptr!==null||ev.pointerType==='mouse')setAim(ev)}if(ptr===ev.pointerId)ev.preventDefault()}
-function onUp(ev){if(ptr===ev.pointerId){ptr=null;S.firing=false}}
+function onMove(ev){if(paused||S.dead||S.shop)return;
+  if(S.tgt){if(ptr===ev.pointerId||ev.pointerType==='mouse'){tgtMove(ev);ev.preventDefault()}return}
+  if(ptr===ev.pointerId||ev.pointerType==='mouse'){if(ptr!==null||ev.pointerType==='mouse')setAim(ev)}if(ptr===ev.pointerId)ev.preventDefault()}
+function onUp(ev){
+  if(S.tgt){if(ptr===ev.pointerId){ptr=null;const el=document.elementFromPoint(ev.clientX,ev.clientY);if(el&&el.closest&&el.closest('#tgtBar'))cancelTgt();else if(!paused)fireTgt()}return}
+  if(ptr===ev.pointerId){ptr=null;S.firing=false}}
 window.addEventListener('pointerdown',onDown,{passive:false});
 window.addEventListener('pointermove',onMove,{passive:false});
 window.addEventListener('pointerup',onUp);window.addEventListener('pointercancel',onUp);
@@ -1739,15 +1754,17 @@ document.querySelectorAll('[data-lang]').forEach(b=>tap(b,()=>setLang(b.dataset.
 tap($('dexP'),()=>setDex(true));tap($('dexO'),()=>setDex(true));tap($('dexClose'),()=>setDex(false));
 $('retry').addEventListener('pointerup',e=>{e.preventDefault();initAudio();newGame()});
 $('go').addEventListener('click',e=>{e.preventDefault();initAudio();closeShop()});
+$('tgtNo').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();cancelTgt()});
 $('reroll').addEventListener('click',e=>{e.preventDefault();initAudio();reroll()});
 window.addEventListener('keydown',e=>{
   if($('codex').classList.contains('show')){if(e.key==='Escape')setDex(false);return}
+  if(e.key==='Escape'&&S.tgt&&!paused){cancelTgt();return}
   if(e.key==='Escape'||e.key==='p'||e.key==='P'){setPause(!paused);return}
   if(e.target.matches?.('[role=button]')&&(e.key===' '||e.key==='Enter')){e.preventDefault();e.target.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true}));return}
   if(e.target.closest?.('button,[role=button]'))return;
   if(S.dead&&(e.key===' '||e.key==='Enter'))newGame();
   else if(S.shop&&e.key==='Enter'&&!paused)closeShop();
-  if(e.key>='1'&&e.key<='4'&&!S.shop)pickW(WKEYS[+e.key-1]);
+  if(e.key>='1'&&e.key<='4'&&!S.shop&&!S.tgt)pickW(WKEYS[+e.key-1]);
   {const i='qw'.indexOf(e.key.toLowerCase());if(i>=0&&!S.shop)skTap(i)}
   if(e.key==='m'||e.key==='M')setMute(!AU.muted)});
 window.addEventListener('blur',()=>{S.firing=false;ptr=null});
@@ -1801,30 +1818,36 @@ function skCluster(R,back){
   for(const c of L){const r=R*sAtY(c.gy);let s=0;for(const e of L)if(Math.hypot(e.sx-c.sx,(e.sy-c.sy)/0.6)<r+e.sr*0.6)s+=skW(e);s*=1+back*c.z/ZMAX;if(s>bs){bs=s;best=c}}
   return best;
 }
-const SKAUTO={fire:1,chain:1,meteor:1,tar:1,beam:1,quake:1,tornado:1};   /* 场上没恐龙时不放、不进冷却 */
-function castSkill(k){
+const SKAUTO={fire:1,chain:1,meteor:1,tar:1,beam:1,quake:1,tornado:1};   /* 自动施放时：场上没恐龙就不放、不进冷却 */
+/* 屏幕点 → 地面世界坐标（proj 的反函数） */
+function unproj(x,y){const q=clamp((y-hy)/(by-hy),0,1),p=PMIN+q*(1-PMIN);return{x:(x-cx)/(W*0.5*(0.3+0.7*q)),z:D0/p-D0}}
+/* pt：玩家手动选的点 {x,y}（屏幕坐标）；不传就自动选目标（机器人/测试用） */
+function castSkill(k,pt){
   if(paused||S.dead||S.shop||!K.sk[k]||(K.skc[k]||0)>0)return false;
   const lv=K.sk[k]-1,D=SKILLS[k],m=skMul(),L=skLive(),ox=cx,oy=ty-40;
-  if(SKAUTO[k]&&!L.length){addText(cx,by-40,tr('f_noT'),'#ffe8c0',15);return false}
+  if(pt)pt={x:clamp(pt.x,10,W-10),y:clamp(pt.y,hy+6,by-6)};
+  if((SKAUTO[k]&&!pt||k==='chain')&&!L.length){addText(cx,by-40,tr('f_noT'),'#ffe8c0',15);return false}
   if(k==='quake'&&!L.some(e=>!TYPES[e.type].fly&&e.z<=ZMAX*0.5)){addText(cx,by-40,tr('f_noT'),'#ffe8c0',15);return false}
   K.skc[k]=D.cd[lv];
   if(k==='fire'){
-    const c=skCluster(D.R[lv]*U,1.2),lt=0.42;
-    S.fx.push({k:'fb',x0:ox,y0:oy,x1:clamp(c.sx+(c.vx||0)*lt,10,W-10),y1:clamp(c.sy+(c.vy||0)*lt,hy+6,by-6),t:0,T:lt,dmg:D.dmg[lv]*m,R:D.R[lv]*U,burn:D.burn[lv]*m});sfx('fireball');
+    const lt=0.42,c=pt?null:skCluster(D.R[lv]*U,1.2);
+    const x1=pt?pt.x:clamp(c.sx+(c.vx||0)*lt,10,W-10),y1=pt?pt.y:clamp(c.sy+(c.vy||0)*lt,hy+6,by-6);
+    S.fx.push({k:'fb',x0:ox,y0:oy,x1,y1,t:0,T:lt,dmg:D.dmg[lv]*m,R:D.R[lv]*U,burn:D.burn[lv]*m});sfx('fireball');
   }else if(k==='frost'){
     for(const e of S.enemies){if(e.dead||e.dive)continue;e.frz=D.dur[lv]*(TYPES[e.type].boss?0.5:1);hurt(e,D.dmg[lv]*m,'s','boom');burst(e.sx,e.sy,'#bfefff',5,120,0.5,'star',0.8)}
     for(const sp of S.spits)sp.dead=1;
     S.frostT=0.6;sfx('frost');
   }else if(k==='chain'){
-    let cur=L.reduce((a,e)=>e.z<a.z?e:a);
+    /* 手动：从离选点最近的恐龙开始；自动：从最靠近骨栅的开始 */
+    let cur=pt?L.reduce((a,e)=>Math.hypot(e.sx-pt.x,e.sy-pt.y)<Math.hypot(a.sx-pt.x,a.sy-pt.y)?e:a):L.reduce((a,e)=>e.z<a.z?e:a);
     const pts=[ox,oy],hit=[];
     for(let i=0;i<D.n[lv]&&cur;i++){hit.push(cur);pts.push(cur.sx,cur.sy);let nx=null,nd=U*2.4;for(const e of L){if(e.dead||hit.includes(e))continue;const d=Math.hypot(e.sx-cur.sx,e.sy-cur.sy);if(d<nd){nd=d;nx=e}}cur=nx}
     S.fx.push({k:'bolt',pts,t:0,T:0.35});
     hit.forEach((e,i)=>{burst(e.sx,e.sy,'#e8d8ff',6,160,0.4,'star',0.8);hurt(e,D.dmg[lv]*m*Math.pow(0.9,i),'s','boom')});
     sfx('zap');
   }else if(k==='meteor'){
-    const c=skCluster(U*1.6,0.3);
-    for(let i=0;i<D.n[lv];i++){const a=Math.random()*PI2,r=Math.random()*U*1.5*sAtY(c.gy);S.fx.push({k:'drop',x1:clamp(c.sx+Math.cos(a)*r,10,W-10),y1:clamp(c.gy-c.h*0.3+Math.sin(a)*r*0.5,hy+10,by-6),t:-i*0.18,T:0.4,dmg:D.dmg[lv]*m,R:D.R[lv]*U})}
+    let mx,my;if(pt){mx=pt.x;my=pt.y}else{const c=skCluster(U*1.6,0.3);mx=c.sx;my=c.gy-c.h*0.3}
+    for(let i=0;i<D.n[lv];i++){const a=Math.random()*PI2,r=Math.random()*U*METR*sAtY(my);S.fx.push({k:'drop',x1:clamp(mx+Math.cos(a)*r,10,W-10),y1:clamp(my+Math.sin(a)*r*0.5,hy+10,by-6),t:-i*0.18,T:0.4,dmg:D.dmg[lv]*m,R:D.R[lv]*U})}
     sfx('riser');
   }else if(k==='quake'){
     /* 前半场的地面恐龙：伤害 + 眩晕 + 往后震退一点（首领眩晕减半、不击退） */
@@ -1834,17 +1857,17 @@ function castSkill(k){
     S.fx.push({k:'quake',t:0,T:0.8,sd:Math.random()*1e4});S.shake=Math.max(S.shake,0.6);sfx('quake');
   }else if(k==='tar'){
     /* 焦油沼泽铺在怪群前方一点，地面恐龙踩进去减速并持续掉血 */
-    const c=skCluster(D.R[lv]*U,0.4);
-    S.fx.push({k:'tar',x:clamp(c.x,-0.9,0.9),z:Math.max(0.4,c.z-0.7),t:0,T:D.dur[lv],R:D.R[lv],dps:D.dps[lv]*m});sfx('tar');
+    const g=pt?unproj(pt.x,pt.y):null,c=pt?null:skCluster(D.R[lv]*U,0.4);
+    S.fx.push({k:'tar',x:clamp(pt?g.x:c.x,-0.9,0.9),z:pt?Math.max(0.3,g.z):Math.max(0.4,c.z-0.7),t:0,T:D.dur[lv],R:D.R[lv],dps:D.dps[lv]*m});sfx('tar');
   }else if(k==='beam'){
-    /* 龙息光束：从炮台射出，挑能穿过最多恐龙的方向 */
-    let bd=null,bs=-1;
-    const along=(dx,dy)=>{let s=0;const n=Math.hypot(dx,dy);for(const e of L){const ex=e.sx-ox,ey=e.sy-oy,t=(ex*dx+ey*dy)/n;if(t>0&&Math.abs(ex*dy-ey*dx)/n<e.sr*0.7+14)s+=skW(e)}return s};
-    for(const c of L){const s=along(c.sx-ox,c.sy-oy);if(s>bs){bs=s;bd=c}}
-    let dx=bd.sx-ox,dy=bd.sy-oy;const n=Math.hypot(dx,dy);dx/=n;dy/=n;
-    const len=(oy-(hy-30))/Math.max(0.2,-dy);
+    /* 龙息光束：从炮台射向选点；自动时挑能穿过最多恐龙的方向 */
+    let tx,tyy;
+    if(pt){tx=pt.x;tyy=pt.y}else{let bd=null,bs=-1;
+      const along=(dx,dy)=>{let s=0;const n=Math.hypot(dx,dy);for(const e of L){const ex=e.sx-ox,ey=e.sy-oy,t=(ex*dx+ey*dy)/n;if(t>0&&Math.abs(ex*dy-ey*dx)/n<e.sr*0.7+14)s+=skW(e)}return s};
+      for(const c of L){const s=along(c.sx-ox,c.sy-oy);if(s>bs){bs=s;bd=c}}tx=bd.sx;tyy=bd.sy}
+    const B=beamLine(tx,tyy),dx=B.dx,dy=B.dy;
     for(const e of L){const ex=e.sx-ox,ey=e.sy-oy,t=ex*dx+ey*dy;if(t>0&&Math.abs(ex*dy-ey*dx)<e.sr*0.7+14){hurt(e,D.dmg[lv]*m,'s','spear');burst(e.sx,e.sy,'#fff2a0',6,180,0.4,'star',0.8)}}
-    S.fx.push({k:'beam',x0:ox,y0:oy,x1:ox+dx*len,y1:oy+dy*len,t:0,T:0.5});S.shake=Math.max(S.shake,0.25);sfx('beam');
+    S.fx.push({k:'beam',x0:ox,y0:oy,x1:B.x1,y1:B.y1,t:0,T:0.5});S.shake=Math.max(S.shake,0.25);sfx('beam');
   }else if(k==='tornado'){
     /* 旋风：全场伤害，把非首领恐龙吹回远处 */
     for(const e of L){hurt(e,D.dmg[lv]*m,'s','boom');if(e.dead||TYPES[e.type].boss)continue;e.z=Math.min(ZMAX-0.2,e.z+D.push[lv]);e.slowT=Math.max(e.slowT||0,1);if(e.type==='pachy'&&e.ps===2)e.ps=0}
@@ -1876,12 +1899,30 @@ function updSkills(dt){
   S.fx=S.fx.filter(f=>!f.dead);
 }
 let lastSkUI='';
-/* 点技能槽：空槽提示去商店买；冷却中/没目标就抖一下 */
+const METR=1.5;   /* 陨石雨散布半径 ×U */
+/* 光束线：从炮台射向 (tx,ty2)，一直延伸到地平线外；至少朝上 */
+function beamLine(tx,ty2){const ox=cx,oy=ty-40;let dx=tx-ox,dy=Math.min(ty2-oy,-20);const n=Math.hypot(dx,dy);dx/=n;dy/=n;const len=(oy-(hy-30))/Math.max(0.2,-dy);return{dx,dy,x1:ox+dx*len,y1:oy+dy*len}}
+/* 需要玩家选释放位置的技能；其余（冰霜/地裂/旋风/狂暴/骨盾）点了直接放 */
+const SKAIM={fire:1,meteor:1,tar:1,beam:1,chain:1};
+/* 点技能槽：空槽提示去商店买；冷却中/没目标就抖一下；选点技能进入选点模式（游戏冻结） */
 function skTap(i){
   const k=K.slot[i];if(paused||S.dead||S.shop)return;
+  if(S.tgt){cancelTgt();return}
   if(!k){hint(tr('hintSkE'),2.5);return}
-  if(!castSkill(k)){sfx('escape');const d=$('skbar').children[i];if(d){d.classList.remove('nogo');void d.offsetWidth;d.classList.add('nogo')}}
+  if(SKAIM[k]&&!((K.skc[k]||0)>0)&&!(k==='chain'&&!skLive().length)){startTgt(k);return}
+  if(!castSkill(k))nogo(i);
 }
+function nogo(i){sfx('escape');const d=$('skbar').children[i];if(d){d.classList.remove('nogo');void d.offsetWidth;d.classList.add('nogo')}}
+/* 选点模式：时间冻结、其他操作停用；按下拖动预览位置，松手释放；点取消/Esc 不消耗技能 */
+function startTgt(k){
+  S.tgt={k,x:S.lockE?S.lockE.sx:S.aim.x,y:clamp(S.lockE?S.lockE.sy:S.aim.y,hy+6,by-6),on:false};
+  S.firing=false;ptr=null;
+  $('tgtIco').src=SPR.sicon[k];$('tgtName').textContent=tr('k_'+k);
+  wrap.classList.add('tgt');sfx('switch');
+}
+function cancelTgt(){if(!S.tgt)return;S.tgt=null;ptr=null;wrap.classList.remove('tgt')}
+function fireTgt(){const t=S.tgt;cancelTgt();if(!castSkill(t.k,{x:t.x,y:t.y}))nogo(K.slot.indexOf(t.k))}
+function tgtMove(ev){const p=toLocal(ev);S.tgt.x=clamp(p.x,10,W-10);S.tgt.y=clamp(p.y,hy+6,by-6)}
 function renderSkills(){
   const bar=$('skbar');if(!SPR.sicon||!K)return;
   if(!bar.children.length)for(let i=0;i<SKMAX;i++){const d=document.createElement('div');d.className='sk';d.dataset.i=i;d.setAttribute('role','button');
@@ -2327,6 +2368,33 @@ function drawShield(){
   for(let i=0;i<S.shield;i++){const x=cx+(i-(S.shield-1)/2)*16;ctx.fillStyle='#bfefff';ctx.strokeStyle='#1a4a6a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,by-52,5,0,PI2);ctx.fill();ctx.stroke()}
   ctx.restore();
 }
+/* 技能选点预览：画面压暗，显示范围；范围内的恐龙描红圈 */
+function drawTarget(){
+  const T=S.tgt,k=T.k,D=SKILLS[k],lv=(K.sk[k]||1)-1,x=T.x,y=T.y,col=D.col,pulse=0.5+0.5*Math.sin(performance.now()/160);
+  ctx.fillStyle='rgba(10,4,0,0.38)';ctx.fillRect(0,0,W,H);
+  const L=skLive(),mark=e=>{ctx.strokeStyle='#ff4a3a';ctx.lineWidth=2.5;ctx.beginPath();ctx.ellipse(e.sx,e.sy,e.sr*0.9,e.sr*0.9,0,0,PI2);ctx.stroke()};
+  ctx.save();ctx.lineWidth=3;
+  if(k==='beam'){
+    const B=beamLine(x,y),ox=cx,oy=ty-40;
+    ctx.strokeStyle='rgba(255,224,102,'+(0.25+0.15*pulse)+')';ctx.lineWidth=30;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(B.x1,B.y1);ctx.stroke();
+    ctx.strokeStyle='#ffe066';ctx.lineWidth=2.5;ctx.setLineDash([10,7]);ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(B.x1,B.y1);ctx.stroke();ctx.setLineDash([]);
+    for(const e of L){const ex=e.sx-ox,ey=e.sy-oy;if(ex*B.dx+ey*B.dy>0&&Math.abs(ex*B.dy-ey*B.dx)<e.sr*0.7+14)mark(e)}
+  }else if(k==='chain'){
+    let c=null,bd=1e9;for(const e of L){const d=Math.hypot(e.sx-x,e.sy-y);if(d<bd){bd=d;c=e}}
+    if(c){ctx.strokeStyle='#c8a8ff';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(c.sx,c.sy);ctx.stroke();ctx.setLineDash([]);
+      ctx.lineWidth=3+2*pulse;ctx.beginPath();ctx.arc(c.sx,c.sy,c.sr+6,0,PI2);ctx.stroke();mark(c)}
+  }else{
+    let rx,ry,px=x,py=y;
+    if(k==='tar'){const g=unproj(x,y),p=proj(clamp(g.x,-0.9,0.9),Math.max(0.3,g.z));px=p.x;py=p.y;rx=D.R[lv]*U*p.s*0.8;ry=rx*0.42}
+    else{const R=(k==='meteor'?U*METR+D.R[lv]*U*0.5:D.R[lv]*U)*sAtY(y);rx=R;ry=R*0.6}
+    ctx.fillStyle=col+'40';ctx.strokeStyle=col;ctx.beginPath();ctx.ellipse(px,py,rx,ry,0,0,PI2);ctx.fill();
+    ctx.lineWidth=2.5+1.5*pulse;ctx.setLineDash([8,6]);ctx.stroke();ctx.setLineDash([]);
+    for(const e of L){const dx=((k==='tar'?e.px:e.sx)-px)/rx,dy=((k==='tar'?e.gy:e.sy)-py)/ry;if(dx*dx+dy*dy<1.15&&!(k==='tar'&&TYPES[e.type].fly))mark(e)}
+  }
+  // 落点十字
+  ctx.strokeStyle='#fff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x-12,y);ctx.lineTo(x+12,y);ctx.moveTo(x,y-12);ctx.lineTo(x,y+12);ctx.stroke();
+  ctx.restore();
+}
 function drawSkillFX(){
   for(const f of S.fx){
     if(f.t<0)continue;const k=Math.min(1,f.t/f.T);
@@ -2408,6 +2476,7 @@ function render(){
   drawBullets();drawLobs();drawSkillFX();drawParts();
   drawTurret();drawAim();drawTexts();drawCoins();
   ctx.restore();
+  if(S.tgt)drawTarget();
   if(S.flash>0){ctx.fillStyle='rgba(255,40,40,'+(S.flash*0.3)+')';ctx.fillRect(0,0,W,H)}
   if(S.combo>=20&&!S.dead){const v=ctx.createRadialGradient(cx,H/2,Math.min(W,H)*0.35,cx,H/2,Math.max(W,H)*0.72);v.addColorStop(0,'rgba(255,140,0,0)');v.addColorStop(1,'rgba(255,150,20,'+(0.16+0.08*Math.sin(S.t*10))+')');ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
   if(S.hp<=4&&!S.dead){const v=ctx.createRadialGradient(cx,H/2,Math.min(W,H)*0.3,cx,H/2,Math.max(W,H)*0.7);v.addColorStop(0,'rgba(255,0,0,0)');v.addColorStop(1,'rgba(220,20,20,'+(0.2+0.12*Math.sin(S.t*6))+')');ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}
@@ -2417,7 +2486,7 @@ function render(){
 let last=performance.now();
 function frame(now){
   const dt=Math.min(0.05,(now-last)/1000);last=now;
-  const ts=window.__ts||1;if(!paused)for(let i=0;i<ts;i++)update(dt);render();skillUI();if(!paused)musicTick();
+  const ts=window.__ts||1;if(!paused&&!S.tgt)for(let i=0;i<ts;i++)update(dt);render();skillUI();if(!paused)musicTick();
   requestAnimationFrame(frame);
 }
 K=newKit();
