@@ -59,23 +59,37 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
 .ci{display:inline-block;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6c0,#ffc23a 45%,#c88400);border:1.5px solid #6a4400;box-sizing:border-box;flex:none}
 #coin.pop{animation:cpop .25s}
 @keyframes cpop{50%{transform:scale(1.25)}}
-/* 底栏：左边武器（拥有 2 把以上才显示），右边技能；只显示已拥有的 */
-#wbar{position:absolute;left:0;right:0;bottom:0;padding:0 calc(env(safe-area-inset-right,0px) + 8px) calc(env(safe-area-inset-bottom,0px) + 6px) calc(env(safe-area-inset-left,0px) + 8px);display:flex;gap:5px;z-index:3;box-sizing:border-box;pointer-events:none;align-items:flex-end}
-#wbar .gap{flex:1}
-/* 技能：右侧骨栅上方 2×2，第一个技能在右下（离拇指最近） */
-#skbar{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);width:97px;display:flex;flex-direction:row-reverse;flex-wrap:wrap-reverse;gap:5px;z-index:3;pointer-events:none}
+/* 底栏都在骨栅下方，不占瞄准区：左下角武器 2×2（拥有 2 把以上才显示），右下角 2 个大技能槽 */
+#wbar{position:absolute;left:calc(env(safe-area-inset-left,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 6px);width:97px;display:flex;flex-wrap:wrap-reverse;gap:5px;z-index:3;pointer-events:none}
+#skbar{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 6px);display:flex;gap:6px;z-index:3;pointer-events:none}
 #wbar.w1 .ws{display:none}
 .ws,.sk{width:46px;height:46px;flex:none;border-radius:13px;display:flex;align-items:center;justify-content:center;pointer-events:auto;cursor:pointer;position:relative;box-sizing:border-box;overflow:hidden}
+.sk{width:62px;height:62px;border-radius:16px;touch-action:none}
 .ws img{height:72%;max-width:80%;object-fit:contain;pointer-events:none}
-.sk img{height:76%;pointer-events:none;position:relative}
+.sk img{height:58%;margin-top:6px;pointer-events:none;position:relative}
 .ws .st,.sk .st{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:8px;letter-spacing:-1px;line-height:1;z-index:2}
 .ws .k,.sk .k{position:absolute;top:2px;left:5px;font-size:9px;opacity:.55;z-index:2}
-.ws.lock,.sk.lock{display:none}
+.sk .k{display:none}
+@media (hover:hover) and (pointer:fine){.sk .k{display:block;top:auto;bottom:2px;left:4px}}
+.sk .nm{position:absolute;top:3px;left:0;right:0;text-align:center;font-size:9.5px;font-weight:900;line-height:1;z-index:2;color:#ffe8c0;text-shadow:0 1px 1px #000;white-space:nowrap;overflow:hidden}
+.ws.lock{display:none}
+.sk.empty{opacity:.6;border-style:dashed}
+.sk.empty b{font-size:26px;font-weight:900;color:#ffe8c0;line-height:1;margin-top:-6px}
+.sk.empty .nm{top:auto;bottom:5px}
 .sk .cdv{position:absolute;left:0;right:0;bottom:0;background:rgba(10,4,0,.68);pointer-events:none;z-index:1}
-.sk .cdn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;text-shadow:0 1px 2px #000;z-index:3;pointer-events:none}
+.sk .cdn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#fff;text-shadow:0 1px 2px #000;z-index:3;pointer-events:none}
 .sk.cd img{filter:grayscale(.7) brightness(.8)}
-.sk.arm{animation:arm .5s infinite alternate}
-@keyframes arm{to{box-shadow:0 0 16px #ff8a2a,0 0 0 3px #ffd23a inset}}
+.sk.nogo{animation:nogo .3s}
+@keyframes nogo{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+#swap{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;padding:12px;background:rgba(10,4,0,.6)}
+#swap.show{display:flex}
+#swap .card{max-width:320px}
+#swap .sd{font-size:12px;line-height:1.4;margin:4px 0 10px;color:#6a4426}
+.swr{display:flex;gap:8px}
+.swo{flex:1;border-radius:14px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:#fff6e0;border:2px solid #c8a070;box-shadow:0 3px 0 #b8905a;color:#3a1a08;font-family:inherit;touch-action:manipulation}
+.swo img{height:44px}.swo b{font-size:13.5px}.swo span{font-size:10.5px;color:#b8301a;font-weight:900}
+.swnew{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0 2px;font-weight:900;color:#3a1a08}
+.swnew img{height:40px}
 #shop{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:12px}
 #shop.show{display:flex}
 .scard{max-width:360px;padding:14px 12px 12px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
@@ -201,6 +215,13 @@ canvas{position:absolute;left:0;top:0;display:block;touch-action:none}
     <div id="team"></div>
     <div class="srow"><button id="reroll" class="big2"></button><button id="go" class="big1"></button></div>
   </div></div>
+  <div id="swap" role="dialog" aria-modal="true"><div class="card">
+    <h2 data-t="swapT">技能栏已满</h2>
+    <div class="swnew" id="swNew"></div>
+    <div class="sd" data-t="swapD"></div>
+    <div class="swr" id="swOpts"></div>
+    <button id="swNo" class="big2" data-t="cancel">取消</button>
+  </div></div>
   <div id="pause" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="card">
     <h2 id="pauseTitle" data-t="pause">暂停</h2>
     <div class="lbl ltl" data-t="lang"></div>
@@ -253,7 +274,6 @@ function layout(){
   by=ty-Math.max(66,H*0.088);
   U=Math.min(W*0.235,(by-hy)*0.22);
   $('hint').style.top=(by-Math.max(120,(by-hy)*0.32))+'px';
-  $('skbar').style.bottom=(H-by+16)+'px';
   if(SPR.base){buildSprites();renderBar();if(S&&S.shop)renderShop()}
 }
 /* 队友站台离骨栅的高度 */
@@ -317,16 +337,23 @@ const ALLIES={
 const AKEYS=['rifle','hawk','boom','tamer'];
 const ASLOTS=[0.1,0.9,0.3,0.7];   /* 队友站位（屏宽比例），骨栅后方 */
 const COIN={raptor:2,compy:1,ovi:3,ptero:3,dilo:6,pachy:6,para:6,trike:8,stego:10,ankylo:14,trex:40,ankyking:40,pteroq:45,tyrant:55,spino:60,titan:70,supply:12};
-/* 技能：冷却完点按施放。aim=1 需要再点地面选落点（R 为爆炸半径 ×U）；按等级 1..3 取数组 */
+/* 技能：冷却完点按施放，自动选目标（不看准星）。最多同时持有 2 个（K.slot），商店随机刷出；按等级 1..3 取数组
+   R 为爆炸半径 ×U；dmg 会再乘 skMul()（随波次成长） */
 const SKILLS={
-  fire:  {aim:1,cd:[12,10,8],dmg:[10,14,18],R:[1.1,1.25,1.4],burn:[1,1.5,2],price:0,up:[100,180],col:'#ff6a1a'},
-  frost: {cd:[22,19,16],dur:[2.5,3,3.5],dmg:[1,1.5,2],price:120,up:[100,170],col:'#6ad0ff'},
-  chain: {cd:[14,12,10],dmg:[6,8,10],n:[5,7,9],price:130,up:[110,180],col:'#c8a8ff'},
-  meteor:{aim:1,cd:[30,26,22],dmg:[8,10,12],n:[6,8,10],R:[0.7,0.75,0.8],price:200,up:[140,220],col:'#ffb03a'}
+  fire:   {cd:[12,10,8], dmg:[10,14,18],R:[1.1,1.25,1.4],burn:[1,1.5,2],price:0,  up:[100,180],col:'#ff6a1a'},   /* 砸后排最密的一群 */
+  frost:  {cd:[22,19,16],dur:[2.5,3,3.5],dmg:[1,1.5,2],price:120,up:[100,170],col:'#6ad0ff'},                   /* 全场冰冻 */
+  chain:  {cd:[14,12,10],dmg:[6,8,10],n:[5,7,9],price:130,up:[110,180],col:'#c8a8ff'},                         /* 从最靠近骨栅的恐龙开始连跳 */
+  meteor: {cd:[30,26,22],dmg:[8,10,12],n:[6,8,10],R:[0.7,0.75,0.8],price:200,up:[140,220],col:'#ffb03a'},      /* 怪最多的地方 */
+  quake:  {cd:[18,15,12],dmg:[5,7,9],stun:[1.2,1.5,1.8],price:140,up:[110,180],col:'#e0a060'},                 /* 前半场地面恐龙：伤害+眩晕+击退 */
+  tar:    {cd:[20,17,14],dps:[2,3,4],dur:[6,7,8],R:[1.3,1.45,1.6],price:130,up:[100,170],col:'#6a4a8a'},        /* 焦油沼泽：减速+持续伤害 */
+  beam:   {cd:[16,14,12],dmg:[8,11,14],price:150,up:[110,190],col:'#ffe066'},                                  /* 龙息光束：贯穿一整列 */
+  tornado:{cd:[24,21,18],dmg:[2,3,4],push:[2,2.5,3],price:170,up:[120,200],col:'#a8e0c8'},                     /* 旋风：把非首领恐龙吹回远处 */
+  rage:   {cd:[25,22,19],dur:[5,6,7],price:150,up:[110,180],col:'#ff4a3a'},                                    /* 狂暴装填：不过热、射速 ×1.4 */
+  shield: {cd:[30,26,22],n:[2,3,4],price:120,up:[100,170],col:'#7ac8ff'}                                       /* 骨盾：抵挡接下来几次撞栅 */
 };
-const SKEYS=['fire','frost','chain','meteor'];
+const SKEYS=Object.keys(SKILLS),SKMAX=2;
 
-function newKit(){return{w:{bone:1},cur:'bone',allies:[],cool:0,coins:0,rerolls:0,sk:{fire:1},skc:{}}}
+function newKit(){return{w:{bone:1},cur:'bone',allies:[],cool:0,coins:0,rerolls:0,sk:{fire:1},skc:{},slot:['fire']}}
 function recruitPrice(K,a){return ALLIES[a].price+50*K.allies.length}
 /* 生成 4 张商店卡片 */
 function shopOffers(K,hp,r){
@@ -334,7 +361,9 @@ function shopOffers(K,hp,r){
   for(const k of WKEYS){if(!K.w[k])pool.push({t:'buy',k,p:WEAPONS[k].price,wt:3});else if(K.w[k]<3)pool.push({t:'wup',k,p:WEAPONS[k].up[K.w[k]-1],wt:2.5})}
   if(K.allies.length<4)for(const a of AKEYS)pool.push({t:'hire',k:a,p:recruitPrice(K,a),wt:K.allies.length<2?2.4:1.4});
   K.allies.forEach((al,i)=>{if(al.lv<3)pool.push({t:'aup',k:al.k,i,p:ALLIES[al.k].up[al.lv-1],wt:1.6})});
-  for(const k of SKEYS){if(!K.sk[k])pool.push({t:'sbuy',k,p:SKILLS[k].price,wt:2.2});else if(K.sk[k]<3)pool.push({t:'sup',k,p:SKILLS[k].up[K.sk[k]-1],wt:1.8})}
+  /* 技能：随机挑 2 个没持有的进卡池（每次刷新都不同）；已持有的可升级 */
+  const nk=SKEYS.filter(k=>!K.sk[k]);for(let i=0;i<2&&nk.length;i++){const k=nk.splice(Math.floor(r()*nk.length),1)[0];pool.push({t:'sbuy',k,p:SKILLS[k].price,wt:K.slot.length<SKMAX?2.4:1.6})}
+  for(const k of K.slot)if(K.sk[k]<3)pool.push({t:'sup',k,p:SKILLS[k].up[K.sk[k]-1],wt:1.8});
   if(hp<HPMAX)pool.push({t:'fix',p:45,wt:hp<=5?4:1.4});
   if(K.cool<3)pool.push({t:'cool',p:80+K.cool*50,wt:1.2});
   const out=[];
@@ -351,9 +380,12 @@ function shopOffers(K,hp,r){
 
 /* ================= 多语言：简体 zh / 繁體 tw / English en ================= */
 const I18N={
-zh:{k_fire:'火球术',k_frost:'冰霜新星',k_chain:'连锁闪电',k_meteor:'陨石雨',skill:'技能',
-  kd_fire:'砸向准星处爆炸，范围伤害并点燃 3 秒。适合炸后排和怪群',kd_frost:'冻住全场恐龙 2.5 秒（首领减半），并清掉空中的酸液',kd_chain:'闪电从准星附近的恐龙开始，连跳 5 只',kd_meteor:'准星周围落下 6 颗陨石，大范围轰炸',
-  kuD:'Lv{0} → Lv{1}：伤害提升、冷却缩短',hintSk:'🔥 右侧骨栅上方是<em>技能</em>：点一下就在准星位置施放<br>火球术炸后排、炸怪群',
+zh:{k_fire:'火球术',k_frost:'冰霜新星',k_chain:'连锁闪电',k_meteor:'陨石雨',k_quake:'地裂震',k_tar:'焦油沼泽',k_beam:'龙息光束',k_tornado:'旋风',k_rage:'狂暴装填',k_shield:'骨盾',skill:'技能',
+  kd_fire:'自动砸向后排最密的怪群，范围伤害并点燃 3 秒',kd_frost:'冻住全场恐龙 2.5 秒（首领减半），并清掉空中的酸液',kd_chain:'闪电从最靠近骨栅的恐龙开始，连跳 5 只',kd_meteor:'在怪最多的地方落下 6 颗陨石',
+  kd_quake:'震击前半场的地面恐龙：伤害、眩晕 1.2 秒并震退',kd_tar:'在怪群前方铺一片焦油，踩进去的恐龙减速并持续掉血 6 秒',kd_beam:'朝怪最多的方向喷出光束，贯穿整列，无视护甲',kd_tornado:'全场伤害，把非首领恐龙吹回远处',kd_rage:'5 秒内炮台不会过热，射速 ×1.4',kd_shield:'挡下接下来 2 次撞栅',
+  kSwap:'（技能栏已满，购买时替换一个）',swapT:'技能栏已满',swapD:'最多同时持有 2 个技能。选一个替换掉（新技能从 Lv1 开始），或取消：',swapX:'替换它',cancel:'取消',
+  skEmpty:'空槽',hintSkE:'空技能槽：每波结束后在<em>营地补给</em>里买技能',f_noT:'没有目标',f_rage:'狂暴装填！',f_shield:'骨盾 ×{0}',f_block:'骨盾挡住了！',
+  kuD:'Lv{0} → Lv{1}：效果提升、冷却缩短',hintSk:'🔥 右下角是<em>技能</em>：点一下自动打最合适的目标<br>商店会刷出新技能，最多带 2 个',
   d_ovi:'窃蛋龙',d_para:'副栉龙',d_stego:'剑龙',d_spino:'棘龙',d_titan:'泰坦腕龙',
   x_ovi:'灵活地左右闪避前进。撞上骨栅时会顺手偷走最多 8 枚金币。',x_para:'每隔几秒鸣叫一次，让附近的恐龙加速 2 秒。优先击杀。',x_stego:'重型。背上骨板会周期性发蓝光硬化，硬化时只受 1/4 伤害，等光灭了再打。撞栅 -3。',
   x_spino:'首领（第 12 波）。会钻进沙里潜行冲刺，潜行时打不中，浮出时震地。撞栅 -6。',x_titan:'首领（第 14 波）。体型最大，每 5 秒践踏一次：屏幕震动、炮台热量 +30，并让所有恐龙加速。撞栅 -10。',
@@ -393,9 +425,12 @@ zh:{k_fire:'火球术',k_frost:'冰霜新星',k_chain:'连锁闪电',k_meteor:'�
   retry:'再守一次',styDoodle:'涂鸦',styToon:'卡通',a_mute:'静音',a_sty:'切换画风',
   pause:'暂停',resume:'继续',restart:'重新开始',lang:'语言 / Language',
   pauseRule:'击退恐龙得分，连杀提高倍率；击杀得金币，清波后在商店买武器、招募队友；骨栅生命归零即失败。按 1–4 或点底部切换武器。'},
-tw:{k_fire:'火球術',k_frost:'冰霜新星',k_chain:'連鎖閃電',k_meteor:'隕石雨',skill:'技能',
-  kd_fire:'砸向準星處爆炸，範圍傷害並點燃 3 秒。適合炸後排和怪群',kd_frost:'凍住全場恐龍 2.5 秒（首領減半），並清掉空中的酸液',kd_chain:'閃電從準星附近的恐龍開始，連跳 5 隻',kd_meteor:'準星周圍落下 6 顆隕石，大範圍轟炸',
-  kuD:'Lv{0} → Lv{1}：傷害提升、冷卻縮短',hintSk:'🔥 右側骨柵上方是<em>技能</em>：點一下就在準星位置施放<br>火球術炸後排、炸怪群',
+tw:{k_fire:'火球術',k_frost:'冰霜新星',k_chain:'連鎖閃電',k_meteor:'隕石雨',k_quake:'地裂震',k_tar:'焦油沼澤',k_beam:'龍息光束',k_tornado:'旋風',k_rage:'狂暴裝填',k_shield:'骨盾',skill:'技能',
+  kd_fire:'自動砸向後排最密的怪群，範圍傷害並點燃 3 秒',kd_frost:'凍住全場恐龍 2.5 秒（首領減半），並清掉空中的酸液',kd_chain:'閃電從最靠近骨柵的恐龍開始，連跳 5 隻',kd_meteor:'在怪最多的地方落下 6 顆隕石',
+  kd_quake:'震擊前半場的地面恐龍：傷害、暈眩 1.2 秒並震退',kd_tar:'在怪群前方鋪一片焦油，踩進去的恐龍減速並持續掉血 6 秒',kd_beam:'朝怪最多的方向噴出光束，貫穿整列，無視護甲',kd_tornado:'全場傷害，把非首領恐龍吹回遠處',kd_rage:'5 秒內砲台不會過熱，射速 ×1.4',kd_shield:'擋下接下來 2 次撞柵',
+  kSwap:'（技能欄已滿，購買時替換一個）',swapT:'技能欄已滿',swapD:'最多同時持有 2 個技能。選一個替換掉（新技能從 Lv1 開始），或取消：',swapX:'替換它',cancel:'取消',
+  skEmpty:'空槽',hintSkE:'空技能槽：每波結束後在<em>營地補給</em>裡買技能',f_noT:'沒有目標',f_rage:'狂暴裝填！',f_shield:'骨盾 ×{0}',f_block:'骨盾擋住了！',
+  kuD:'Lv{0} → Lv{1}：效果提升、冷卻縮短',hintSk:'🔥 右下角是<em>技能</em>：點一下自動打最合適的目標<br>商店會刷出新技能，最多帶 2 個',
   d_ovi:'竊蛋龍',d_para:'副櫛龍',d_stego:'劍龍',d_spino:'棘龍',d_titan:'泰坦腕龍',
   x_ovi:'靈活地左右閃避前進。撞上骨柵時會順手偷走最多 8 枚金幣。',x_para:'每隔幾秒鳴叫一次，讓附近的恐龍加速 2 秒。優先擊殺。',x_stego:'重型。背上骨板會週期性發藍光硬化，硬化時只受 1/4 傷害，等光滅了再打。撞柵 -3。',
   x_spino:'首領（第 12 波）。會鑽進沙裡潛行衝刺，潛行時打不中，浮出時震地。撞柵 -6。',x_titan:'首領（第 14 波）。體型最大，每 5 秒踐踏一次：螢幕震動、砲台熱量 +30，並讓所有恐龍加速。撞柵 -10。',
@@ -435,9 +470,12 @@ tw:{k_fire:'火球術',k_frost:'冰霜新星',k_chain:'連鎖閃電',k_meteor:'�
   retry:'再守一次',styDoodle:'塗鴉',styToon:'卡通',a_mute:'靜音',a_sty:'切換畫風',
   pause:'暫停',resume:'繼續',restart:'重新開始',lang:'語言 / Language',
   pauseRule:'擊退恐龍得分，連殺提高倍率；擊殺得金幣，清波後在商店買武器、招募隊友；骨柵生命歸零即失敗。按 1–4 或點底部切換武器。'},
-en:{k_fire:'Fireball',k_frost:'Frost Nova',k_chain:'Chain Lightning',k_meteor:'Meteor Shower',skill:'Skill',
-  kd_fire:'Explodes at the crosshair for area damage and burns for 3s. Great on back rows and packs',kd_frost:'Freezes every dino for 2.5s (half on bosses) and clears acid in the air',kd_chain:'Lightning starts at the dino nearest the crosshair and jumps through 5',kd_meteor:'Rains 6 meteors around the crosshair',
-  kuD:'Lv{0} → Lv{1}: more damage, shorter cooldown',hintSk:'🔥 <em>Skills</em> sit on the right above the fence. Tap one to cast at your crosshair<br>Fireball blasts back rows and packs',
+en:{k_fire:'Fireball',k_frost:'Frost Nova',k_chain:'Chain Lightning',k_meteor:'Meteor Shower',k_quake:'Earthquake',k_tar:'Tar Pit',k_beam:'Dragon Beam',k_tornado:'Tornado',k_rage:'Overdrive',k_shield:'Bone Shield',skill:'Skill',
+  kd_fire:'Auto-targets the densest pack in the back rows. Area damage, burns for 3s',kd_frost:'Freezes every dino for 2.5s (half on bosses) and clears acid in the air',kd_chain:'Lightning starts at the dino closest to the fence and jumps through 5',kd_meteor:'Drops 6 meteors where the dinos are thickest',
+  kd_quake:'Hits ground dinos in the near half: damage, 1.2s stun and knockback',kd_tar:'Spreads tar in front of a pack. Dinos inside slow down and take damage for 6s',kd_beam:'Fires a beam down the most crowded line. Pierces everything and ignores armor',kd_tornado:'Damages everything and blows non-boss dinos back to the far end',kd_rage:'No overheating and 1.4× fire rate for 5s',kd_shield:'Blocks the next 2 fence hits',
+  kSwap:' (Skill slots full: replace one when buying)',swapT:'Skill slots full',swapD:'You can hold 2 skills. Pick one to replace (the new skill starts at Lv1), or cancel:',swapX:'Replace',cancel:'Cancel',
+  skEmpty:'Empty',hintSkE:'Empty skill slot: buy skills in the <em>Camp Shop</em> after each wave',f_noT:'No target',f_rage:'Overdrive!',f_shield:'Shield ×{0}',f_block:'Blocked!',
+  kuD:'Lv{0} → Lv{1}: stronger effect, shorter cooldown',hintSk:'🔥 <em>Skills</em> are in the bottom-right. Tap one and it picks the best target<br>The shop rolls new skills. Hold up to 2',
   d_ovi:'Oviraptor',d_para:'Parasaurolophus',d_stego:'Stegosaurus',d_spino:'Spinosaurus',d_titan:'Titan Brachio',
   x_ovi:'Dodges left and right as it runs. If it reaches the fence it also steals up to 8 coins.',x_para:'Honks every few seconds, speeding up nearby dinos for 2s. Kill it first.',x_stego:'Heavy. Its plates glow blue and harden from time to time; while hardened it takes 1/4 damage, so wait for the glow to fade. Fence -3.',
   x_spino:'Boss (wave 12). Burrows into the sand and dashes; you cannot hit it while it is under, and it shakes the ground when it surfaces. Fence -6.',x_titan:'Boss (wave 14). The biggest dino. Stomps every 5s: the screen shakes, your cannon gains 30 heat, and every dino speeds up. Fence -10.',
@@ -983,6 +1021,32 @@ function skillIcon(k){
   }else if(k==='chain'){
     blob([56,6,24,52,44,52,34,90,74,40,52,40,64,6],'#d8c0ff');
     g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();g.moveTo(54,14);g.lineTo(34,46);g.stroke();
+  }else if(k==='quake'){
+    blob([8,62,88,62,88,84,8,84],'#a87848');
+    g.lineWidth=6;g.beginPath();g.moveTo(48,10);g.lineTo(38,32);g.lineTo(54,44);g.lineTo(40,62);g.lineTo(52,84);g.stroke();
+    g.strokeStyle='#ffe066';g.lineWidth=2.5;g.stroke();
+    for(const [x,y] of[[20,40],[76,36],[70,54]]){g.fillStyle='#c8a878';g.strokeStyle=ink;g.lineWidth=3;g.beginPath();g.arc(x,y,6,0,PI2);g.fill();g.stroke()}
+  }else if(k==='tar'){
+    g.fillStyle='#2a1430';g.strokeStyle=ink;g.lineWidth=5;g.beginPath();g.ellipse(48,64,40,20,0,0,PI2);g.fill();g.stroke();
+    g.fillStyle='#7a5a9a';g.beginPath();g.ellipse(38,58,16,7,0,0,PI2);g.fill();
+    for(const [x,y,r] of[[60,40,9],[38,26,6],[66,18,4]]){g.fillStyle='#4a2a5a';g.strokeStyle=ink;g.lineWidth=3.5;g.beginPath();g.arc(x,y,r,0,PI2);g.fill();g.stroke();g.fillStyle='#c8a8e8';g.beginPath();g.arc(x-r*0.3,y-r*0.3,r*0.3,0,PI2);g.fill()}
+  }else if(k==='beam'){
+    blob([10,86,22,74,84,12,74,24],'#ffd23a');
+    g.strokeStyle='#fffbe0';g.lineWidth=5;g.beginPath();g.moveTo(18,80);g.lineTo(80,18);g.stroke();
+    g.fillStyle='#ff7a1a';g.strokeStyle=ink;g.lineWidth=4;g.beginPath();g.arc(20,76,14,0,PI2);g.fill();g.stroke();
+    g.fillStyle='#fff';g.beginPath();g.arc(16,72,4,0,PI2);g.fill();
+  }else if(k==='tornado'){
+    for(const [y,w2] of[[76,14],[64,24],[52,32],[40,38],[28,42]]){const x=48+(76-y)*0.15;g.strokeStyle=ink;g.lineWidth=7;g.beginPath();g.ellipse(x,y,w2,7,0,0,PI2);g.stroke();g.strokeStyle='#bff0dc';g.lineWidth=3;g.stroke()}
+    g.strokeStyle=ink;g.lineWidth=5;g.beginPath();g.moveTo(46,82);g.lineTo(48,90);g.stroke();
+  }else if(k==='rage'){
+    blob([28,84,28,44,20,44,48,10,76,44,68,44,68,84],'#ff4a3a');
+    g.strokeStyle='#ffd0a0';g.lineWidth=3;g.beginPath();g.moveTo(48,22);g.lineTo(34,40);g.stroke();
+    for(const y of[56,70]){g.strokeStyle=ink;g.lineWidth=4;g.beginPath();g.moveTo(36,y);g.lineTo(60,y);g.stroke()}
+  }else if(k==='shield'){
+    blob([48,8,82,20,78,58,48,88,18,58,14,20],'#7ac8ff');
+    blob([48,22,68,30,64,56,48,74,32,56,28,30],'#d8f2ff');
+    g.strokeStyle=ink;g.lineWidth=5;g.beginPath();g.moveTo(40,40);g.lineTo(56,56);g.moveTo(56,40);g.lineTo(40,56);g.stroke();
+    g.fillStyle='#fff';g.beginPath();g.arc(40,40,4,0,PI2);g.arc(56,56,4,0,PI2);g.fill();
   }else{
     for(const [x,y,r] of[[62,30,14],[32,52,10],[58,68,8]]){g.strokeStyle='rgba(255,140,40,.7)';g.lineWidth=r*0.9;g.beginPath();g.moveTo(x+r*0.8,y-r*0.8);g.lineTo(x+r*2.6,y-r*2.6);g.stroke();
       g.fillStyle='#8a5a3a';g.strokeStyle=ink;g.lineWidth=4;g.beginPath();g.arc(x,y,r,0,PI2);g.fill();g.stroke();g.fillStyle='#ffb03a';g.beginPath();g.arc(x-r*0.25,y+r*0.25,r*0.45,0,PI2);g.fill()}
@@ -1307,6 +1371,11 @@ function sfx(kind,x){
     case'fireball':nz('bandpass',700,0.35,0.3,1.5);tone('sawtooth',180,60,0.35,0.12);break;
     case'frost':arp('triangle',84,[0,7,12,19,24],0.04,0.07);nz('highpass',5000,0.5,0.15);break;
     case'zap':nz('highpass',2400,0.25,0.3);tone('square',1800,200,0.2,0.06);break;
+    case'quake':tone('sine',70,25,0.7,0.6);nz('lowpass',500,0.6,0.5);break;
+    case'tar':tone('sine',180,60,0.3,0.2);nz('lowpass',700,0.3,0.2);break;
+    case'beam':tone('sawtooth',300,1400,0.35,0.08);nz('highpass',3000,0.35,0.15);break;
+    case'wind':{const t=now+0.01,n=noiseSrc(t,1.1),f=a.createBiquadFilter(),g=a.createGain();f.type='bandpass';f.Q.value=2;f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(2400,t+0.5);f.frequency.exponentialRampToValueAtTime(300,t+1);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.4,t+0.2);g.gain.exponentialRampToValueAtTime(0.0001,t+1.05);n.connect(f);f.connect(g);g.connect(AU.sfx);break}
+    case'shield':arp('triangle',79,[0,7,12,16],0.05,0.08);break;
     case'honk':tone('sawtooth',220,330,0.25,0.07);tone('square',330,440,0.2,0.04,0.12);break;
     case'escape':tone('triangle',500,200,0.3,0.06);break;
   }
@@ -1364,7 +1433,7 @@ function newGame(){
   K=newKit();
   S={t:0,score:0,hp:HP0,wave:0,stage:1,combo:0,comboT:0,kills:0,sups:0,enemies:[],bullets:[],lobs:[],spits:[],parts:[],texts:[],tele:[],coinFx:[],
     heat:0,over:0,overT:0,charge:0,fireCD:0,firing:false,aim:{x:cx,y:(hy+by)/2},lockE:null,shake:0,dead:false,shop:false,hs:0,rr:0,earned:0,
-    wv:null,wt:0,qi:0,si:0,inter:0,noDmg:true,lastKiller:'',fired:0,turretA:-Math.PI/2,prevStage:1,stageFade:1,flash:0,meteors:[],dust:[],smoke:[],flocks:[],hintSup:false,rec:0,fx:[],frostT:0};
+    wv:null,wt:0,qi:0,si:0,inter:0,noDmg:true,lastKiller:'',fired:0,turretA:-Math.PI/2,prevStage:1,stageFade:1,flash:0,meteors:[],dust:[],smoke:[],flocks:[],hintSup:false,rec:0,fx:[],frostT:0,shield:0};
   setPause(false);
   $('over').classList.remove('show');$('shop').classList.remove('show');
   AU.over=false;AU.calm=false;
@@ -1489,6 +1558,7 @@ function explode(x,y,R,d,src,slow){
   ring(x,y,R*1.4);S.shake=Math.max(S.shake,0.18);sfx('boom');
 }
 function fenceDmg(d,x,type,label){
+  if(S.shield>0&&!S.dead){S.shield--;S.shake=Math.max(S.shake,0.15);burst(x,by-14,'#9adcff',14,220,0.6,'star',1.1);addText(x,by-30,tr('f_block'),'#9adcff',18);sfx('hit',900);return}
   S.hp-=d;S.combo=0;S.noDmg=false;S.shake=Math.min(0.7,0.25+d*0.08);S.flash=0.35;S.lastKiller=type;
   burst(x,by-10,'#c8a878',12,120,0.8,'dust',3);burst(x,by-14,'#fff',6,220,0.9,'bone',1.2);addText(x,by-30,label||tr('f_hit',d),'#ff5a70',20);
   sfx('base');renderHP(true);updHUD();
@@ -1526,8 +1596,9 @@ function cardInfo(o){
   if(o.t==='wup')return{tag:tr('up'),img:W2(o.k),name:tr('w_'+o.k)+' '+'★'.repeat(K.w[o.k]+1),desc:tr('upD',K.w[o.k],K.w[o.k]+1)};
   if(o.t==='hire')return{tag:tr('hire'),img:SPR.aicon[o.k],name:tr('a_'+o.k),desc:K.allies.length>=4?tr('full'):tr('ad_'+o.k)};
   if(o.t==='aup'){const al=K.allies[o.i];return{tag:tr('up'),img:SPR.aicon[o.k],name:tr('a_'+o.k)+' '+'★'.repeat(al.lv+1),desc:tr('upD',al.lv,al.lv+1)}}
-  if(o.t==='sbuy')return{tag:tr('skill'),img:SPR.sicon[o.k],name:tr('k_'+o.k),desc:tr('kd_'+o.k)};
+  if(o.t==='sbuy'&&K.slot.length<SKMAX)return{tag:tr('skill'),img:SPR.sicon[o.k],name:tr('k_'+o.k),desc:tr('kd_'+o.k)};
   if(o.t==='sup')return{tag:tr('up'),img:SPR.sicon[o.k],name:tr('k_'+o.k)+' '+'★'.repeat(K.sk[o.k]+1),desc:tr('kuD',K.sk[o.k],K.sk[o.k]+1)};
+  if(o.t==='sbuy'&&K.slot.length>=SKMAX)return{tag:tr('skill'),img:SPR.sicon[o.k],name:tr('k_'+o.k),desc:tr('kd_'+o.k)+tr('kSwap')};
   if(o.t==='fix')return{tag:tr('item'),img:W2('fix'),name:tr('fixT'),desc:tr('fixD')};
   return{tag:tr('item'),img:W2('cool'),name:tr('coolT'),desc:tr('coolD',K.cool+1)};
 }
@@ -1547,9 +1618,21 @@ function renderShop(){
   const rp=rerollPrice();$('reroll').innerHTML=tr('reroll')+' <i class="ci"></i>'+rp;$('reroll').disabled=K.coins<rp;
   $('go').textContent=tr('go',S.wave+1);
 }
-function buyCard(i){
+/* 技能栏满了还买新技能：弹出替换面板，选一个旧技能换掉（新技能从 Lv1 开始） */
+function openSwap(i){
+  const o=offers[i];
+  $('swNew').innerHTML='<img src="'+SPR.sicon[o.k]+'" alt=""><span>'+tr('k_'+o.k)+'</span>';
+  const box=$('swOpts');box.innerHTML='';
+  K.slot.forEach((k,si)=>{const b=document.createElement('button');b.className='swo';
+    b.innerHTML='<img src="'+SPR.sicon[k]+'" alt=""><b>'+tr('k_'+k)+' '+'★'.repeat(K.sk[k])+'</b><span>'+tr('swapX')+'</span>';
+    b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('swap').classList.remove('show');buyCard(i,si)});box.appendChild(b)});
+  $('swap').classList.add('show');
+}
+$('swNo').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();$('swap').classList.remove('show')});
+function buyCard(i,swapI){
   const o=offers[i];if(!o||!cardOk(o))return;
   if(K.coins<o.p){sfx('escape');return}
+  if(o.t==='sbuy'&&K.slot.length>=SKMAX&&swapI===undefined){openSwap(i);return}
   K.coins-=o.p;o.sold=true;
   if(o.t==='buy'){K.w[o.k]=1;K.cur=o.k}
   else if(o.t==='wup')K.w[o.k]++;
@@ -1557,7 +1640,9 @@ function buyCard(i){
   else if(o.t==='aup')K.allies[o.i].lv++;
   else if(o.t==='fix'){S.hp=Math.min(HPMAX,S.hp+3);renderHP()}
   else if(o.t==='cool')K.cool++;
-  else if(o.t==='sbuy'){K.sk[o.k]=1;K.skc[o.k]=0}
+  else if(o.t==='sbuy'){
+    if(swapI!==undefined){const old=K.slot[swapI];delete K.sk[old];delete K.skc[old];K.slot[swapI]=o.k}else K.slot.push(o.k);
+    K.sk[o.k]=1;K.skc[o.k]=0}
   else if(o.t==='sup')K.sk[o.k]++;
   sfx('buy');renderShop();renderBar();renderSkills();lastHud='';updHUD();
 }
@@ -1565,7 +1650,7 @@ function reroll(){const rp=rerollPrice();if(K.coins<rp)return;K.coins-=rp;S.rr++
 /* 自动购物（测试 / 平衡机器人用）：补栅 > 前两名队友 > 新武器 > 升级 */
 function autoShop(){
   if(!S.shop)return;
-  const rank=o=>o.t==='fix'?(S.hp<=6?0:9):o.t==='hire'?(K.allies.length<2?1:4):o.t==='buy'?2:o.t==='sbuy'?2.5:o.t==='wup'?3:o.t==='aup'?5:o.t==='sup'?5:6;
+  const rank=o=>o.t==='fix'?(S.hp<=6?0:9):o.t==='hire'?(K.allies.length<2?1:4):o.t==='buy'?2:o.t==='sbuy'?(K.slot.length<SKMAX?2.5:9):o.t==='wup'?3:o.t==='aup'?5:o.t==='sup'?5:6;
   for(let g=0;g<12;g++){
     const c=offers.map((o,i)=>({o,i})).filter(q=>cardOk(q.o)&&q.o.p<=K.coins&&rank(q.o)<9).sort((a,b)=>rank(a.o)-rank(b.o))[0];
     if(!c)break;buyCard(c.i);
@@ -1579,7 +1664,7 @@ function autoShop(){
 /* 武器按钮：左下两个、右下两个，炮台在中间；只有 1 把武器时整栏隐藏 */
 function renderBar(){
   const bar=$('wbar');if(!SPR.wicon||!K)return;
-  if(!bar.querySelector('.ws')){bar.innerHTML='';WKEYS.forEach((k,i)=>{if(i===2){const g=document.createElement('i');g.className='gap';bar.appendChild(g)}
+  if(!bar.querySelector('.ws')){bar.innerHTML='';WKEYS.forEach((k,i)=>{
     const d=document.createElement('div');d.className='ws';d.dataset.w=k;d.setAttribute('role','button');
     d.innerHTML='<span class="k">'+(i+1)+'</span><img alt=""><span class="st"></span>';
     d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();pickW(k)});bar.appendChild(d)})}
@@ -1625,7 +1710,7 @@ function setAim(ev){
   S.aim.x=clamp(p.x,6,W-6);S.aim.y=clamp(p.y-off,hy-60,by+10);
 }
 function onDown(ev){
-  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#wbar,#skbar,#codex'))return;
+  if(ev.target.closest&&ev.target.closest('.btn,#over,#pause,#shop,#swap,#wbar,#skbar,#codex'))return;
   ev.preventDefault();initAudio();
   if(paused||S.dead||S.shop)return;
   ptr=ev.pointerId;setAim(ev);S.firing=true;
@@ -1663,7 +1748,7 @@ window.addEventListener('keydown',e=>{
   if(S.dead&&(e.key===' '||e.key==='Enter'))newGame();
   else if(S.shop&&e.key==='Enter'&&!paused)closeShop();
   if(e.key>='1'&&e.key<='4'&&!S.shop)pickW(WKEYS[+e.key-1]);
-  {const i='qwer'.indexOf(e.key.toLowerCase());if(i>=0&&!S.shop)castSkill(SKEYS[i])}
+  {const i='qw'.indexOf(e.key.toLowerCase());if(i>=0&&!S.shop)skTap(i)}
   if(e.key==='m'||e.key==='M')setMute(!AU.muted)});
 window.addEventListener('blur',()=>{S.firing=false;ptr=null});
 window.addEventListener('pagehide',()=>{if(!S.dead)setPause(true);else if(AU.ctx)void AU.ctx.suspend().catch(()=>{})});
@@ -1706,28 +1791,69 @@ function allyFire(al,i,t){
   }
   al.fire=1;
 }
-/* ================= 技能（施放在准星位置） ================= */
+/* ================= 技能（自动选目标，不看准星；最多 2 个槽 K.slot） ================= */
 const skMul=()=>1+0.1*(S.wave-1);
-function aimPt(){const L=S.lockE;return L?{x:L.sx,y:L.sy}:{x:S.aim.x,y:clamp(S.aim.y,hy+10,by-10)}}
+const skLive=()=>S.enemies.filter(e=>!e.dead&&!e.dive&&!e.gone&&e.type!=='supply'&&e.sx!==undefined);
+const skW=e=>1+Math.min(2,e.hp/6);   /* 血厚的多算一点 */
+/* 最密的一群：以每只恐龙为中心数半径 R（像素，按透视缩放）内的恐龙；back 越大越偏向后排 */
+function skCluster(R,back){
+  const L=skLive();let best=null,bs=-1;
+  for(const c of L){const r=R*sAtY(c.gy);let s=0;for(const e of L)if(Math.hypot(e.sx-c.sx,(e.sy-c.sy)/0.6)<r+e.sr*0.6)s+=skW(e);s*=1+back*c.z/ZMAX;if(s>bs){bs=s;best=c}}
+  return best;
+}
+const SKAUTO={fire:1,chain:1,meteor:1,tar:1,beam:1,quake:1,tornado:1};   /* 场上没恐龙时不放、不进冷却 */
 function castSkill(k){
   if(paused||S.dead||S.shop||!K.sk[k]||(K.skc[k]||0)>0)return false;
-  const lv=K.sk[k],D=SKILLS[k],m=skMul(),A=aimPt();
-  K.skc[k]=D.cd[lv-1];
-  if(k==='fire'){S.fx.push({k:'fb',x0:cx,y0:ty-40,x1:A.x,y1:A.y,t:0,T:0.42,dmg:D.dmg[lv-1]*m,R:D.R[lv-1]*U,burn:D.burn[lv-1]*m});sfx('fireball')}
-  else if(k==='frost'){
-    for(const e of S.enemies){if(e.dead||e.dive)continue;e.frz=D.dur[lv-1]*(TYPES[e.type].boss?0.5:1);hurt(e,D.dmg[lv-1]*m,'s','boom');burst(e.sx,e.sy,'#bfefff',5,120,0.5,'star',0.8)}
+  const lv=K.sk[k]-1,D=SKILLS[k],m=skMul(),L=skLive(),ox=cx,oy=ty-40;
+  if(SKAUTO[k]&&!L.length){addText(cx,by-40,tr('f_noT'),'#ffe8c0',15);return false}
+  if(k==='quake'&&!L.some(e=>!TYPES[e.type].fly&&e.z<=ZMAX*0.5)){addText(cx,by-40,tr('f_noT'),'#ffe8c0',15);return false}
+  K.skc[k]=D.cd[lv];
+  if(k==='fire'){
+    const c=skCluster(D.R[lv]*U,1.2),lt=0.42;
+    S.fx.push({k:'fb',x0:ox,y0:oy,x1:clamp(c.sx+(c.vx||0)*lt,10,W-10),y1:clamp(c.sy+(c.vy||0)*lt,hy+6,by-6),t:0,T:lt,dmg:D.dmg[lv]*m,R:D.R[lv]*U,burn:D.burn[lv]*m});sfx('fireball');
+  }else if(k==='frost'){
+    for(const e of S.enemies){if(e.dead||e.dive)continue;e.frz=D.dur[lv]*(TYPES[e.type].boss?0.5:1);hurt(e,D.dmg[lv]*m,'s','boom');burst(e.sx,e.sy,'#bfefff',5,120,0.5,'star',0.8)}
     for(const sp of S.spits)sp.dead=1;
     S.frostT=0.6;sfx('frost');
   }else if(k==='chain'){
-    let cur=null,bd=1e9;for(const e of S.enemies){if(e.dead||e.dive)continue;const d=Math.hypot(e.sx-A.x,e.sy-A.y);if(d<bd){bd=d;cur=e}}
-    const pts=[cx,ty-40],hit=[];
-    for(let i=0;i<D.n[lv-1]&&cur;i++){hit.push(cur);pts.push(cur.sx,cur.sy);let nx=null,nd=U*2.4;for(const e of S.enemies){if(e.dead||e.dive||hit.includes(e))continue;const d=Math.hypot(e.sx-cur.sx,e.sy-cur.sy);if(d<nd){nd=d;nx=e}}cur=nx}
+    let cur=L.reduce((a,e)=>e.z<a.z?e:a);
+    const pts=[ox,oy],hit=[];
+    for(let i=0;i<D.n[lv]&&cur;i++){hit.push(cur);pts.push(cur.sx,cur.sy);let nx=null,nd=U*2.4;for(const e of L){if(e.dead||hit.includes(e))continue;const d=Math.hypot(e.sx-cur.sx,e.sy-cur.sy);if(d<nd){nd=d;nx=e}}cur=nx}
     S.fx.push({k:'bolt',pts,t:0,T:0.35});
-    hit.forEach((e,i)=>{burst(e.sx,e.sy,'#e8d8ff',6,160,0.4,'star',0.8);hurt(e,D.dmg[lv-1]*m*Math.pow(0.9,i),'s','boom')});
+    hit.forEach((e,i)=>{burst(e.sx,e.sy,'#e8d8ff',6,160,0.4,'star',0.8);hurt(e,D.dmg[lv]*m*Math.pow(0.9,i),'s','boom')});
     sfx('zap');
   }else if(k==='meteor'){
-    for(let i=0;i<D.n[lv-1];i++){const a=Math.random()*PI2,r=Math.random()*U*1.6;S.fx.push({k:'drop',x1:clamp(A.x+Math.cos(a)*r,10,W-10),y1:clamp(A.y+Math.sin(a)*r*0.5,hy+10,by-6),t:-i*0.18,T:0.4,dmg:D.dmg[lv-1]*m,R:D.R[lv-1]*U})}
+    const c=skCluster(U*1.6,0.3);
+    for(let i=0;i<D.n[lv];i++){const a=Math.random()*PI2,r=Math.random()*U*1.5*sAtY(c.gy);S.fx.push({k:'drop',x1:clamp(c.sx+Math.cos(a)*r,10,W-10),y1:clamp(c.gy-c.h*0.3+Math.sin(a)*r*0.5,hy+10,by-6),t:-i*0.18,T:0.4,dmg:D.dmg[lv]*m,R:D.R[lv]*U})}
     sfx('riser');
+  }else if(k==='quake'){
+    /* 前半场的地面恐龙：伤害 + 眩晕 + 往后震退一点（首领眩晕减半、不击退） */
+    for(const e of L){const T=TYPES[e.type];if(T.fly||e.z>ZMAX*0.5)continue;
+      burst(e.px,e.gy,'#c8a878',8,140,0.7,'dust',2.4);burst(e.sx,e.sy-e.sr,'#ffe066',3,80,0.6,'star',0.7);
+      hurt(e,D.dmg[lv]*m,'s','boom');if(e.dead)continue;e.dazT=Math.max(e.dazT||0,D.stun[lv]*(T.boss?0.5:1));if(!T.boss)e.z=Math.min(ZMAX,e.z+0.5)}
+    S.fx.push({k:'quake',t:0,T:0.8,sd:Math.random()*1e4});S.shake=Math.max(S.shake,0.6);sfx('quake');
+  }else if(k==='tar'){
+    /* 焦油沼泽铺在怪群前方一点，地面恐龙踩进去减速并持续掉血 */
+    const c=skCluster(D.R[lv]*U,0.4);
+    S.fx.push({k:'tar',x:clamp(c.x,-0.9,0.9),z:Math.max(0.4,c.z-0.7),t:0,T:D.dur[lv],R:D.R[lv],dps:D.dps[lv]*m});sfx('tar');
+  }else if(k==='beam'){
+    /* 龙息光束：从炮台射出，挑能穿过最多恐龙的方向 */
+    let bd=null,bs=-1;
+    const along=(dx,dy)=>{let s=0;const n=Math.hypot(dx,dy);for(const e of L){const ex=e.sx-ox,ey=e.sy-oy,t=(ex*dx+ey*dy)/n;if(t>0&&Math.abs(ex*dy-ey*dx)/n<e.sr*0.7+14)s+=skW(e)}return s};
+    for(const c of L){const s=along(c.sx-ox,c.sy-oy);if(s>bs){bs=s;bd=c}}
+    let dx=bd.sx-ox,dy=bd.sy-oy;const n=Math.hypot(dx,dy);dx/=n;dy/=n;
+    const len=(oy-(hy-30))/Math.max(0.2,-dy);
+    for(const e of L){const ex=e.sx-ox,ey=e.sy-oy,t=ex*dx+ey*dy;if(t>0&&Math.abs(ex*dy-ey*dx)<e.sr*0.7+14){hurt(e,D.dmg[lv]*m,'s','spear');burst(e.sx,e.sy,'#fff2a0',6,180,0.4,'star',0.8)}}
+    S.fx.push({k:'beam',x0:ox,y0:oy,x1:ox+dx*len,y1:oy+dy*len,t:0,T:0.5});S.shake=Math.max(S.shake,0.25);sfx('beam');
+  }else if(k==='tornado'){
+    /* 旋风：全场伤害，把非首领恐龙吹回远处 */
+    for(const e of L){hurt(e,D.dmg[lv]*m,'s','boom');if(e.dead||TYPES[e.type].boss)continue;e.z=Math.min(ZMAX-0.2,e.z+D.push[lv]);e.slowT=Math.max(e.slowT||0,1);if(e.type==='pachy'&&e.ps===2)e.ps=0}
+    for(const sp of S.spits)sp.dead=1;
+    S.fx.push({k:'wind',t:0,T:1});sfx('wind');
+  }else if(k==='rage'){
+    S.charge=Math.max(S.charge,D.dur[lv]);S.heat=0;S.over=0;addText(cx,ty-80,tr('f_rage'),'#ff6a3a',20);burst(cx,ty-30,'#ff4a3a',16,220,0.7,'star',1.2);sfx('charge');
+  }else if(k==='shield'){
+    S.shield=D.n[lv];addText(cx,by-40,tr('f_shield',S.shield),'#9adcff',20);burst(cx,by-10,'#9adcff',18,260,0.7,'star',1.2);sfx('shield');
   }
   renderSkills();return true;
 }
@@ -1740,27 +1866,40 @@ function updSkills(dt){
       if(k>=1){f.dead=1;const R=f.R*sAtY(f.y1);explode(f.x1,f.y1,R,f.dmg,'s');burst(f.x1,f.y1,'#ff5a1a',22,320,0.8,null,1.4);burst(f.x1,f.y1,'#ffe08a',10,220,0.7,'star',1.1);S.shake=Math.max(S.shake,0.3);
         for(const e of S.enemies)if(!e.dead&&Math.hypot(e.sx-f.x1,e.sy-f.y1)<R+e.sr*0.6){e.burnT=3;e.burnD=f.burn}}}
     else if(f.k==='drop'){f.x=f.x1+(1-k)*W*0.25;f.y=lerp(-20,f.y1,k);if(k>=1){f.dead=1;explode(f.x1,f.y1,f.R*sAtY(f.y1),f.dmg,'s');burst(f.x1,f.y1,'#ffb03a',10,200,0.6,null,1.1)}}
+    else if(f.k==='tar'){
+      const p=proj(f.x,f.z);f.sx=p.x;f.sy=p.y;f.rx=f.R*U*p.s*0.8;f.ry=f.rx*0.42;
+      for(const e of S.enemies){if(e.dead||e.dive||TYPES[e.type].fly||e.type==='supply')continue;const dx=(e.px-p.x)/f.rx,dy=(e.gy-p.y)/f.ry;
+        if(dx*dx+dy*dy<1){e.slowT=Math.max(e.slowT||0,0.25);e.hp-=f.dps*dt;if(Math.random()<dt*6)burst(e.px,e.gy,'#4a2a5a',1,40,0.6,'dust',1.2);if(e.hp<=0.001){e.dead=1;killEnemy(e)}}}
+      if(k>=1)f.dead=1}
     else if(k>=1)f.dead=1;
   }
   S.fx=S.fx.filter(f=>!f.dead);
 }
 let lastSkUI='';
+/* 点技能槽：空槽提示去商店买；冷却中/没目标就抖一下 */
+function skTap(i){
+  const k=K.slot[i];if(paused||S.dead||S.shop)return;
+  if(!k){hint(tr('hintSkE'),2.5);return}
+  if(!castSkill(k)){sfx('escape');const d=$('skbar').children[i];if(d){d.classList.remove('nogo');void d.offsetWidth;d.classList.add('nogo')}}
+}
 function renderSkills(){
   const bar=$('skbar');if(!SPR.sicon||!K)return;
-  if(!bar.children.length)SKEYS.forEach((k,i)=>{const d=document.createElement('div');d.className='sk';d.dataset.s=k;d.setAttribute('role','button');
-    d.innerHTML='<span class="k">'+'QWER'[i]+'</span><i class="cdv"></i><img alt=""><span class="cdn"></span><span class="st"></span>';
-    d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();if(!castSkill(k)&&K.sk[k])sfx('escape')});bar.appendChild(d)});
+  if(!bar.children.length)for(let i=0;i<SKMAX;i++){const d=document.createElement('div');d.className='sk';d.dataset.i=i;d.setAttribute('role','button');
+    d.innerHTML='<span class="k">'+'QW'[i]+'</span><i class="cdv"></i><img alt=""><b></b><span class="nm"></span><span class="cdn"></span><span class="st"></span>';
+    d.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();initAudio();skTap(i)});bar.appendChild(d)}
   lastSkUI='';skillUI();
 }
 /* 每帧刷新冷却遮罩（只在数值变化时改 DOM） */
 function skillUI(){
-  if(!K)return;let key='';for(const k of SKEYS)key+=(K.sk[k]||0)+':'+Math.ceil((K.skc[k]||0)*4)+'|';if(key===lastSkUI)return;lastSkUI=key;
-  for(const d of $('skbar').children){const k=d.dataset.s,lv=K.sk[k]||0,c=K.skc[k]||0,D=SKILLS[k];
-    d.classList.toggle('lock',!lv);if(!lv)continue;
-    const img=d.querySelector('img');if(img.dataset.w!==String(W)){img.src=SPR.sicon[k];img.dataset.w=String(W)}
-    d.classList.toggle('cd',c>0);d.classList.toggle('ready',c<=0);
-    d.querySelector('.cdv').style.height=(c>0?c/D.cd[lv-1]*100:0)+'%';d.querySelector('.cdn').textContent=c>0?Math.ceil(c):'';
-    d.querySelector('.st').textContent='★'.repeat(lv);d.setAttribute('aria-label',tr('k_'+k))}
+  if(!K)return;let key=LANG+W;for(let i=0;i<SKMAX;i++){const k=K.slot[i];key+='|'+(k||'-')+(K.sk[k]||0)+':'+Math.ceil((K.skc[k]||0)*4)}if(key===lastSkUI)return;lastSkUI=key;
+  [...$('skbar').children].forEach((d,i)=>{const k=K.slot[i],lv=k?K.sk[k]:0,c=k?K.skc[k]||0:0,img=d.querySelector('img');
+    d.classList.toggle('empty',!k);d.dataset.s=k||'';
+    img.style.display=k?'':'none';d.querySelector('b').textContent=k?'':'+';
+    d.querySelector('.nm').textContent=k?tr('k_'+k):tr('skEmpty');
+    if(k&&img.dataset.k!==k+W){img.src=SPR.sicon[k];img.dataset.k=k+W}
+    d.classList.toggle('cd',c>0);d.classList.toggle('ready',!!k&&c<=0);
+    d.querySelector('.cdv').style.height=(k&&c>0?c/SKILLS[k].cd[lv-1]*100:0)+'%';d.querySelector('.cdn').textContent=c>0?Math.ceil(c):'';
+    d.querySelector('.st').textContent='★'.repeat(lv);d.setAttribute('aria-label',k?tr('k_'+k):tr('skEmpty'))});
 }
 function spit(e){
   const tx=proj(e.x,0).x;S.spits.push({x0:e.sx,y0:e.py-e.h*0.82,x1:tx,y1:by-16,t:0,T:1.4,x:e.sx,y:e.py-e.h*0.82});sfx('spit');
@@ -1801,6 +1940,7 @@ function update(dt){
     e.t+=dt;e.flash=Math.max(0,e.flash-dt*6);if(e.armT>0)e.armT-=dt;e.hitT=Math.max(0,(e.hitT||0)-dt);
     let slow=e.slowT>0?0.4:1;if(e.slowT>0)e.slowT-=dt;
     if(e.frz>0){e.frz-=dt;slow=0}
+    if(e.dazT>0){e.dazT-=dt;slow=0;if(Math.random()<dt*5)burst(e.sx,e.sy-e.sr,'#ffe066',1,40,0.5,'star',0.6)}
     if(e.burnT>0&&!e.dead){e.burnT-=dt;e.hp-=e.burnD*dt;if(Math.random()<dt*10)burst(e.sx+(Math.random()-0.5)*e.sr,e.sy,'#ff7a1a',1,60,0.5,null,1);if(e.hp<=0.001){e.dead=1;killEnemy(e);continue}}
     if(e.hasteT>0){e.hasteT-=dt;slow*=1.3}
     if(e.el==='regen'&&!e.dead){e.calm+=dt;if(e.calm>1&&e.hp<e.max){e.hp=Math.min(e.max,e.hp+e.max*0.06*dt);if(Math.random()<dt*4)burst(e.sx,e.sy,'#7dff9a',1,50,0.5,'star',0.6)}}
@@ -2163,6 +2303,30 @@ function drawLobs(){
   }
 }
 /* 技能特效：火球、闪电链、陨石 */
+/* 地面技能效果（画在恐龙下面）：焦油沼泽 */
+function drawGroundFX(){
+  for(const f of S.fx){
+    if(f.k!=='tar'||f.sx===undefined)continue;
+    const a=Math.min(1,f.t/0.3,(f.T-f.t)/0.6),x=f.sx,y=f.sy,rx=f.rx,ry=f.ry;
+    ctx.save();ctx.globalAlpha=a;
+    ctx.fillStyle='rgba(30,14,36,0.78)';ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,PI2);ctx.fill();
+    ctx.strokeStyle='#6a4a8a';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.fillStyle='rgba(120,80,150,0.5)';ctx.beginPath();ctx.ellipse(x-rx*0.2,y-ry*0.25,rx*0.45,ry*0.3,0,0,PI2);ctx.fill();
+    for(let i=0;i<5;i++){const ph=(S.t*0.9+i*0.37)%1,bx=x+Math.cos(i*2.3)*rx*0.6,by2=y+Math.sin(i*1.7)*ry*0.5,br=(2+4*ph)*(rx/60);
+      ctx.globalAlpha=a*(1-ph);ctx.strokeStyle='#b89ad8';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(bx,by2-ph*3,br,0,PI2);ctx.stroke()}
+    ctx.restore();
+  }
+}
+/* 骨盾：骨栅前一道蓝色护罩，小圆点是剩余次数 */
+function drawShield(){
+  if(!(S.shield>0))return;
+  const p=0.5+0.5*Math.sin(S.t*5);ctx.save();
+  const g=ctx.createLinearGradient(0,by-46,0,by+6);g.addColorStop(0,'rgba(140,210,255,0)');g.addColorStop(1,'rgba(140,210,255,'+(0.3+0.15*p)+')');
+  ctx.fillStyle=g;ctx.fillRect(0,by-46,W,52);
+  ctx.strokeStyle='rgba(200,240,255,'+(0.6+0.3*p)+')';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,by-40);for(let x=0;x<=W;x+=16)ctx.lineTo(x,by-40+Math.sin(x*0.05+S.t*4)*3);ctx.stroke();
+  for(let i=0;i<S.shield;i++){const x=cx+(i-(S.shield-1)/2)*16;ctx.fillStyle='#bfefff';ctx.strokeStyle='#1a4a6a';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,by-52,5,0,PI2);ctx.fill();ctx.stroke()}
+  ctx.restore();
+}
 function drawSkillFX(){
   for(const f of S.fx){
     if(f.t<0)continue;const k=Math.min(1,f.t/f.T);
@@ -2181,6 +2345,20 @@ function drawSkillFX(){
       const a=1-k;ctx.save();ctx.globalAlpha=a;ctx.lineJoin='round';
       for(const [w,c] of[[9,'rgba(170,130,255,0.6)'],[3.5,'#ffffff']]){ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(f.pts[0],f.pts[1]);
         for(let i=2;i<f.pts.length;i+=2){const x0=f.pts[i-2],y0=f.pts[i-1],x1=f.pts[i],y1=f.pts[i+1];for(let s=1;s<=4;s++){const t=s/4;ctx.lineTo(lerp(x0,x1,t)+(s<4?(Math.random()-0.5)*16:0),lerp(y0,y1,t)+(s<4?(Math.random()-0.5)*16:0))}}ctx.stroke()}
+    }else if(f.k==='beam'){
+      const a=k<0.2?k/0.2:1-(k-0.2)/0.8;ctx.save();ctx.globalAlpha=a;ctx.lineCap='round';
+      ctx.globalCompositeOperation='lighter';
+      for(const [w,c] of[[34,'rgba(255,120,30,0.35)'],[18,'rgba(255,200,60,0.7)'],[7,'#fffbe0']]){ctx.strokeStyle=c;ctx.lineWidth=w*(0.7+0.3*Math.sin(S.t*60));ctx.beginPath();ctx.moveTo(f.x0,f.y0);ctx.lineTo(f.x1,f.y1);ctx.stroke()}
+      ctx.restore();
+    }else if(f.k==='quake'){
+      const a=1-k;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#3a2210';ctx.lineWidth=3;ctx.lineCap='round';
+      const r=rng(f.sd|0),yMid=lerp(by,hy,0.5);
+      for(let i=0;i<7;i++){let x=W*(i+0.5)/7,y=by-4;ctx.beginPath();ctx.moveTo(x,y);while(y>yMid){x+=(r()-0.5)*26;y-=10+r()*16;ctx.lineTo(x,y)}ctx.stroke()}
+      ctx.fillStyle='rgba(200,168,120,'+(0.35*a)+')';ctx.fillRect(0,yMid,W,by-yMid);ctx.restore();
+    }else if(f.k==='wind'){
+      const a=Math.sin(Math.PI*k);ctx.save();ctx.globalAlpha=a*0.8;ctx.strokeStyle='#e8fff4';ctx.lineCap='round';
+      for(let i=0;i<9;i++){const y=lerp(by-20,hy+20,(i+0.5)/9),x=((i*97+k*W*1.6)%(W+120))-60,s=sAtY(y);ctx.lineWidth=3*s;
+        ctx.beginPath();ctx.ellipse(x,y-18*s*k,40*s,12*s,0,Math.PI*0.2,Math.PI*1.7);ctx.stroke();ctx.beginPath();ctx.moveTo(x-70*s,y+10*s);ctx.lineTo(x+20*s,y+10*s);ctx.stroke()}
       ctx.restore();
     }
   }
@@ -2221,11 +2399,11 @@ function render(){
   ctx.drawImage(bgFor(S.stage),0,0,W,H);ctx.globalAlpha=1;
   drawAmbient();
   drawSceneFX(S.t);
-  drawTele();
+  drawTele();drawGroundFX();
   const es=S.enemies.slice().sort((a,b)=>b.z-a.z);
   for(const e of es)drawShadow(e);
   for(const e of es)drawEnemy(e);
-  drawFence();
+  drawFence();drawShield();
   drawAllies();
   drawBullets();drawLobs();drawSkillFX();drawParts();
   drawTurret();drawAim();drawTexts();drawCoins();
@@ -2248,7 +2426,7 @@ requestAnimationFrame(frame);
 // 测试钩子
 window.__FT={setLang,setPause,get paused(){return paused},get S(){return S},get K(){return K},waveDef,stageOf,TYPES,WEAPONS,ALLIES,get AU(){return AU},
   skip(n){if(S.shop){S.shop=false;AU.calm=false;$('shop').classList.remove('show')}S.enemies=[];S.tele=[];S.spits=[];S.lobs=[];startWave(n)},
-  spawn,castSkill,SKILLS,openShop,closeShop,buyCard,autoShop,setDex,get seen(){return seen},renderBar,get offers(){return offers},fence(d){fenceDmg(d,cx,'raptor')}};
+  spawn,castSkill,SKILLS,SKEYS,renderSkills,renderShop,step:dt=>update(dt),fenceY:()=>by,openShop,closeShop,buyCard,autoShop,setDex,get seen(){return seen},renderBar,get offers(){return offers},fence(d){fenceDmg(d,cx,'raptor')}};
 
 })();
 </script>
