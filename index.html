@@ -264,22 +264,23 @@ function glow(col){
 }
 /* cy: 命中中心高度/身高, hr: 命中半径/身高 */
 const TYPES={
-  raptor:{hp:2,spd:1.9,pts:10,dmg:1,size:1,col:'#7ad35a',cy:0.56,hr:0.38},
-  compy:{hp:1,spd:2.6,pts:4,dmg:1,size:0.62,col:'#b8d85a',cy:0.56,hr:0.46},
+  /* 数值（2026-11-03 按 tools/balance.cjs 统计重调）：pts ≈ 耐久×5 + 威胁加成；spd 越慢的耐久越高 */
+  raptor:{hp:2,spd:2.1,pts:10,dmg:1,size:1,col:'#7ad35a',cy:0.56,hr:0.38},
+  compy:{hp:1,spd:2.6,pts:5,dmg:1,size:0.62,col:'#b8d85a',cy:0.56,hr:0.46},
   ptero:{hp:3,spd:2.1,pts:15,dmg:1,size:1.05,col:'#b98ae8',cy:0.66,hr:0.4,fly:1},
-  dilo:{hp:6,spd:1.3,pts:30,dmg:1,size:1.05,col:'#4ac0a8',cy:0.56,hr:0.4},
-  pachy:{hp:8,spd:0.9,pts:30,dmg:2,size:1.1,col:'#d88ac8',cy:0.52,hr:0.42},
-  trike:{hp:16,spd:0.8,pts:40,dmg:2,size:1.25,col:'#5aa8ee',cy:0.48,hr:0.46,heavy:1},
-  ankylo:{hp:36,spd:0.6,pts:80,dmg:3,size:1.45,col:'#e0a040',cy:0.24,hr:0.42,heavy:1},
-  trex:{hp:90,spd:0.5,pts:300,dmg:5,size:1.9,col:'#f0574a',cy:0.6,hr:0.44,heavy:1,boss:1},
-  ankyking:{hp:50,spd:0.4,pts:350,dmg:4,size:1.9,col:'#ffd23a',cy:0.24,hr:0.42,heavy:1,boss:1,armor:1},
-  pteroq:{hp:90,spd:0.55,pts:400,dmg:4,size:1.75,col:'#c85ae8',cy:0.66,hr:0.4,heavy:1,boss:1,fly:1},
-  tyrant:{hp:150,spd:0.5,pts:500,dmg:8,size:2.1,col:'#ff3a1a',cy:0.6,hr:0.44,heavy:1,boss:1},
-  ovi:{hp:3,spd:2.2,pts:14,dmg:1,size:0.9,col:'#5ab8e8',cy:0.56,hr:0.42},
-  para:{hp:7,spd:1.0,pts:30,dmg:2,size:1.15,col:'#e89a3a',cy:0.56,hr:0.4},
-  stego:{hp:20,spd:0.7,pts:60,dmg:3,size:1.35,col:'#7ac85a',cy:0.36,hr:0.44,heavy:1},
-  spino:{hp:120,spd:0.55,pts:600,dmg:6,size:1.9,col:'#3ab0c8',cy:0.6,hr:0.44,heavy:1,boss:1,top:1.35},
-  titan:{hp:150,spd:0.35,pts:700,dmg:10,size:1.5,col:'#a8b05a',cy:0.55,hr:0.52,heavy:1,boss:1,top:2},
+  dilo:{hp:5,spd:1.3,pts:35,dmg:1,size:1.05,col:'#4ac0a8',cy:0.56,hr:0.4},
+  pachy:{hp:6,spd:0.9,pts:40,dmg:2,size:1.1,col:'#d88ac8',cy:0.52,hr:0.42},
+  trike:{hp:18,spd:1.0,pts:60,dmg:2,size:1.25,col:'#5aa8ee',cy:0.48,hr:0.46,heavy:1},
+  ankylo:{hp:40,spd:0.7,pts:120,dmg:3,size:1.45,col:'#e0a040',cy:0.24,hr:0.42,heavy:1},
+  trex:{hp:90,spd:0.6,pts:400,dmg:5,size:1.9,col:'#f0574a',cy:0.6,hr:0.44,heavy:1,boss:1},
+  ankyking:{hp:55,spd:0.5,pts:350,dmg:4,size:1.9,col:'#ffd23a',cy:0.24,hr:0.42,heavy:1,boss:1,armor:1},
+  pteroq:{hp:90,spd:0.55,pts:450,dmg:4,size:1.75,col:'#c85ae8',cy:0.66,hr:0.4,heavy:1,boss:1,fly:1},
+  tyrant:{hp:150,spd:0.55,pts:600,dmg:8,size:2.1,col:'#ff3a1a',cy:0.6,hr:0.44,heavy:1,boss:1},
+  ovi:{hp:3,spd:2.5,pts:15,dmg:1,size:0.9,col:'#5ab8e8',cy:0.56,hr:0.42},
+  para:{hp:7,spd:1.0,pts:35,dmg:2,size:1.15,col:'#e89a3a',cy:0.56,hr:0.4},
+  stego:{hp:20,spd:0.85,pts:80,dmg:3,size:1.35,col:'#7ac85a',cy:0.36,hr:0.44,heavy:1},
+  spino:{hp:120,spd:0.55,pts:650,dmg:6,size:1.9,col:'#3ab0c8',cy:0.6,hr:0.44,heavy:1,boss:1,top:1.35},
+  titan:{hp:150,spd:0.4,pts:750,dmg:10,size:1.5,col:'#a8b05a',cy:0.55,hr:0.52,heavy:1,boss:1,top:2},
   supply:{hp:3,spd:0,pts:60,dmg:0,size:1.05,col:'#ffcc22',cy:0.5,hr:0.62}
 };
 /* 精英词缀：可出现在普通恐龙身上（不含细颚龙、首领、补给兽） */
@@ -303,7 +304,7 @@ const ALLIES={
 };
 const AKEYS=['rifle','hawk','boom','tamer'];
 const ASLOTS=[0.1,0.9,0.3,0.7];   /* 队友站位（屏宽比例），骨栅后方 */
-const COIN={raptor:2,compy:1,ovi:3,ptero:3,dilo:6,pachy:6,para:6,trike:7,stego:9,ankylo:12,trex:40,ankyking:40,pteroq:45,tyrant:55,spino:60,titan:70,supply:12};
+const COIN={raptor:2,compy:1,ovi:3,ptero:3,dilo:6,pachy:6,para:6,trike:8,stego:10,ankylo:14,trex:40,ankyking:40,pteroq:45,tyrant:55,spino:60,titan:70,supply:12};
 
 function newKit(){return{w:{bone:1},cur:'bone',allies:[],cool:0,coins:0,rerolls:0}}
 function recruitPrice(K,a){return ALLIES[a].price+50*K.allies.length}
@@ -337,7 +338,7 @@ zh:{d_ovi:'窃蛋龙',d_para:'副栉龙',d_stego:'剑龙',d_spino:'棘龙',d_tit
   d_ankyking:'甲龙王',d_pteroq:'翼龙女王',d_tyrant:'暴君霸王龙',x_ankyking:'首领（第 4 波）。厚甲：骨炮、霰弹和队友子弹只造成一半伤害，长矛和爆炸不受影响。撞栅 -4。',x_pteroq:'首领（第 8 波）。大幅蛇形飞行，每 3.5 秒召唤两只翼龙。撞栅 -4。',x_tyrant:'首领（第 10 波）。耐久最高，血量低于一半时狂暴，全身发红，速度接近翻倍。撞栅 -8。',bh_trex:'留好热量',bh_ankyking:'厚甲：换长矛或榴弹',bh_pteroq:'会召唤翼龙',bh_tyrant:'半血后狂暴加速',rage:'狂暴！',armor:'护甲减伤',d_compy:'细颚龙',d_dilo:'双冠龙',d_pachy:'肿头龙',dexT:'怪物图鉴',close:'返回',dexN:'已发现 {0} / {1} 种 · 数值为基础值，耐久随波次提升',dHP:'耐久 {0}',dDmg:'撞栅 -{0}',dRew:'击败有奖励',dPts:'分值 {0}',dFirst:'第 {0} 波起',
   sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 极快',sp4:'横穿 7.5 秒',tBoss:'首领',tHeavy:'重型',tSup:'补给',unk:'？？？',unkD:'还没遇到。遇到后解锁详细资料。',newDex:'📖 图鉴新增：{0}',
   x_raptor:'最常见的恐龙。速度快、耐久低，走路时左右小幅摇摆。',x_compy:'体型小，5 只一群高速冲来。用霰弹或榴弹清群最划算。',x_ptero:'蛇形飞行，左右大幅摆动。弓箭手会优先射它。',
-  x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨栅（嘴部发绿光是预警）。酸液可以在空中打掉。',x_pachy:'靠近后停下蓄力（头顶出现 ！），然后高速冲锋。驯兽师的网能让它减速。',
+  x_dilo:'走到中途停下，每 4.2 秒吐一口酸液砸骨栅（嘴部发绿光是预警）。酸液可以在空中打掉。',x_pachy:'靠近后停下蓄力（头顶出现 ！），然后高速冲锋。驯兽师的网能让它减速。',
   x_trike:'重型。耐久高，出场前地平线有 ⚠ 预警，提前集中火力。',x_ankylo:'重型。全身甲壳，耐久很高，撞栅 -3。长矛和炸药最有效。',
   x_trex:'首领（第 6 波）。出场会吼叫，耐久极高，撞栅 -5，留好热量。第 16 波起六个首领在偶数波轮流登场。',x_supply:'金色补给兽，从坑侧横穿，7.5 秒后逃走。击败得骨栅 +2 或 6 秒超载火力。',
   
@@ -376,7 +377,7 @@ tw:{d_ovi:'竊蛋龍',d_para:'副櫛龍',d_stego:'劍龍',d_spino:'棘龍',d_tit
   d_ankyking:'甲龍王',d_pteroq:'翼龍女王',d_tyrant:'暴君霸王龍',x_ankyking:'首領（第 4 波）。厚甲：骨砲、霰彈和隊友子彈只造成一半傷害，長矛和爆炸不受影響。撞柵 -4。',x_pteroq:'首領（第 8 波）。大幅蛇形飛行，每 3.5 秒召喚兩隻翼龍。撞柵 -4。',x_tyrant:'首領（第 10 波）。耐久最高，血量低於一半時狂暴，全身發紅，速度接近翻倍。撞柵 -8。',bh_trex:'留好熱量',bh_ankyking:'厚甲：換長矛或榴彈',bh_pteroq:'會召喚翼龍',bh_tyrant:'半血後狂暴加速',rage:'狂暴！',armor:'護甲減傷',d_compy:'細顎龍',d_dilo:'雙冠龍',d_pachy:'腫頭龍',dexT:'怪物圖鑑',close:'返回',dexN:'已發現 {0} / {1} 種 · 數值為基礎值，耐久隨波次提升',dHP:'耐久 {0}',dDmg:'撞柵 -{0}',dRew:'擊敗有獎勵',dPts:'分值 {0}',dFirst:'第 {0} 波起',
   sp0:'速度 慢',sp1:'速度 中',sp2:'速度 快',sp3:'速度 極快',sp4:'橫穿 7.5 秒',tBoss:'首領',tHeavy:'重型',tSup:'補給',unk:'？？？',unkD:'還沒遇到。遇到後解鎖詳細資料。',newDex:'📖 圖鑑新增：{0}',
   x_raptor:'最常見的恐龍。速度快、耐久低，走路時左右小幅搖擺。',x_compy:'體型小，5 隻一群高速衝來。用霰彈或榴彈清群最划算。',x_ptero:'蛇形飛行，左右大幅擺動。弓箭手會優先射牠。',
-  x_dilo:'走到中途停下，每 2.4 秒吐一口酸液砸骨柵（嘴部發綠光是預警）。酸液可以在空中打掉。',x_pachy:'靠近後停下蓄力（頭頂出現 ！），然後高速衝鋒。馴獸師的網能讓牠減速。',
+  x_dilo:'走到中途停下，每 4.2 秒吐一口酸液砸骨柵（嘴部發綠光是預警）。酸液可以在空中打掉。',x_pachy:'靠近後停下蓄力（頭頂出現 ！），然後高速衝鋒。馴獸師的網能讓牠減速。',
   x_trike:'重型。耐久高，出場前地平線有 ⚠ 預警，提前集中火力。',x_ankylo:'重型。全身甲殼，耐久很高，撞柵 -3。長矛和炸藥最有效。',
   x_trex:'首領（第 6 波）。出場會吼叫，耐久極高，撞柵 -5，留好熱量。第 16 波起六個首領在偶數波輪流登場。',x_supply:'金色補給獸，從坑側橫穿，7.5 秒後逃走。擊敗得骨柵 +2 或 6 秒超載火力。',
   
@@ -415,7 +416,7 @@ en:{d_ovi:'Oviraptor',d_para:'Parasaurolophus',d_stego:'Stegosaurus',d_spino:'Sp
   d_ankyking:'Ankylo King',d_pteroq:'Ptero Queen',d_tyrant:'Tyrant Rex',x_ankyking:'Boss (wave 4). Thick armor: bone cannon, gravel shot and ally bullets deal half damage. Spears and explosions deal full damage. Fence -4.',x_pteroq:'Boss (wave 8). Weaves widely and summons two pterosaurs every 3.5s. Fence -4.',x_tyrant:'Boss (wave 10). Highest HP. Below half HP it enrages, glows red and nearly doubles its speed. Fence -8.',bh_trex:'save your heat',bh_ankyking:'armored: use spears or grenades',bh_pteroq:'summons pterosaurs',bh_tyrant:'enrages at half HP',rage:'ENRAGED!',armor:'Armor',d_compy:'Compy',d_dilo:'Dilophosaur',d_pachy:'Pachycephalosaur',dexT:'Bestiary',close:'Back',dexN:'Discovered {0} / {1} · base stats; HP grows each wave',dHP:'HP {0}',dDmg:'Fence -{0}',dRew:'Drops a reward',dPts:'{0} pts',dFirst:'From wave {0}',
   sp0:'Speed: slow',sp1:'Speed: medium',sp2:'Speed: fast',sp3:'Speed: very fast',sp4:'Crosses in 7.5s',tBoss:'BOSS',tHeavy:'HEAVY',tSup:'SUPPLY',unk:'???',unkD:'Not met yet. Details unlock once you see it.',newDex:'📖 New bestiary entry: {0}',
   x_raptor:'The most common dino. Fast and fragile; sways a little as it runs.',x_compy:'Tiny, and comes in packs of 5 at high speed. Gravel shot or grenades clear them best.',x_ptero:'Flies in a wide weave. Archers target it first.',
-  x_dilo:'Stops midway and spits acid at the fence every 2.4s (a green glow at the mouth is the warning). You can shoot the acid down.',x_pachy:'Stops to wind up when close (a ! appears), then charges at high speed. The Tamer’s net slows it.',
+  x_dilo:'Stops midway and spits acid at the fence every 4.2s (a green glow at the mouth is the warning). You can shoot the acid down.',x_pachy:'Stops to wind up when close (a ! appears), then charges at high speed. The Tamer’s net slows it.',
   x_trike:'Heavy. High HP, announced by a ⚠ on the horizon. Focus fire early.',x_ankylo:'Heavy. Armored all over with very high HP; fence -3. Spears and dynamite work best.',
   x_trex:'Boss (wave 6). Roars on arrival. Huge HP, fence -5. Save your heat. From wave 16 the six bosses take turns on even waves.',x_supply:'Golden supply dino. Crosses the crater and escapes after 7.5s. Shoot it for fence +2 or 6s Overdrive.',
   
@@ -1258,14 +1259,14 @@ function setMute(m){AU.muted=m;store('fossil_muted',m?'1':'0');$('mute').textCon
 /* ================= 波次设计 ================= */
 function stageOf(n){return n<=2?1:n<=4?2:n<=6?3:4}
 const WAVES={1:[{raptor:13,compy:10,ovi:1},0.92],2:[{raptor:11,compy:10,ovi:4,pachy:2},0.86],3:[{raptor:9,compy:5,ovi:2,trike:1,pachy:2,para:1},0.92],
-  4:[{raptor:8,compy:10,ovi:2,trike:1,pachy:2,dilo:2,para:1},0.88],5:[{raptor:6,compy:10,ovi:2,ptero:4,trike:1,dilo:2,pachy:2,para:1,stego:1},0.86],
+  4:[{raptor:9,compy:10,ovi:2,trike:1,pachy:2,dilo:1,para:1},0.88],5:[{raptor:6,compy:10,ovi:2,ptero:4,trike:1,dilo:2,pachy:2,para:1,stego:1},0.86],
   6:[{raptor:8,compy:10,ovi:2,ptero:4,trike:1,dilo:1,pachy:2,para:1},0.84]};   /* 霸王龙波：少放重型 */
 const BOSSES=['trex','ankyking','pteroq','tyrant','spino','titan'];
 function waveDef(n){
   const st=stageOf(n),k=Math.max(0,n-7);
   let c,gap;
   if(WAVES[n]){c=WAVES[n][0];gap=WAVES[n][1]}
-  else{c={raptor:8+k,compy:10+2*k,ovi:3+(k>>1),ptero:5+(k>>1),dilo:3+Math.floor(k/3),pachy:3+Math.floor(k/3),para:2+Math.floor(k/3),trike:2+Math.floor(k/3),stego:Math.min(4,1+(k>>1)),ankylo:Math.min(5,1+(k>>1))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
+  else{c={raptor:9+k,compy:10+2*k,ovi:3+(k>>1),ptero:5+(k>>1),dilo:2+(k>>1),pachy:2+(k>>1),para:1+(k>>1),trike:2+Math.floor(k/3),stego:Math.min(4,1+Math.floor(k/3)),ankylo:Math.min(5,1+Math.floor(k/3))};gap=Math.max(0.45,0.72*Math.pow(0.96,k))}
   /* 难度：耐久、数量、出怪间隔（2026-11-02 第三次加难度） */
   const hpMul=(1.4+0.12*(n-1))*Math.pow(1.17,k);
   const cMul=1.12+Math.min(0.25,0.025*(n-1));
@@ -1687,11 +1688,11 @@ function update(dt){
       if(e.life<=0||Math.abs(e.x)>2.4){e.gone=1;const p=proj(clamp(e.x,-1,1),e.z);addText(p.x,p.y-30,tr('f_esc'),"#ffd447",14);sfx('escape')}
     }else{
       let sp=e.spd*slow;
-      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=3.2;spit(e)}}
+      if(e.type==='dilo'&&e.z<=e.stopZ){sp=0;e.spitT-=dt*slow;e.wind=e.spitT<0.6;if(e.spitT<=0){e.spitT=4.2;spit(e)}}
       if(e.type==='pachy'){
         if(e.ps===0&&e.z<5.5){e.ps=1;e.pw=0.9;sfx('charge')}
         if(e.ps===1){sp=0;e.pw-=dt;if(e.pw<=0)e.ps=2}
-        if(e.ps===2)sp=3.6*slow;
+        if(e.ps===2)sp=2.8*slow;
       }
       /* 透视补偿：屏幕上从地平线到骨栅匀速移动。dz/dt ∝ (z+D0)² 时屏幕 y 匀速；
          ZSPD=0.045 → 走完全程约 12/spd 秒（原匀速世界速度为 10/spd），近处比之前慢约 40% */
@@ -1760,7 +1761,7 @@ function update(dt){
           if(b.pierce){b.hit.push(e);b.dmg*=0.85}else{b.dead=1;break}
         }
       }
-      if(!b.dead)for(const sp of S.spits)if(!sp.dead&&Math.hypot(sp.x-b.x,sp.y-b.y)<16){sp.dead=1;burst(sp.x,sp.y,'#8aff6a',8,140,0.4);addText(sp.x,sp.y-14,tr('f_pop'),'#8aff6a',13);if(!b.pierce)b.dead=1;break}
+      if(!b.dead)for(const sp of S.spits)if(!sp.dead&&Math.hypot(sp.x-b.x,sp.y-b.y)<22){sp.dead=1;burst(sp.x,sp.y,'#8aff6a',8,140,0.4);addText(sp.x,sp.y-14,tr('f_pop'),'#8aff6a',13);if(!b.pierce)b.dead=1;break}
       if(!b.dead&&(b.left<=0||b.age>1.5||b.y<hy-90||b.x<-40||b.x>W+40)){b.dead=1;burst(b.x,b.y,'#d8b888',2,40,0.35,'dust',1.2)}
     }
   }
